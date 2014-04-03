@@ -11,7 +11,7 @@ class BoardExample():
 
 	#it will call generatesMultiplesproblems, which returns a Problem object
 	#we need to say the size of the board and the difficult level (1, 2, or 3)
-	problem_x = generatesMultiplesProblems(42, 1)
+	problem_x = generatesMultiplesProblems(42, 3)
 
 	#the Problem object has the following attributes
 	#size of the board, like 42 (6x7)
