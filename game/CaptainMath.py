@@ -23,13 +23,19 @@ class CaptainMath(spyral.Scene):
         spyral.Scene.__init__(self, SIZE)
         #self.background = spyral.Image(size=SIZE).fill(BG_COLOR)
         self.background = spyral.Image("images/Begin.png")
-
+        
+        left = "left"
+        right="right"
+        up = "up"
+        down = "down"
+        enter = "]"
         self.font = font(self,"fonts/Bite_Bullet.ttf","glhf :)")
         spyral.event.register("system.quit", spyral.director.pop)
         spyral.event.register("director.update", self.update)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
-
-
+        spyral.event.register("input.keyboard.down."+up, self.askquest)
+    def askquest(self):
+        self.background = spyral.Image("images/MathmuncherboardwithsomestuffONed.png");
     def update(self, delta):
         print "hello world"
 
