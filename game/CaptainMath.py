@@ -21,7 +21,8 @@ class CaptainMath(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.background = spyral.Image(size=SIZE).fill(BG_COLOR)
+        #self.background = spyral.Image(size=SIZE).fill(BG_COLOR)
+        self.background = spyral.Image("images/Begin.png")
 
         self.font = font(self,"fonts/Bite_Bullet.ttf","glhf :)")
         spyral.event.register("system.quit", spyral.director.pop)
