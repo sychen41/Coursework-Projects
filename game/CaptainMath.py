@@ -2,6 +2,7 @@ import spyral
 import random
 import math
 import time
+import pygame
 
 WIDTH = 1200
 HEIGHT = 800
@@ -69,8 +70,16 @@ class Player(spyral.Sprite):
         self.moving = 'right'
         self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
     def move_up(self):
+        if(isface == "right"):
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+        else:
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
         self.moving = 'up'
     def move_down(self):
+        if(isface == "right"):
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+        else:
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
         self.moving = 'down'
     def place_piece(self):
         self.moving = 'place_piece'
@@ -115,18 +124,33 @@ class CaptainMath(spyral.Scene):
         spyral.event.register("input.keyboard.up."+space, self.space_unclicked)
 
     def space_clicked(self):
+        global isface
         self.Laser = Laser(self)
+        pygame.mixer.init()
+        sounda = pygame.mixer.Sound("sounds/lasershot.wav")
+        sounda.play()
+
+
         if(isface == "right"):
+          self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRight.png", size = None)
           self.Laser.x = self.player.x+90
           self.Laser.y = self.player.y-25
+          isface = "right"
         elif(isface == "left"):
+          isface = "left"
+          self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeft.png", size = None)
           self.Laser.x = self.player.x-250
           self.Laser.y = self.player.y-25
 
 
 
     def space_unclicked(self):
+        global isface
         time.sleep(0.2)
+        if(isface == "right"):
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+        else:
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         self.Laser.kill()
     def update(self, delta):
         global isface
