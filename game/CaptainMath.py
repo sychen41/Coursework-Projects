@@ -1,13 +1,14 @@
 import spyral
 import random
 import math
+import time
 
 WIDTH = 1200
 HEIGHT = 800
 BG_COLOR = (0,0,0)
 WHITE = (255, 255, 255)
 SIZE = (WIDTH, HEIGHT)
-
+isface = "right"
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -16,11 +17,17 @@ class font(spyral.Sprite):
         self.x = 450
         self.y = 0
         self.moving = False
+class Laser(spyral.Sprite):
+    def __init__(self, scene):
+        spyral.Sprite.__init__(self, scene)
+        self.image = spyral.image.Image(filename = "images/misc/laser.png", size = None)
+        self.moving = False
 
 class Player(spyral.Sprite):
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
         global playerColor
+        global isface
         playerColor = "red"
         if(playerColor == "red"):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
@@ -29,12 +36,12 @@ class Player(spyral.Sprite):
         self.x = WIDTH/2
         self.y = HEIGHT - 200
         self.moving = False
-
         left = "left"
         right="right"
         up = "up"
         down = "down"
         enter = "]"
+        space = "space"
         spyral.event.register("input.keyboard.down."+left, self.move_left)
         spyral.event.register("input.keyboard.down."+right, self.move_right)
         spyral.event.register("input.keyboard.up."+left, self.stop_move)
@@ -46,11 +53,19 @@ class Player(spyral.Sprite):
         spyral.event.register("input.keyboard.up."+enter, self.stop_move)
         spyral.event.register("input.mouse.left.click", self.askquest)
         spyral.event.register("director.update", self.update)
+#        spyral.event.register("input.keyboard.up."+space, self.stop_move)
+#        spyral.event.register("input.keyboard.down."+space, self.move_right)
+
+
 
     def move_left(self):
+        global isface
+        isface = "left"
         self.moving = 'left'
         self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
     def move_right(self):
+        global isface
+        isface = "right"
         self.moving = 'right'
         self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
     def move_up(self):
@@ -83,16 +98,38 @@ class CaptainMath(spyral.Scene):
         spyral.Scene.__init__(self, SIZE)
         self.background = spyral.Image("images/fullLevels/planet2_Board.png")
         self.player = Player(self)
+        global isface
+      #  self.Laser = Laser(self)
+
         left = "left"
         right="right"
         up = "up"
         down = "down"
         enter = "]"
+        space = "space"
         self.font = font(self,"fonts/Bite_Bullet.ttf","glhf :)")
         spyral.event.register("system.quit", spyral.director.pop)
         spyral.event.register("director.update", self.update)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
+        spyral.event.register("input.keyboard.down."+space, self.space_clicked)
+        spyral.event.register("input.keyboard.up."+space, self.space_unclicked)
 
+    def space_clicked(self):
+        self.Laser = Laser(self)
+        if(isface == "right"):
+          self.Laser.x = self.player.x+90
+          self.Laser.y = self.player.y-25
+        elif(isface == "left"):
+          self.Laser.x = self.player.x-250
+          self.Laser.y = self.player.y-25
+
+
+
+    def space_unclicked(self):
+        time.sleep(0.2)
+        self.Laser.kill()
     def update(self, delta):
+        global isface
         print "hello world"
         print "hey"
+        print isface
