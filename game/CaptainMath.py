@@ -8,7 +8,7 @@ BG_COLOR = (0,0,0)
 WHITE = (255, 255, 255)
 SIZE = (WIDTH, HEIGHT)
 
-class font(spyral.Sprite): 
+class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
         font = spyral.Font(font, 80)
@@ -46,11 +46,13 @@ class Player(spyral.Sprite):
         spyral.event.register("input.keyboard.up."+enter, self.stop_move)
         spyral.event.register("input.mouse.left.click", self.askquest)
         spyral.event.register("director.update", self.update)
-        
+
     def move_left(self):
         self.moving = 'left'
+        self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
     def move_right(self):
         self.moving = 'right'
+        self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
     def move_up(self):
         self.moving = 'up'
     def move_down(self):
@@ -65,7 +67,7 @@ class Player(spyral.Sprite):
         print "askquest"
     def update(self, delta):
         paddle_velocity = 250
-        
+        print delta
         if self.moving == 'left':
             self.x -= paddle_velocity * delta
         elif self.moving == 'right':
@@ -79,7 +81,7 @@ class CaptainMath(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.background = spyral.Image("images/entireScenes/Begin.png")
+        self.background = spyral.Image("images/fullLevels/planet2_Board.png")
         self.player = Player(self)
         left = "left"
         right="right"
