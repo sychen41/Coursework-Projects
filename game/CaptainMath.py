@@ -90,7 +90,7 @@ class Player(spyral.Sprite):
     def askquest(self):
         print "askquest"
     def update(self, delta):
-        paddle_velocity = 250
+        paddle_velocity = 500
         print delta
         if self.moving == 'left':
             self.x -= paddle_velocity * delta
