@@ -54,11 +54,18 @@ class Player(spyral.Sprite):
         spyral.event.register("input.keyboard.up."+enter, self.stop_move)
         spyral.event.register("input.mouse.left.click", self.askquest)
         spyral.event.register("director.update", self.update)
-#        spyral.event.register("input.keyboard.up."+space, self.stop_move)
-#        spyral.event.register("input.keyboard.down."+space, self.move_right)
 
-
-
+    '''
+    def asorbAnswer(self):
+        print "hello yo boy"
+        #self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+        self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRight.png", size = None)
+        time.sleep(1)
+        if(isface == "right"):
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+        else:
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+    '''
     def move_left(self):
         global isface
         isface = "left"
@@ -122,6 +129,7 @@ class CaptainMath(spyral.Scene):
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
         spyral.event.register("input.keyboard.down."+space, self.space_clicked)
         spyral.event.register("input.keyboard.up."+space, self.space_unclicked)
+        spyral.event.register("input.keyboard.down.t", self.asorbAnswer)
 
     def space_clicked(self):
         global isface
@@ -143,7 +151,14 @@ class CaptainMath(spyral.Scene):
           self.Laser.y = self.player.y-25
 
 
-
+    def asorbAnswer(self):
+        print "hello yo boy"
+        self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+        time.sleep(0.2)
+        if(isface == "right"):
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+        else:
+          self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
     def space_unclicked(self):
         global isface
         time.sleep(0.2)
