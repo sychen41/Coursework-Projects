@@ -3,6 +3,9 @@ import random
 import math
 import time
 import pygame
+from problem import Problem
+from ourmath import generatesMultiplesProblems
+
 
 WIDTH = 1200
 HEIGHT = 800
@@ -108,6 +111,102 @@ class Player(spyral.Sprite):
         elif self.moving == 'down':
             self.y += paddle_velocity * delta
 
+class MathText(spyral.Sprite):
+    def __init__(self, scene, index, difficulty):
+        spyral.Sprite.__init__(self, scene)
+       
+        problem = generatesMultiplesProblems(30, 1)
+        # Todo: random mix of right and wrong anwsers, also mix with index of asteriods 
+        answers = problem.right_answers + problem.wrong_answers
+        #for e in answers:
+         #   print e
+        origin_x = 145.5
+        origin_y = 121
+        row = index / 6
+        col = index % 6
+        w = WIDTH/8
+        h = HEIGHT/7
+        GOLDEN = (218,165,32)
+        WHITE = (255, 255, 255)
+        self.x = col*w + WIDTH/40 + origin_x
+        self.y = row*h + HEIGHT/40 + origin_y
+        font = spyral.Font(None, WIDTH/20)
+        if index == 0:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 1:
+            self.x -= WIDTH/70
+            self.y -= HEIGHT/35
+            self.image = spyral.image.Image(filename = "images/misc/asteroid_small.png", size = None)
+        elif index == 2:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 3:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 4:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 5:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 6:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 7:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 8:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 9:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 10:
+            self.x -= WIDTH/70
+            self.y -= HEIGHT/35
+            self.image = spyral.image.Image(filename = "images/misc/asteroid_small.png", size = None)
+            #self.image = font.render(str(index), WHITE)
+        elif index == 11:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 12:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 13:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 14:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 15:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 16:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 17:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 18:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 19:
+            self.x -= WIDTH/70
+            self.y -= HEIGHT/35
+            self.image = spyral.image.Image(filename = "images/misc/asteroid_small.png", size = None)
+        elif index == 20:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 21:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 22:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 23:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 24:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 25:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 26:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 27:
+            self.x -= WIDTH/70
+            self.y -= HEIGHT/35
+            self.image = spyral.image.Image(filename = "images/misc/asteroid_small.png", size = None)
+        elif index == 28:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 29:
+            self.image = font.render(str(answers[index]), WHITE)
+        elif index == 30:
+            self.x = WIDTH*7/20
+            self.y = HEIGHT/12
+            self.image = font.render("Find Multiples of " + str(problem.question), GOLDEN)
+        
+
+
 class CaptainMath(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
@@ -130,6 +229,17 @@ class CaptainMath(spyral.Scene):
         spyral.event.register("input.keyboard.down."+space, self.space_clicked)
         spyral.event.register("input.keyboard.up."+space, self.space_unclicked)
         spyral.event.register("input.keyboard.down.t", self.asorbAnswer)
+        spyral.event.register("input.mouse.down.left", self.mouse_down)
+
+
+        for x in range(0, 31):
+            self.mathText = MathText(self, x, 1)
+
+
+    def mouse_down(self, pos, button):
+        self.mX = pos[0]
+        self.mY = pos[1]
+        print pos, button
 
     def space_clicked(self):
         global isface
