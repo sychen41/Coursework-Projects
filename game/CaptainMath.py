@@ -115,11 +115,6 @@ class MathText(spyral.Sprite):
     def __init__(self, scene, index, answers, problem_question):
         spyral.Sprite.__init__(self, scene)
        
-        #problem = generatesMultiplesProblems(30, difficulty)
-        # Todo: random mix of right and wrong anwsers, also mix with index of asteriods 
-        #answers = problem.right_answers + problem.wrong_answers
-        #for e in answers:
-         #   print e
         origin_x = 145.5
         origin_y = 121
         row = index / 6
@@ -135,8 +130,6 @@ class MathText(spyral.Sprite):
             self.x = WIDTH*7/20
             self.y = HEIGHT/12
             self.image = font.render("Find Multiples of " + str(problem_question), GOLDEN)
-            #self.image = font.render("Find Multiples of ", GOLDEN)
-        #elif answers[index] index == 1 or index == 10 or index == 19 or index == 27:
         elif answers[index] == -1:
             self.x -= WIDTH/70
             self.y -= HEIGHT/35
