@@ -101,7 +101,7 @@ class Player(spyral.Sprite):
         print "askquest"
     def update(self, delta):
         paddle_velocity = 500
-        print delta
+        #print delta
         if self.moving == 'left':
             self.x -= paddle_velocity * delta
         elif self.moving == 'right':
@@ -112,12 +112,12 @@ class Player(spyral.Sprite):
             self.y += paddle_velocity * delta
 
 class MathText(spyral.Sprite):
-    def __init__(self, scene, index, problem):
+    def __init__(self, scene, index, answers, problem_question):
         spyral.Sprite.__init__(self, scene)
        
         #problem = generatesMultiplesProblems(30, difficulty)
         # Todo: random mix of right and wrong anwsers, also mix with index of asteriods 
-        answers = problem.right_answers + problem.wrong_answers
+        #answers = problem.right_answers + problem.wrong_answers
         #for e in answers:
          #   print e
         origin_x = 145.5
@@ -134,8 +134,10 @@ class MathText(spyral.Sprite):
         if index == 30:
             self.x = WIDTH*7/20
             self.y = HEIGHT/12
-            self.image = font.render("Find Multiples of " + str(problem.question), GOLDEN)
-        elif index == 1 or index == 10 or index == 19 or index == 27:
+            self.image = font.render("Find Multiples of " + str(problem_question), GOLDEN)
+            #self.image = font.render("Find Multiples of ", GOLDEN)
+        #elif answers[index] index == 1 or index == 10 or index == 19 or index == 27:
+        elif answers[index] == -1:
             self.x -= WIDTH/70
             self.y -= HEIGHT/35
             self.image = spyral.image.Image(filename = "images/misc/asteroid_small.png", size = None)
@@ -168,9 +170,52 @@ class CaptainMath(spyral.Scene):
         spyral.event.register("input.keyboard.down.t", self.asorbAnswer)
         spyral.event.register("input.mouse.down.left", self.mouse_down)
 
-        problem = generatesMultiplesProblems(30, 2)
+        # generate math problem (27 answers needed, because there are 3 asteroids)
+        problem = generatesMultiplesProblems(27, 2)
+#######################################################################
+# The following block makes right and wrong answers and asteroids 
+# randomly displayed on the board. 
+# Documentation will be added later
+        indexOfRightAnswers = [None]*int(problem.quant_right)
+        len1 = int(problem.quant_right)+3 # length of randomIndexes
+        randomIndexes = [None]*len1
+        randomNum = random.randint(0, 7)
+        print randomNum
+        modulo = 29 # prime
+        incrementor = 17180131327 # relative prime
+        primeNums = [5, 7, 11, 13, 17, 19, 23, 29]
+        current = primeNums[randomNum] # some start value
+        for i in range(0, len1):
+            current = (current + incrementor) % modulo
+            randomIndexes[i] = current
+        for i in range(0, len(indexOfRightAnswers)):
+            indexOfRightAnswers[i] = randomIndexes[i]
+        indexOfAsteroid = [randomIndexes[len1-1],randomIndexes[len1-2],randomIndexes[len1-3]]
+        indexOfRightAnswers.sort()
+        indexOfAsteroid.sort()
+        j=0
+        k=0
+        r=0
+        w=0
+        answers = [None]*30
+        for i in range(0, 30):
+            if i == indexOfRightAnswers[j]:
+                answers[i] = problem.right_answers[r]
+                print " " + str(i) + " right" 
+                if j < problem.quant_right-1:
+                  j+=1
+                r+=1
+            elif i == indexOfAsteroid[k]:
+                answers[i] = -1 # -1 represent an asteroid
+                if k < len(indexOfAsteroid)-1:
+                    k+=1
+            else:
+                answers[i] = problem.wrong_answers[w]
+                if w < problem.quant_wrong-1:
+                    w+=1
+########################################################################      
         for x in range(0, 31):
-            self.mathText = MathText(self, x, problem)
+            self.mathText = MathText(self, x, answers, problem.question)
 
 
     def mouse_down(self, pos, button):
@@ -216,6 +261,6 @@ class CaptainMath(spyral.Scene):
         self.Laser.kill()
     def update(self, delta):
         global isface
-        print "hello world"
-        print "hey"
-        print isface
+        #print "hello world"
+        #print "hey"
+        #print isface
