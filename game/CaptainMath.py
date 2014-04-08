@@ -165,27 +165,37 @@ class CaptainMath(spyral.Scene):
 
         # generate math problem (27 answers needed, because there are 3 asteroids)
         problem = generatesMultiplesProblems(27, 2)
-#######################################################################
-# The following block makes right and wrong answers and asteroids 
-# randomly displayed on the board. 
-# Documentation will be added later
+
+        # The following block makes right and wrong answers and asteroids 
+        # randomly displayed on the board. 
+        
+        # init array to contain indexes of right answers
         indexOfRightAnswers = [None]*int(problem.quant_right)
+        # init array to contain random indexes of right answers and three asteroids
         len1 = int(problem.quant_right)+3 # length of randomIndexes
         randomIndexes = [None]*len1
+        primeNums = [5, 7, 11, 13, 17, 19, 23, 29]
+        # randomly pick one prime number from the primeNum
         randomNum = random.randint(0, 7)
-        print randomNum
+        current = primeNums[randomNum] # some start value
+        # fill the randomIndexes array with non-repeat numbers, range is 0-28 
         modulo = 29 # prime
         incrementor = 17180131327 # relative prime
-        primeNums = [5, 7, 11, 13, 17, 19, 23, 29]
-        current = primeNums[randomNum] # some start value
         for i in range(0, len1):
             current = (current + incrementor) % modulo
             randomIndexes[i] = current
+        # fill indexOfAsteroid with the last 3 numbers in randomIndexes
+        indexOfAsteroid = [randomIndexes[len1-1],randomIndexes[len1-2],randomIndexes[len1-3]]
+        # fill indexOfRightAnswers with rest numbers in randomIndexes
         for i in range(0, len(indexOfRightAnswers)):
             indexOfRightAnswers[i] = randomIndexes[i]
-        indexOfAsteroid = [randomIndexes[len1-1],randomIndexes[len1-2],randomIndexes[len1-3]]
+        # both array HAVE TO BE ASCENDING order
         indexOfRightAnswers.sort()
         indexOfAsteroid.sort()
+        # generate the array: answers 
+        # when index is in indexOfRightAnswers, assign the location with a RIGHT answer
+        # when index is in indexOfAsteroid, assign the location with -1 
+        # otherwise, assgin the location with a WRONG answer
         j=0
         k=0
         r=0
@@ -206,7 +216,8 @@ class CaptainMath(spyral.Scene):
                 answers[i] = problem.wrong_answers[w]
                 if w < problem.quant_wrong-1:
                     w+=1
-########################################################################      
+    
+        # display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
         for x in range(0, 31):
             self.mathText = MathText(self, x, answers, problem.question)
 
