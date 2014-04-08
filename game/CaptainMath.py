@@ -4,7 +4,7 @@ import math
 import time
 import pygame
 from problem import Problem
-from ourmath import generatesMultiplesProblems
+from ourmath2 import generatesMultiplesProblems
 
 
 WIDTH = 1200
@@ -112,10 +112,10 @@ class Player(spyral.Sprite):
             self.y += paddle_velocity * delta
 
 class MathText(spyral.Sprite):
-    def __init__(self, scene, index, difficulty):
+    def __init__(self, scene, index, problem):
         spyral.Sprite.__init__(self, scene)
        
-        problem = generatesMultiplesProblems(30, 1)
+        #problem = generatesMultiplesProblems(30, difficulty)
         # Todo: random mix of right and wrong anwsers, also mix with index of asteriods 
         answers = problem.right_answers + problem.wrong_answers
         #for e in answers:
@@ -231,9 +231,9 @@ class CaptainMath(spyral.Scene):
         spyral.event.register("input.keyboard.down.t", self.asorbAnswer)
         spyral.event.register("input.mouse.down.left", self.mouse_down)
 
-
+        problem = generatesMultiplesProblems(30, 2)
         for x in range(0, 31):
-            self.mathText = MathText(self, x, 1)
+            self.mathText = MathText(self, x, problem)
 
 
     def mouse_down(self, pos, button):
