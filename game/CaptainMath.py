@@ -14,7 +14,8 @@ WHITE = (255, 255, 255)
 SIZE = (WIDTH, HEIGHT)
 isface = "right"
 forceFieldOn = False
-forceFieldTime = 0;
+forceFieldTime = 0
+laserCount = 3
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -142,6 +143,10 @@ class MathText(spyral.Sprite):
             self.image = spyral.Image(size=(1, 1))
         else:
             self.image = font.render(str(answers[index]), WHITE)
+class Battery(spyral.Sprite):
+    def __init__(self, scene):
+        spyral.Sprite.__init__(self, scene)
+        self.image = spyral.image.Image(filename = "images/misc/BatteryLogo.png", size = None)
 
 class Asteroid(spyral.Sprite):
     def __init__(self, scene, index):
@@ -166,6 +171,15 @@ class CaptainMath(spyral.Scene):
         spyral.Scene.__init__(self, SIZE)
         self.background = spyral.Image("images/fullLevels/planet2_Board.png")
         self.player = Player(self)
+        self.Battery1 = Battery(self)
+        self.Battery1.x = 0
+        self.Battery1.y = 10
+        self.Battery2 = Battery(self)
+        self.Battery2.x = self.Battery1.width + 10
+        self.Battery2.y = 10
+        self.Battery3 = Battery(self)
+        self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
+        self.Battery3.y = 10
         global isface
         left = "left"
         right="right"
@@ -252,12 +266,19 @@ class CaptainMath(spyral.Scene):
 
     def space_clicked(self):
         global isface
+        global laserCount
+        if(laserCount == 0):
+          print "No Laser Left!!!!"
+          pygame.mixer.init()
+          noAmmo = pygame.mixer.Sound("sounds/emptyGun.wav")
+          noAmmo.play()
+          return
         self.Laser = Laser(self)
-      #  self.Laser.collide_meteor()
         pygame.mixer.init()
         sounda = pygame.mixer.Sound("sounds/lasershot.wav")
         sounda.play()
-
+       
+    
 
         if(isface == "right" and forceFieldOn == False):
           self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRight.png", size = None)
@@ -279,6 +300,14 @@ class CaptainMath(spyral.Scene):
           self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRightForceField.png", size = None)
           self.Laser.x = self.player.x+90
           self.Laser.y = self.player.y-25
+        if(laserCount == 3):
+          self.Battery3.kill()
+        if(laserCount == 2):
+          self.Battery2.kill()
+        if(laserCount == 1):
+          self.Battery1.kill()
+        laserCount = laserCount - 1
+
     def asorbAnswer(self):
         print "hello yo boy"
         self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
@@ -323,4 +352,10 @@ class CaptainMath(spyral.Scene):
             pygame.mixer.init()
             FFFailure = pygame.mixer.Sound("sounds/forceFieldFail.wav")
             FFFailure.play()
+            FFOff = pygame.mixer.Sound("sounds/forceFieldOff.wav")
+            FFOff.play()
+            if(isface == "right"):
+              self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+            else:
+              self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
        
