@@ -137,13 +137,28 @@ class MathText(spyral.Sprite):
             self.y = HEIGHT/12
             self.image = font.render("Find Multiples of " + str(problem_question), GOLDEN)
         elif answers[index] == -1:
-            self.x -= WIDTH/70
-            self.y -= HEIGHT/35
-            self.image = spyral.image.Image(filename = "images/misc/asteroid_small.png", size = None)
+            #self.x -= WIDTH/70
+            #self.y -= HEIGHT/35
+            self.image = spyral.Image(size=(1, 1))
         else:
             self.image = font.render(str(answers[index]), WHITE)
-        
 
+class Asteroid(spyral.Sprite):
+    def __init__(self, scene, index):
+        spyral.Sprite.__init__(self, scene)
+       
+        origin_x = 145.5
+        origin_y = 121
+        row = index / 6
+        col = index % 6
+        w = WIDTH/8
+        h = HEIGHT/7
+        self.x = col*w + WIDTH/40 + origin_x
+        self.y = row*h + HEIGHT/40 + origin_y
+        self.x -= WIDTH/70
+        self.y -= HEIGHT/35
+        self.image = spyral.image.Image(filename = "images/misc/asteroid_small.png", size = None)
+ 
 
 class CaptainMath(spyral.Scene):
     def __init__(self, *args, **kwargs):
@@ -223,6 +238,11 @@ class CaptainMath(spyral.Scene):
         # display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
         for x in range(0, 31):
             self.mathText = MathText(self, x, answers, problem.question)
+        
+        # render asteroids
+        self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
+        self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
+        self.asteroid3 = Asteroid(self, indexOfAsteroid[2])
 
 
     def mouse_down(self, pos, button):
