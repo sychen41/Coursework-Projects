@@ -14,6 +14,7 @@ WHITE = (255, 255, 255)
 SIZE = (WIDTH, HEIGHT)
 isface = "right"
 forceFieldOn = False
+forceFieldTime = 0;
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -272,9 +273,11 @@ class CaptainMath(spyral.Scene):
     def forceFieldOn(self):
         print "holla for ya mama"
         global forceFieldOn
+        global forceFieldTime
         forceFieldOn = True
         print "hey" ,isface
         pygame.mixer.init()
+        forceFieldTime = time.time()
         FF = pygame.mixer.Sound("sounds/forceFieldOn.wav")
         FF.play()
         if(isface == "right"):
@@ -290,5 +293,14 @@ class CaptainMath(spyral.Scene):
           self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         self.Laser.kill()
     def update(self, delta):
-        global isface
+        global forceFieldOn
+        global forceFieldTime
+        #print forceFieldTime
+        #print time.time()
+        print (forceFieldTime - time.time())
+        if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
+            forceFieldOn = False
+            pygame.mixer.init()
+            FFFailure = pygame.mixer.Sound("sounds/forceFieldFail.wav")
+            FFFailure.play()
        
