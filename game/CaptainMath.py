@@ -157,7 +157,6 @@ class CaptainMath(spyral.Scene):
         down = "down"
         enter = "]"
         space = "space"
-        self.font = font(self,"fonts/Bite_Bullet.ttf","glhf :)")
         spyral.event.register("system.quit", spyral.director.pop)
         spyral.event.register("director.update", self.update)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
