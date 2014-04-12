@@ -163,6 +163,45 @@ class Asteroid(spyral.Sprite):
         self.x -= WIDTH/70
         self.y -= HEIGHT/35
         self.image = spyral.image.Image(filename = "images/misc/asteroid_small.png", size = None)
+
+class Enemy(spyral.Sprite):
+    def __init__(self, scene):
+        super(Enemy, self).__init__(scene)
+        self.image = spyral.image.Image(filename = "images/mainEnemyPurpleImages/PurpleEnemySprite.png", size = None)
+        #spyral.event.register("pong_score", self._reset)
+        spyral.event.register("director.update", self.update)
+        self._reset()
+        
+    def _reset(self):
+        r = 5
+        self.vel_x = r #* math.cos(theta)
+        self.vel_y = r #* math.sin(theta)
+        self.anchor = 'center'
+        self.pos = (WIDTH/2, HEIGHT/2)
+                
+    def update(self):
+        self.x += self.vel_x
+        self.y += self.vel_y
+        
+        r = self.rect
+        if r.top < 0:
+            r.top = 0
+            self.vel_y = -self.vel_y
+        if r.bottom > HEIGHT:
+            r.bottom = HEIGHT
+            self.vel_y = -self.vel_y
+        if r.left < 100:
+            r.left = 100
+            self.vel_x = -self.vel_x
+            #spyral.event.handle("pong_score", spyral.Event(side='left'))
+        if r.right > WIDTH-100:
+            r.right = WIDTH-100
+            self.vel_x = -self.vel_x
+            #spyral.event.handle("pong_score", spyral.Event(side='right'))
+            
+    def collide_asteroid(self, asteroid):
+        if self.collide_sprite(asteroid):
+            self.vel_x = -self.vel_x        
  
 
 class CaptainMath(spyral.Scene):
@@ -257,6 +296,8 @@ class CaptainMath(spyral.Scene):
         self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
         self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
         self.asteroid3 = Asteroid(self, indexOfAsteroid[2])
+
+        self.enemy1 = Enemy(self)
 
 
     def mouse_down(self, pos, button):
@@ -358,4 +399,8 @@ class CaptainMath(spyral.Scene):
               self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
             else:
               self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+
+        self.enemy1.collide_asteroid(self.asteroid1)
+        self.enemy1.collide_asteroid(self.asteroid2)
+        self.enemy1.collide_asteroid(self.asteroid3)  
        
