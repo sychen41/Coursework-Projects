@@ -602,18 +602,6 @@ class CaptainMath(spyral.Scene):
         global manager
         spyral.Scene.__init__(self, SIZE)
         self.background = spyral.Image("images/fullLevels/planet2_Board.png")
-        '''
-        self.player = Player(self)
-        self.Battery1 = Battery(self)
-        self.Battery1.x = 0
-        self.Battery1.y = 10
-        self.Battery2 = Battery(self)
-        self.Battery2.x = self.Battery1.width + 10
-        self.Battery2.y = 10
-        self.Battery3 = Battery(self)
-        self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
-        self.Battery3.y = 10
-        '''
         global isface
         left = "left"
         right="right"
@@ -630,74 +618,7 @@ class CaptainMath(spyral.Scene):
         spyral.event.register("input.keyboard.down.f", self.forceFieldOn)
         spyral.event.register("input.mouse.down.left", self.down_left)
         spyral.event.register("input.keyboard.down.return", self.return_clicked)
-        '''
-        #generate math problem (27 answers needed, because there are 3 asteroids)
-        problem = generatesMultiplesProblems(27, 2)
-
-        # The following block makes right and wrong answers and asteroids 
-        # randomly displayed on the board. 
-        
-        # init array to contain indexes of right answers
-        indexOfRightAnswers = [None]*int(problem.quant_right)
-        # init array to contain random indexes of right answers and three asteroids
-        len1 = int(problem.quant_right)+3 # length of randomIndexes
-        randomIndexes = [None]*len1
-        primeNums = [5, 7, 11, 13, 17, 19, 23, 29]
-        # randomly pick one prime number from the primeNum
-        randomNum = random.randint(0, 7)
-        current = primeNums[randomNum] # some start value
-        # fill the randomIndexes array with non-repeat numbers, range is 0-28 
-        modulo = 29 # prime
-        incrementor = 17180131327 # relative prime
-        for i in range(0, len1):
-            current = (current + incrementor) % modulo
-            randomIndexes[i] = current
-        # fill indexOfAsteroid with the last 3 numbers in randomIndexes
-        indexOfAsteroid = [randomIndexes[len1-1],randomIndexes[len1-2],randomIndexes[len1-3]]
-        # fill indexOfRightAnswers with rest numbers in randomIndexes
-        for i in range(0, len(indexOfRightAnswers)):
-            indexOfRightAnswers[i] = randomIndexes[i]
-        # both array HAVE TO BE ASCENDING order
-        indexOfRightAnswers.sort()
-        indexOfAsteroid.sort()
-        # generate the array: answers 
-        # when index is in indexOfRightAnswers, assign the location with a RIGHT answer
-        # when index is in indexOfAsteroid, assign the location with -1 
-        # otherwise, assgin the location with a WRONG answer
-        j=0
-        k=0
-        r=0
-        w=0
-        answers = [None]*30
-        for i in range(0, 30):
-            if i == indexOfRightAnswers[j]:
-                answers[i] = problem.right_answers[r]
-                print " " + str(i) + " right" 
-                if j < problem.quant_right-1:
-                  j+=1
-                r+=1
-            elif i == indexOfAsteroid[k]:
-                answers[i] = -1 # -1 represent an asteroid
-                if k < len(indexOfAsteroid)-1:
-                    k+=1
-            else:
-                answers[i] = problem.wrong_answers[w]
-                if w < problem.quant_wrong-1:
-                    w+=1
     
-        # display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
-        for x in range(0, 31):
-            self.mathText = MathText(self, x, answers, problem.question)
-        
-        # render asteroids
-        self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
-        self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
-        self.asteroid3 = Asteroid(self, indexOfAsteroid[2])
-
-        self.enemy1 = Enemy(self)
-'''
-
-
     def down_left(self,pos,button):
         global gamestate
         if(gamestate == "StartScreen" and pos[0] >= 500 and pos[0] <= 700 and pos[1] >=340 and pos[1] <= 450 ):
@@ -718,6 +639,8 @@ class CaptainMath(spyral.Scene):
 			gamestate = "fullLevels"
 			self.question.x = WIDTH+1
 			self.player = Player(self)
+			self.player.x = 155
+			self.player.y = 100
 			self.Battery1 = Battery(self)
 			self.Battery1.x = 0
 			self.Battery1.y = 10
@@ -798,7 +721,6 @@ class CaptainMath(spyral.Scene):
         if gamestate == "fullLevels":
 			
 			if(laserCount == 0):
-				print "No Laser Left!!!!"
 				pygame.mixer.init()
 				noAmmo = pygame.mixer.Sound("sounds/emptyGun.wav")
 				noAmmo.play()
@@ -904,21 +826,3 @@ class CaptainMath(spyral.Scene):
 			self.enemy1.collide_asteroid(self.asteroid3) 
         elif gamestate == "minigame":
 			self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
-			'''
-        print (forceFieldTime - time.time())
-        if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
-            forceFieldOn = False
-            pygame.mixer.init()
-            FFFailure = pygame.mixer.Sound("sounds/forceFieldFail.wav")
-            FFFailure.play()
-            FFOff = pygame.mixer.Sound("sounds/forceFieldOff.wav")
-            FFOff.play()
-            if(isface == "right"):
-              self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
-            else:
-              self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
-
-        self.enemy1.collide_asteroid(self.asteroid1)
-        self.enemy1.collide_asteroid(self.asteroid2)
-        self.enemy1.collide_asteroid(self.asteroid3)  
-   '''    
