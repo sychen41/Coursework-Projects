@@ -17,6 +17,7 @@ forceFieldOn = False
 forceFieldTime = 0
 laserCount = 3
 gamestate = "StartScreen"
+gameStarted = False
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -210,7 +211,7 @@ class Spaceship(spyral.Sprite):
 
 		spyral.Sprite.__init__(self, scene)
 
-		self.image = spyral.image.Image(filename = "images/spaceship/spaceshipRight.png", size = None)
+		self.image = spyral.image.Image(filename = "images/spaceship/spaceshipRightmoving.png", size = None)
 
 		self.x = 0
 
@@ -242,7 +243,7 @@ class Arrow(spyral.Sprite):
 
 		spyral.Sprite.__init__(self, scene)
 
-		self.image = spyral.image.Image(filename = "images/misc/red_arrow.png", size = None)
+		self.image = spyral.image.Image(filename = "images/misc/left_red_arrow.png", size = None)
 
 		self.x = 0
 
@@ -308,7 +309,7 @@ class Arrow(spyral.Sprite):
 
 		elif self.level == 3 and gamestate == "Levelselect":
 
-			self.image = spyral.image.Image(filename = "images/misc/red_arrow.png", size = None)
+			self.image = spyral.image.Image(filename = "images/misc/left_red_arrow.png", size = None)
 
 			self.x = 700
 
@@ -316,7 +317,7 @@ class Arrow(spyral.Sprite):
 
 		elif self.level == 4 and gamestate == "Levelselect":
 
-			self.image = spyral.image.Image(filename = "images/misc/blue_arrow.png", size = None)
+			self.image = spyral.image.Image(filename = "images/misc/right_red_arrow.png", size = None)
 
 			self.x = 730
 
@@ -635,8 +636,20 @@ class CaptainMath(spyral.Scene):
 			self.question = Question(self)
 			self.arrow.level = 5 
 			self.spaceship = Spaceship(self)
+			pygame.mixer.init()
+			SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
+			SSF.play()
+			SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
+			SST.play()
 		elif(gamestate == "minigame" and self.question.correct == '1'):
+			global SST
+			global SSF
+			SSF.stop()
+			SST.stop()
 			gamestate = "fullLevels"
+			pygame.mixer.init()
+			MainTheme = pygame.mixer.Sound("sounds/mainGameTheme.wav")
+			MainTheme.play()
 			self.question.x = WIDTH+1
 			self.player = Player(self)
 			self.player.x = 155
@@ -803,8 +816,14 @@ class CaptainMath(spyral.Scene):
         #print forceFieldTime
         #print time.time()
         global gamestate
+        global gameStarted
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
+			if(gameStarted == False):
+				pygame.mixer.init()
+				SSTheme = pygame.mixer.Sound("sounds/startScreenTheme.wav")
+				SSTheme.play()
+				gameStarted = True
         elif gamestate == "Levelselect":
             self.background = spyral.Image("images/preMadeImages/PlanetMap.png")
         elif gamestate == "fullLevels":
@@ -825,4 +844,6 @@ class CaptainMath(spyral.Scene):
 			self.enemy1.collide_asteroid(self.asteroid2)
 			self.enemy1.collide_asteroid(self.asteroid3) 
         elif gamestate == "minigame":
+			global SSTheme
+			SSTheme.stop()
 			self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
