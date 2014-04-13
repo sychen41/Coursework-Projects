@@ -59,6 +59,7 @@ class Player(spyral.Sprite):
             self.image = spyral.image.Image(filename = "images/entireScenes/hand_blue.png", size = None)
         self.x = WIDTH/2
         self.y = HEIGHT - 200
+        self.anchor = 'center'
         self.moving = False
         left = "left"
         right="right"
