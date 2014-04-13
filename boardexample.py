@@ -1,5 +1,8 @@
 #We import functions we will use to generate problems
 from ourmath2 import generatesMultiplesProblems
+from ourmath2 import generatesEqualitiesProblems
+from ourmath2 import generatesFractionsProblems
+
 #functions not implemented yet::::::
 #from ourmath import generatesFractorsProblems
 #from ourmath import generatesEqualitiesProblems
@@ -11,10 +14,10 @@ class BoardExample():
 
 	#it will call generatesMultiplesproblems, which returns a Problem object
 	#we need to say the size of the board and the difficult level (1, 2, or 3)
-	problem_x = generatesMultiplesProblems(30, 1)
+	problem_x = generatesFractionsProblems(30, 2)
 
 	answers = problem_x.right_answers + problem_x.wrong_answers
-	print(answers)
+	#print(answers)
 
 	#the Problem object has the following attributes
 	#size of the board, like 42 (6x7)
