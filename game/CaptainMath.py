@@ -121,16 +121,45 @@ class Player(spyral.Sprite):
     def askquest(self):
         print "askquest"
     def update(self, delta):
+	global ProwNum
+	global PcolNum
         paddle_velocity = 500
         #print delta
         if self.moving == 'left':
-            self.x -= paddle_velocity * delta
+            global ProwNum
+	    global PcolNum
+            #self.x -= paddle_velocity * delta
+	    if (BoardStatus[ProwNum][PcolNum] != -1):
+		if (PcolNum != 0):
+                    PcolNum-=1
+	    self.x = BoardXcoord[ProwNum][PcolNum]
+            #self.y = BoardYcoord[ProwNum][PcolNum]
         elif self.moving == 'right':
-            self.x += paddle_velocity * delta
+            global ProwNum
+	    global PcolNum
+	    if (BoardStatus[ProwNum][PcolNum] != -1):
+		if (PcolNum != 5):
+                    PcolNum+=1
+	    self.x = BoardXcoord[ProwNum][PcolNum]
         elif self.moving == 'up':
-            self.y -= paddle_velocity * delta
+            global ProwNum
+	    global PcolNum
+	    if (BoardStatus[ProwNum][PcolNum] != -1):
+	        if (ProwNum != -1):
+                    ProwNum-=1
+            self.y = BoardYcoord[ProwNum][PcolNum]
         elif self.moving == 'down':
-            self.y += paddle_velocity * delta
+            global ProwNum
+	    global PcolNum
+	    if (BoardStatus[ProwNum][PcolNum] != -1):
+	        if (ProwNum != 5):
+                    ProwNum+=1
+            self.y = BoardYcoord[ProwNum][PcolNum]
+        if (PcolNum == 6):
+            PcolNum = 0
+            ProwNum+=1
+        if (ProwNum == 5):
+            ProwNum = 0
 
 class MathText(spyral.Sprite):
     def __init__(self, scene, index, answers, problem_question):
