@@ -296,6 +296,32 @@ class Spaceship(spyral.Sprite):
             self.x = WIDTH + 100
 
 
+class StoryText(spyral.Sprite):
+    def __init__(self,scene):
+        spyral.Sprite.__init__(self, scene)
+
+        font=spyral.font.Font("fonts/white.ttf",40,(255,255,255))
+
+        text="This little math captain is blablablabla!"
+
+        self.image=font.render(text)
+
+        self.anchor = "center"
+
+        self.x = WIDTH/2
+
+        self.y = HEIGHT/2
+
+        #spyral.event.register("input.mouse.down.left", self.down_left2)
+
+    #def down_left2(self):
+        #gamestate = "LevelSelect"
+
+
+
+        #spyral.event.register ("input.mouse.down.left",self.down_left)
+
+
 
 class Arrow(spyral.Sprite):
 
@@ -305,9 +331,9 @@ class Arrow(spyral.Sprite):
 
 		self.image = spyral.image.Image(filename = "images/misc/left_red_arrow.png", size = None)
 
-		self.x = 0
+		self.x = 300
 
-		self.y = HEIGHT/2
+		self.y = 610
 
 		self.level = 1
 
@@ -758,9 +784,18 @@ class CaptainMath(spyral.Scene):
         print pos, button
         global gamestate
         if(gamestate == "StartScreen" and pos[0] >= 500 and pos[0] <= 700 and pos[1] >=340 and pos[1] <= 450 ):
-			gamestate = "Levelselect"
-			print "gamestate = Levelselect"
-			self.arrow = Arrow(self)
+			#gamestate = "Levelselect"
+            #print "gamestate = Levelselect"
+            gamestate = "story"
+            print "gamestate = story"
+            self.storytext = StoryText(self)
+
+
+        elif(gamestate == "story"):
+            gamestate = "Levelselect"
+            print "gamestate = Levelselect"
+            self.storytext.kill()
+            self.arrow = Arrow(self)
 			
 			
     def return_clicked(self):
@@ -1023,3 +1058,9 @@ class CaptainMath(spyral.Scene):
 			global SSTheme
 			SSTheme.stop()
 			self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
+
+        #story screen
+        elif gamestate == "story":
+            self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
+
+
