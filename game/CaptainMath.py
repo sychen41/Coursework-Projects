@@ -20,6 +20,12 @@ gamestate = "StartScreen"
 gameStarted = False
 enemyCollided = False
 eNow = 0
+timeStart = 0
+BoardXcoord = [[0 for x in xrange(6)] for x in xrange(5)] # row = 5 ;col = 6
+BoardYcoord = [[0 for x in xrange(6)] for x in xrange(5)]
+BoardStatus = [[0 for x in xrange(6)] for x in xrange(5)]
+rowNum = 0
+colNum = 0
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -188,34 +194,35 @@ class Enemy(spyral.Sprite):
                 
     def update(self):
 	global enemyCollided
-	global eNow
-        self.x += self.vel_x
-        self.y += self.vel_y
-	print enemyCollided
-	print "enow - time",(eNow - time.time())
+	global eNow  
+	#print enemyCollided
+	#print "enow - time",(eNow - time.time())
 	if(eNow - time.time() < (1-3) and enemyCollided == True):
 	    enemyCollided = False
         
-        r = self.rect
-        if r.top < 0:
-            r.top = 0
-            self.vel_y = -self.vel_y
-        if r.bottom > HEIGHT:
-            r.bottom = HEIGHT
-            self.vel_y = -self.vel_y
-        if r.left < 100:
-            r.left = 100
-            self.vel_x = -self.vel_x
-            #spyral.event.handle("pong_score", spyral.Event(side='left'))
-        if r.right > WIDTH-100:
-            r.right = WIDTH-100
-            self.vel_x = -self.vel_x
-            #spyral.event.handle("pong_score", spyral.Event(side='right'))
+        global timeStart
+        global rowNum
+        global colNum
+        if (time.time() - timeStart > 1):
+            if (BoardStatus[rowNum][colNum] == -1):
+                if (colNum != 5):
+                    colNum+=1
+                else:
+                    rowNum+=1
+                    colNum=0
+            self.x = BoardXcoord[rowNum][colNum]
+            self.y = BoardYcoord[rowNum][colNum]
+            timeStart = time.time()
+            colNum+=1
+            if (colNum == 6):
+                colNum = 0
+                rowNum+=1
+            if (rowNum == 5):
+                rowNum = 0
             
     def collide_asteroid(self, asteroid):
 	global enemyCollided
         if(self.collide_sprite(asteroid) and enemyCollided == False):
-            self.vel_x = -self.vel_x
 	    enemyCollided = True
 	    eNow = time.time()
 	            
@@ -619,6 +626,10 @@ class CaptainMath(spyral.Scene):
         spyral.Scene.__init__(self, SIZE)
         self.background = spyral.Image("images/fullLevels/planet2_Board.png")
         global isface
+        global timeStart
+        timeStart = time.time()
+        self.mX = 0 #mouse x coordinate
+        self.mY = 0 #mouse y coordinate
         left = "left"
         right="right"
         up = "up"
@@ -634,8 +645,78 @@ class CaptainMath(spyral.Scene):
         spyral.event.register("input.keyboard.down.f", self.forceFieldOn)
         spyral.event.register("input.mouse.down.left", self.down_left)
         spyral.event.register("input.keyboard.down.return", self.return_clicked)
+
+        # build coordinate matrix so that a cell(a,b) of the board
+        # has coordinate: (BoardXcoord[a][b], BoardYcoord[a][b])
+        global BoardXcoord
+        global BoardYcoord
+        # the following are rough coordinates, thus subject to change
+        BoardXcoord[0][0] = 184
+        BoardXcoord[1][0] = 184
+        BoardXcoord[2][0] = 184
+        BoardXcoord[3][0] = 184
+        BoardXcoord[4][0] = 184
+        BoardXcoord[0][1] = 333
+        BoardXcoord[1][1] = 333
+        BoardXcoord[2][1] = 333
+        BoardXcoord[3][1] = 333
+        BoardXcoord[4][1] = 333
+        BoardXcoord[0][2] = 477
+        BoardXcoord[1][2] = 477
+        BoardXcoord[2][2] = 477
+        BoardXcoord[3][2] = 477
+        BoardXcoord[4][2] = 477
+        BoardXcoord[0][3] = 633
+        BoardXcoord[1][3] = 633
+        BoardXcoord[2][3] = 633
+        BoardXcoord[3][3] = 633
+        BoardXcoord[4][3] = 633
+        BoardXcoord[0][4] = 777
+        BoardXcoord[1][4] = 777
+        BoardXcoord[2][4] = 777
+        BoardXcoord[3][4] = 777
+        BoardXcoord[4][4] = 777
+        BoardXcoord[0][5] = 933
+        BoardXcoord[1][5] = 933
+        BoardXcoord[2][5] = 933
+        BoardXcoord[3][5] = 933
+        BoardXcoord[4][5] = 933
+
+        BoardYcoord[0][0] = 156
+        BoardYcoord[0][1] = 156
+        BoardYcoord[0][2] = 156
+        BoardYcoord[0][3] = 156
+        BoardYcoord[0][4] = 156
+        BoardYcoord[0][5] = 156
+        BoardYcoord[1][0] = 254
+        BoardYcoord[1][1] = 254
+        BoardYcoord[1][2] = 254
+        BoardYcoord[1][3] = 254
+        BoardYcoord[1][4] = 254
+        BoardYcoord[1][5] = 254
+        BoardYcoord[2][0] = 364
+        BoardYcoord[2][1] = 364
+        BoardYcoord[2][2] = 364
+        BoardYcoord[2][3] = 364
+        BoardYcoord[2][4] = 364
+        BoardYcoord[2][5] = 364
+        BoardYcoord[3][0] = 465
+        BoardYcoord[3][1] = 465
+        BoardYcoord[3][2] = 465
+        BoardYcoord[3][3] = 465
+        BoardYcoord[3][4] = 465
+        BoardYcoord[3][5] = 465
+        BoardYcoord[4][0] = 578
+        BoardYcoord[4][1] = 578
+        BoardYcoord[4][2] = 578
+        BoardYcoord[4][3] = 578
+        BoardYcoord[4][4] = 578
+        BoardYcoord[4][5] = 578
     
     def down_left(self,pos,button):
+        self.mX = pos[0]
+        self.mY = pos[1]
+        print pos, button
         global gamestate
         if(gamestate == "StartScreen" and pos[0] >= 500 and pos[0] <= 700 and pos[1] >=340 and pos[1] <= 450 ):
 			gamestate = "Levelselect"
@@ -736,6 +817,17 @@ class CaptainMath(spyral.Scene):
 			for x in range(0, 31):
 				self.mathText = MathText(self, x, answers, problem.question)
         
+            		# fill the global BoardStatus with answers
+            		global BoardStatus
+            		a = 0
+            		b = 0
+            		for x in range(0, 30):
+                		BoardStatus[a][b] = answers[x]
+                		b+=1
+                		if (b==6):
+                    			b=0
+                    			a+=1
+			
 			# render asteroids
 			self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
 			self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
@@ -848,6 +940,7 @@ class CaptainMath(spyral.Scene):
         #print time.time()
         global gamestate
         global gameStarted
+        global timePassed
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
@@ -871,9 +964,10 @@ class CaptainMath(spyral.Scene):
 				else:
 					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
 
-			self.enemy1.collide_asteroid(self.asteroid1)
+			# enemy will NEVER collide with asteroids, so these three line can be delete
+            		self.enemy1.collide_asteroid(self.asteroid1)
 			self.enemy1.collide_asteroid(self.asteroid2)
-			self.enemy1.collide_asteroid(self.asteroid3) 
+			self.enemy1.collide_asteroid(self.asteroid3)
 			
         elif gamestate == "minigame":
 			global SSTheme
