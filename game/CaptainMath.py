@@ -18,6 +18,8 @@ forceFieldTime = 0
 laserCount = 3
 gamestate = "StartScreen"
 gameStarted = False
+enemyCollided = False
+eNow = 0
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -33,7 +35,10 @@ class Laser(spyral.Sprite):
         self.moving = False
     def collide_meteor(self, Sprite):
         if self.collide_sprite(Sprite):
-            print "hey you got me"
+            Sprite.kill()
+	    pygame.mixer.init()
+	    asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+	    asteroidExplode.play()
 class Player(spyral.Sprite):
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
@@ -182,8 +187,14 @@ class Enemy(spyral.Sprite):
         self.pos = (WIDTH/2, HEIGHT/2)
                 
     def update(self):
+	global enemyCollided
+	global eNow
         self.x += self.vel_x
         self.y += self.vel_y
+	print enemyCollided
+	print "enow - time",(eNow - time.time())
+	if(eNow - time.time() < (1-3) and enemyCollided == True):
+	    enemyCollided = False
         
         r = self.rect
         if r.top < 0:
@@ -202,8 +213,12 @@ class Enemy(spyral.Sprite):
             #spyral.event.handle("pong_score", spyral.Event(side='right'))
             
     def collide_asteroid(self, asteroid):
-        if self.collide_sprite(asteroid):
-            self.vel_x = -self.vel_x        
+	global enemyCollided
+        if(self.collide_sprite(asteroid) and enemyCollided == False):
+            self.vel_x = -self.vel_x
+	    enemyCollided = True
+	    eNow = time.time()
+	            
  
 class Spaceship(spyral.Sprite):
 
@@ -648,7 +663,7 @@ class CaptainMath(spyral.Scene):
 			SST.stop()
 			gamestate = "fullLevels"
 			pygame.mixer.init()
-			MainTheme = pygame.mixer.Sound("sounds/mainGameTheme.wav")
+			MainTheme = pygame.mixer.Sound("sounds/mainTheme.wav")
 			MainTheme.play()
 			self.question.x = WIDTH+1
 			self.player = Player(self)
@@ -750,21 +765,37 @@ class CaptainMath(spyral.Scene):
 				self.Laser.x = self.player.x+90
 				self.Laser.y = self.player.y-25
 				isface = "right"
+				self.Laser.collide_meteor(self.asteroid1)
+				self.Laser.collide_meteor(self.asteroid2)
+				self.Laser.collide_meteor(self.asteroid3)
+				self.Laser.collide_meteor(self.enemy1)
 			elif(isface == "left" and forceFieldOn == False and gamestate == "fullLevels"):
 				isface = "left"
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeft.png", size = None)
 				self.Laser.x = self.player.x-250
 				self.Laser.y = self.player.y-25
+				self.Laser.collide_meteor(self.asteroid1)
+				self.Laser.collide_meteor(self.asteroid2)
+				self.Laser.collide_meteor(self.asteroid3)
+				self.Laser.collide_meteor(self.enemy1)
 			elif(isface == "left" and forceFieldOn == True and gamestate == "fullLevels"):
 				isface = "left"
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeftForceField.png", size = None)
 				self.Laser.x = self.player.x-250
 				self.Laser.y = self.player.y-25
+				self.Laser.collide_meteor(self.asteroid1)
+				self.Laser.collide_meteor(self.asteroid2)
+				self.Laser.collide_meteor(self.asteroid3)
+				self.Laser.collide_meteor(self.enemy1)
 			elif(isface == "right" and forceFieldOn == True and gamestate == "fullLevels"):
 				isface = "right"
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRightForceField.png", size = None)
 				self.Laser.x = self.player.x+90
 				self.Laser.y = self.player.y-25
+				self.Laser.collide_meteor(self.asteroid1)
+				self.Laser.collide_meteor(self.asteroid2)
+				self.Laser.collide_meteor(self.asteroid3)
+				self.Laser.collide_meteor(self.enemy1)
 			if(laserCount == 3 and gamestate == "fullLevels"):
 				self.Battery3.kill()
 			if(laserCount == 2 and gamestate == "fullLevels"):
@@ -843,6 +874,7 @@ class CaptainMath(spyral.Scene):
 			self.enemy1.collide_asteroid(self.asteroid1)
 			self.enemy1.collide_asteroid(self.asteroid2)
 			self.enemy1.collide_asteroid(self.asteroid3) 
+			
         elif gamestate == "minigame":
 			global SSTheme
 			SSTheme.stop()
