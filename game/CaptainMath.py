@@ -541,7 +541,8 @@ class Question(spyral.Sprite):
 
             font=spyral.font.Font("fonts/white.ttf",30,(0,255,0))
 
-            self.image=font.render(text)
+            self.image=spyral.image.Image(filename = "images/feedback/Correct.png", size = None)
+            self.x = 400
 
             self.in_answer=0
 
@@ -555,7 +556,8 @@ class Question(spyral.Sprite):
 
             font=spyral.font.Font("fonts/white.ttf",30,(255,0,0))
 
-            self.image=font.render(text)
+            self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
+            self.x = 400
 
             self.in_answer=0
 
@@ -564,12 +566,12 @@ class Question(spyral.Sprite):
                 
 
     def K0(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 0
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
@@ -577,55 +579,55 @@ class Question(spyral.Sprite):
         self.image=font.render(text)
 
     def K1(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 1
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
 
     def K2(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 2
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
 
     def K3(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 3
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
         self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
 
     def K4(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 4
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
 
     def K5(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 5
@@ -637,49 +639,49 @@ class Question(spyral.Sprite):
         self.image=font.render(text)
 
     def K6(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 6
 
-        text=(question1 + str(self.in_answer))
-
+        text=(self.question1 + str(self.in_answer))
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
 
     def K7(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 7
 
-        text=(question1 + str(self.in_answer))
-
+        text=(self.question1 + str(self.in_answer))
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
 
     def K8(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 8
 
-        text=(question1 + str(self.in_answer))
-
+        text=(self.question1 + str(self.in_answer))
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
 
     def K9(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 9
 
-        text=(question1 + str(self.in_answer))
-
+        text=(self.question1 + str(self.in_answer))
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
