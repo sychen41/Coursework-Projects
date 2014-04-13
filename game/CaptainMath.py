@@ -52,13 +52,19 @@ class Player(spyral.Sprite):
         spyral.Sprite.__init__(self, scene)
         global playerColor
         global isface
+	global rowNum
+        global colNum
+	global BoardXcoord
+        global BoardYcoord
         playerColor = "red"
         if(playerColor == "red"):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         elif(playerColor == "blue"):
             self.image = spyral.image.Image(filename = "images/entireScenes/hand_blue.png", size = None)
-        self.x = WIDTH/2
-        self.y = HEIGHT - 200
+        #self.x = WIDTH/2
+        #self.y = HEIGHT - 200
+	self.x = BoardXcoord[ProwNum][PcolNum]
+        self.y = BoardYcoord[ProwNum][PcolNum]
         self.anchor = 'center'
         self.moving = False
         left = "left"
@@ -782,8 +788,8 @@ class CaptainMath(spyral.Scene):
 			MainTheme.play()
 			self.question.x = WIDTH+1
 			self.player = Player(self)
-			self.player.x = 155
-			self.player.y = 100
+			#self.player.x = 155
+			#self.player.y = 100
 			self.Battery1 = Battery(self)
 			self.Battery1.x = 0
 			self.Battery1.y = 10
@@ -888,8 +894,8 @@ class CaptainMath(spyral.Scene):
 
 			if(isface == "right" and forceFieldOn == False and gamestate == "fullLevels"):
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRight.png", size = None)
-				self.Laser.x = self.player.x+90
-				self.Laser.y = self.player.y-25
+				self.Laser.x = self.player.x+20
+				self.Laser.y = self.player.y-90
 				isface = "right"
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
@@ -898,8 +904,8 @@ class CaptainMath(spyral.Scene):
 			elif(isface == "left" and forceFieldOn == False and gamestate == "fullLevels"):
 				isface = "left"
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeft.png", size = None)
-				self.Laser.x = self.player.x-250
-				self.Laser.y = self.player.y-25
+				self.Laser.x = self.player.x-300
+				self.Laser.y = self.player.y-90
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
@@ -907,8 +913,8 @@ class CaptainMath(spyral.Scene):
 			elif(isface == "left" and forceFieldOn == True and gamestate == "fullLevels"):
 				isface = "left"
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeftForceField.png", size = None)
-				self.Laser.x = self.player.x-250
-				self.Laser.y = self.player.y-25
+				self.Laser.x = self.player.x-300
+				self.Laser.y = self.player.y-90
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
@@ -916,8 +922,8 @@ class CaptainMath(spyral.Scene):
 			elif(isface == "right" and forceFieldOn == True and gamestate == "fullLevels"):
 				isface = "right"
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRightForceField.png", size = None)
-				self.Laser.x = self.player.x+90
-				self.Laser.y = self.player.y-25
+				self.Laser.x = self.player.x+20
+				self.Laser.y = self.player.y-90
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
