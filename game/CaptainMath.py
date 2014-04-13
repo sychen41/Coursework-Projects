@@ -24,8 +24,8 @@ timeStart = 0
 BoardXcoord = [[0 for x in xrange(6)] for x in xrange(5)] # row = 5 ;col = 6
 BoardYcoord = [[0 for x in xrange(6)] for x in xrange(5)]
 BoardStatus = [[0 for x in xrange(6)] for x in xrange(5)]
-rowNum = 0
-colNum = 0
+rowNum = 4
+colNum = 5
 ProwNum = 0
 PcolNum = 0
 class font(spyral.Sprite):
@@ -221,15 +221,8 @@ class Enemy(spyral.Sprite):
         self.image = spyral.image.Image(filename = "images/mainEnemyPurpleImages/PurpleEnemySprite.png", size = None)
         #spyral.event.register("pong_score", self._reset)
         spyral.event.register("director.update", self.update)
-        self._reset()
-        
-    def _reset(self):
-        r = 5
-        self.vel_x = r #* math.cos(theta)
-        self.vel_y = r #* math.sin(theta)
         self.anchor = 'center'
-        self.pos = (WIDTH/2, HEIGHT/2)
-                
+
     def update(self):
 	global enemyCollided
 	global eNow  
@@ -242,6 +235,8 @@ class Enemy(spyral.Sprite):
         global rowNum
         global colNum
         if (time.time() - timeStart > 1):
+	    randomNum = random.randint(0, 3)
+	    #print randomNum
             if (BoardStatus[rowNum][colNum] == -1):
                 if (colNum != 5):
                     colNum+=1
@@ -910,11 +905,6 @@ class CaptainMath(spyral.Scene):
                 		if (b==6):
                     			b=0
                     			a+=1
-			z=0	
-			for x in range(0, 5):
-				for y in range(0,6):
-					print z, " ", BoardStatus[x][y]
-					z+=1
 			# render asteroids
 			self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
 			self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
