@@ -26,6 +26,8 @@ BoardYcoord = [[0 for x in xrange(6)] for x in xrange(5)]
 BoardStatus = [[0 for x in xrange(6)] for x in xrange(5)]
 rowNum = 0
 colNum = 0
+ProwNum = 0
+PcolNum = 0
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -50,13 +52,20 @@ class Player(spyral.Sprite):
         spyral.Sprite.__init__(self, scene)
         global playerColor
         global isface
+	global rowNum
+        global colNum
+	global BoardXcoord
+        global BoardYcoord
         playerColor = "red"
         if(playerColor == "red"):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         elif(playerColor == "blue"):
             self.image = spyral.image.Image(filename = "images/entireScenes/hand_blue.png", size = None)
-        self.x = WIDTH/2
-        self.y = HEIGHT - 200
+        #self.x = WIDTH/2
+        #self.y = HEIGHT - 200
+	self.x = BoardXcoord[ProwNum][PcolNum]
+        self.y = BoardYcoord[ProwNum][PcolNum]
+        self.anchor = 'center'
         self.moving = False
         left = "left"
         right="right"
@@ -121,16 +130,45 @@ class Player(spyral.Sprite):
     def askquest(self):
         print "askquest"
     def update(self, delta):
+	global ProwNum
+	global PcolNum
         paddle_velocity = 500
         #print delta
         if self.moving == 'left':
-            self.x -= paddle_velocity * delta
+            global ProwNum
+	    global PcolNum
+            #self.x -= paddle_velocity * delta
+	    if (BoardStatus[ProwNum][PcolNum] != -1):
+		if (PcolNum != 0):
+                    PcolNum-=1
+	    self.x = BoardXcoord[ProwNum][PcolNum]
+            #self.y = BoardYcoord[ProwNum][PcolNum]
         elif self.moving == 'right':
-            self.x += paddle_velocity * delta
+            global ProwNum
+	    global PcolNum
+	    if (BoardStatus[ProwNum][PcolNum] != -1):
+		if (PcolNum != 5):
+                    PcolNum+=1
+	    self.x = BoardXcoord[ProwNum][PcolNum]
         elif self.moving == 'up':
-            self.y -= paddle_velocity * delta
+            global ProwNum
+	    global PcolNum
+	    if (BoardStatus[ProwNum][PcolNum] != -1):
+	        if (ProwNum != -1):
+                    ProwNum-=1
+            self.y = BoardYcoord[ProwNum][PcolNum]
         elif self.moving == 'down':
-            self.y += paddle_velocity * delta
+            global ProwNum
+	    global PcolNum
+	    if (BoardStatus[ProwNum][PcolNum] != -1):
+	        if (ProwNum != 5):
+                    ProwNum+=1
+            self.y = BoardYcoord[ProwNum][PcolNum]
+        if (PcolNum == 6):
+            PcolNum = 0
+            ProwNum+=1
+        if (ProwNum == 5):
+            ProwNum = 0
 
 class MathText(spyral.Sprite):
     def __init__(self, scene, index, answers, problem_question):
@@ -391,9 +429,10 @@ class Question(spyral.Sprite):
 
         self.y=150
 
-        font=spyral.font.Font("fonts/white.ttf",20,(255,255,255))
+        font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
-        text="answer the math question, input answer then hit RETURN to check!"
+        self.question1 = "Ronnie has 10 dollar, \n the price of an apple is 2 dollar,how many apples she can buy ?"
+        text=(self.question1+"____")
 
         self.image=font.render(text)
 
@@ -420,8 +459,8 @@ class Question(spyral.Sprite):
         self.in_answer=0
 
         self.dig_answer=0
-
-        self.lock = '0'
+        self.answer = 5
+        self.lock = False
 
         self.win = 'False'
 
@@ -453,7 +492,6 @@ class Question(spyral.Sprite):
 
         time.sleep(0.1)
 
-        self.question1 = "Ronnie has 10 dollar, \n the price of an apple is 2 dollar,how many apples she can buy ?"
 
     
 
@@ -479,7 +517,7 @@ class Question(spyral.Sprite):
 
                 
 
-                self.answer = 5
+                
 
 
 
@@ -494,8 +532,8 @@ class Question(spyral.Sprite):
 
 
     def check_answer(self):
-
-        if self.in_answer == self.answer and gamestate == "minigame":
+	time.sleep(0.1)
+        if self.in_answer == self.answer and gamestate == "minigame" and self.lock:
 
             self.correct = '1'
 
@@ -509,7 +547,7 @@ class Question(spyral.Sprite):
 
         
 
-        elif self.in_answer != self.answer and gamestate == "minigame":
+        elif self.in_answer != self.answer and gamestate == "minigame" and self.lock:
 
             self.correct = '0'
 
@@ -534,6 +572,7 @@ class Question(spyral.Sprite):
         text=(question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
+        self.lock = True
 
         self.image=font.render(text)
 
@@ -546,7 +585,7 @@ class Question(spyral.Sprite):
         text=(question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
+        self.lock = True
         self.image=font.render(text)
 
     def K2(self):
@@ -558,7 +597,7 @@ class Question(spyral.Sprite):
         text=(question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
+        self.lock = True
         self.image=font.render(text)
 
     def K3(self):
@@ -568,7 +607,7 @@ class Question(spyral.Sprite):
         self.in_answer = self.in_answer*10 + 3
 
         text=(question1 + str(self.in_answer))
-
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
@@ -582,7 +621,7 @@ class Question(spyral.Sprite):
         text=(question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
+        self.lock = True
         self.image=font.render(text)
 
     def K5(self):
@@ -594,7 +633,7 @@ class Question(spyral.Sprite):
         text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
+        self.lock = True
         self.image=font.render(text)
 
     def K6(self):
@@ -762,11 +801,12 @@ class CaptainMath(spyral.Scene):
     def return_clicked(self):
 		global gamestate
 		if(gamestate == "Levelselect" and self.arrow.level <=4):
-			gamestate = "minigame"
-			print "gamestate = minigame"
 			self.question = Question(self)
-			self.arrow.level = 5 
+                        print "gamestate = minigame"
+                        self.arrow.level = 5 
 			self.spaceship = Spaceship(self)
+                        gamestate = "minigame"
+			
 			pygame.mixer.init()
 			SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
 			SSF.play()
@@ -783,8 +823,8 @@ class CaptainMath(spyral.Scene):
 			MainTheme.play()
 			self.question.x = WIDTH+1
 			self.player = Player(self)
-			self.player.x = 155
-			self.player.y = 100
+			#self.player.x = 155
+			#self.player.y = 100
 			self.Battery1 = Battery(self)
 			self.Battery1.x = 0
 			self.Battery1.y = 10
@@ -852,17 +892,27 @@ class CaptainMath(spyral.Scene):
 			for x in range(0, 31):
 				self.mathText = MathText(self, x, answers, problem.question)
         
-            		# fill the global BoardStatus with answers
+            		# fill the global BoardStatus with answers: -1 for asteroids and -2 for right answers
             		global BoardStatus
             		a = 0
             		b = 0
+			y = 0
             		for x in range(0, 30):
-                		BoardStatus[a][b] = answers[x]
+				if (x == indexOfRightAnswers[y]):
+                			BoardStatus[a][b] = -2
+					if (y < len(indexOfRightAnswers)-1):
+						y+=1
+                		else:
+					BoardStatus[a][b] = answers[x]
                 		b+=1
                 		if (b==6):
                     			b=0
                     			a+=1
-			
+			z=0	
+			for x in range(0, 5):
+				for y in range(0,6):
+					print z, " ", BoardStatus[x][y]
+					z+=1
 			# render asteroids
 			self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
 			self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
@@ -889,8 +939,8 @@ class CaptainMath(spyral.Scene):
 
 			if(isface == "right" and forceFieldOn == False and gamestate == "fullLevels"):
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRight.png", size = None)
-				self.Laser.x = self.player.x+90
-				self.Laser.y = self.player.y-25
+				self.Laser.x = self.player.x+20
+				self.Laser.y = self.player.y-90
 				isface = "right"
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
@@ -899,8 +949,8 @@ class CaptainMath(spyral.Scene):
 			elif(isface == "left" and forceFieldOn == False and gamestate == "fullLevels"):
 				isface = "left"
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeft.png", size = None)
-				self.Laser.x = self.player.x-250
-				self.Laser.y = self.player.y-25
+				self.Laser.x = self.player.x-300
+				self.Laser.y = self.player.y-90
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
@@ -908,8 +958,8 @@ class CaptainMath(spyral.Scene):
 			elif(isface == "left" and forceFieldOn == True and gamestate == "fullLevels"):
 				isface = "left"
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeftForceField.png", size = None)
-				self.Laser.x = self.player.x-250
-				self.Laser.y = self.player.y-25
+				self.Laser.x = self.player.x-300
+				self.Laser.y = self.player.y-90
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
@@ -917,8 +967,8 @@ class CaptainMath(spyral.Scene):
 			elif(isface == "right" and forceFieldOn == True and gamestate == "fullLevels"):
 				isface = "right"
 				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRightForceField.png", size = None)
-				self.Laser.x = self.player.x+90
-				self.Laser.y = self.player.y-25
+				self.Laser.x = self.player.x+20
+				self.Laser.y = self.player.y-90
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
