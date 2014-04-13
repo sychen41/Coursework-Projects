@@ -397,9 +397,10 @@ class Question(spyral.Sprite):
 
         self.y=150
 
-        font=spyral.font.Font("fonts/white.ttf",20,(255,255,255))
+        font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
-        text="answer the math question, input answer then hit RETURN to check!"
+        self.question1 = "Ronnie has 10 dollar, \n the price of an apple is 2 dollar,how many apples she can buy ?"
+        text=(self.question1+"____")
 
         self.image=font.render(text)
 
@@ -426,8 +427,8 @@ class Question(spyral.Sprite):
         self.in_answer=0
 
         self.dig_answer=0
-
-        self.lock = '0'
+        self.answer = 5
+        self.lock = False
 
         self.win = 'False'
 
@@ -459,7 +460,6 @@ class Question(spyral.Sprite):
 
         time.sleep(0.1)
 
-        self.question1 = "Ronnie has 10 dollar, \n the price of an apple is 2 dollar,how many apples she can buy ?"
 
     
 
@@ -485,7 +485,7 @@ class Question(spyral.Sprite):
 
                 
 
-                self.answer = 5
+                
 
 
 
@@ -500,8 +500,8 @@ class Question(spyral.Sprite):
 
 
     def check_answer(self):
-
-        if self.in_answer == self.answer and gamestate == "minigame":
+	time.sleep(0.1)
+        if self.in_answer == self.answer and gamestate == "minigame" and self.lock:
 
             self.correct = '1'
 
@@ -515,7 +515,7 @@ class Question(spyral.Sprite):
 
         
 
-        elif self.in_answer != self.answer and gamestate == "minigame":
+        elif self.in_answer != self.answer and gamestate == "minigame" and self.lock:
 
             self.correct = '0'
 
@@ -540,6 +540,7 @@ class Question(spyral.Sprite):
         text=(question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
+        self.lock = True
 
         self.image=font.render(text)
 
@@ -552,7 +553,7 @@ class Question(spyral.Sprite):
         text=(question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
+        self.lock = True
         self.image=font.render(text)
 
     def K2(self):
@@ -564,7 +565,7 @@ class Question(spyral.Sprite):
         text=(question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
+        self.lock = True
         self.image=font.render(text)
 
     def K3(self):
@@ -574,7 +575,7 @@ class Question(spyral.Sprite):
         self.in_answer = self.in_answer*10 + 3
 
         text=(question1 + str(self.in_answer))
-
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
@@ -588,7 +589,7 @@ class Question(spyral.Sprite):
         text=(question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
+        self.lock = True
         self.image=font.render(text)
 
     def K5(self):
@@ -600,7 +601,7 @@ class Question(spyral.Sprite):
         text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
+        self.lock = True
         self.image=font.render(text)
 
     def K6(self):
@@ -759,11 +760,12 @@ class CaptainMath(spyral.Scene):
     def return_clicked(self):
 		global gamestate
 		if(gamestate == "Levelselect" and self.arrow.level <=4):
-			gamestate = "minigame"
-			print "gamestate = minigame"
 			self.question = Question(self)
-			self.arrow.level = 5 
+                        print "gamestate = minigame"
+                        self.arrow.level = 5 
 			self.spaceship = Spaceship(self)
+                        gamestate = "minigame"
+			
 			pygame.mixer.init()
 			SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
 			SSF.play()
