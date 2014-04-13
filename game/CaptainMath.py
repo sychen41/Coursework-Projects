@@ -857,17 +857,27 @@ class CaptainMath(spyral.Scene):
 			for x in range(0, 31):
 				self.mathText = MathText(self, x, answers, problem.question)
         
-            		# fill the global BoardStatus with answers
+            		# fill the global BoardStatus with answers: -1 for asteroids and -2 for right answers
             		global BoardStatus
             		a = 0
             		b = 0
+			y = 0
             		for x in range(0, 30):
-                		BoardStatus[a][b] = answers[x]
+				if (x == indexOfRightAnswers[y]):
+                			BoardStatus[a][b] = -2
+					if (y < len(indexOfRightAnswers)-1):
+						y+=1
+                		else:
+					BoardStatus[a][b] = answers[x]
                 		b+=1
                 		if (b==6):
                     			b=0
                     			a+=1
-			
+			z=0	
+			for x in range(0, 5):
+				for y in range(0,6):
+					print z, " ", BoardStatus[x][y]
+					z+=1
 			# render asteroids
 			self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
 			self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
