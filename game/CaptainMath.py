@@ -26,6 +26,8 @@ BoardYcoord = [[0 for x in xrange(6)] for x in xrange(5)]
 BoardStatus = [[0 for x in xrange(6)] for x in xrange(5)]
 rowNum = 0
 colNum = 0
+ProwNum = 0
+PcolNum = 0
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
