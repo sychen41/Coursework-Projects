@@ -246,7 +246,7 @@ class Enemy(spyral.Sprite):
         global timeStart
         global rowNum
         global colNum
-        if (time.time() - timeStart > 0.5):
+        if (time.time() - timeStart > 1):
 	    ranNum = random.randint(0, 3)
 	    #print ranNum
             if (ranNum == 0):
