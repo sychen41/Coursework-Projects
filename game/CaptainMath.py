@@ -233,6 +233,10 @@ class Battery(spyral.Sprite):
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
         self.image = spyral.image.Image(filename = "images/misc/BatteryLogo.png", size = None)
+class spaceShipLife(spyral.Sprite):
+    def __init__(self, scene):
+        spyral.Sprite.__init__(self, scene)
+        self.image = spyral.image.Image(filename = "images/spaceship/spaceShipLife.png", size = None)
 
 class Asteroid(spyral.Sprite):
     def __init__(self, scene, index):
@@ -812,6 +816,12 @@ class CaptainMath(spyral.Scene):
 			self.Battery3 = Battery(self)
 			self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
 			self.Battery3.y = 10
+			self.spaceShipLife1 = spaceShipLife(self)
+			self.spaceShipLife1.x = 1200 - self.spaceShipLife1.width
+			self.spaceShipLife1.y = 0
+			self.spaceShipLife2 = spaceShipLife(self)
+			self.spaceShipLife2.x = 1200 - (self.spaceShipLife1.width*2)
+			self.spaceShipLife2.y = 0
 			 #generate math problem (27 answers needed, because there are 3 asteroids)
 			problem = generatesMultiplesProblems(27, 2)
 
@@ -982,8 +992,10 @@ class CaptainMath(spyral.Scene):
           self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
           if(playerLives == 2):
             self.player.kill()
+            self.spaceShipLife1.kill()
           elif(playerLives == 1):
             self.player2.kill()
+            self.spaceShipLife2.kill()
           elif(playerLives == 0):
             self.player3.kill()
           pygame.mixer.init()
@@ -1084,9 +1096,11 @@ class CaptainMath(spyral.Scene):
             if(playerLives == 2):
                 self.player2 = Player(self)
                 playerLives-= 1
+                self.spaceShipLife1.kill()
             elif(playerLives == 1):
                 self.player3 = Player(self)
                 playerLives-= 1
+                self.spaceShipLife2.kill()
             
            
 
