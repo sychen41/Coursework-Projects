@@ -445,8 +445,11 @@ class Arrow(spyral.Sprite):
 
 			self.y = HEIGHT *2
 
-
-
+class AnswerCorrect(spyral.Sprite):
+    def __init__(self,scene):
+        spyral.Sprite.__init__(self, scene)
+        self.image = spyral.image.Image(filename = "images/feedback/correctSmaller.png", size = None)
+        self.anchor = 'center'
 class Question(spyral.Sprite):
 
     def __init__(self,scene):
@@ -965,6 +968,9 @@ class CaptainMath(spyral.Scene):
           self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
         if (BoardStatus[ProwNum][PcolNum] == -2):
           print "Answer Selected is CORRECT!!!"
+          self.AnswerCorrect = AnswerCorrect(self)
+          self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
+          self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
           #if(self.player.collide_sprite(self.mathText)):
               #print "hey man you know what?"
     def forceFieldOn(self):
