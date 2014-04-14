@@ -28,6 +28,8 @@ rowNum = 4
 colNum = 5
 ProwNum = 0
 PcolNum = 0
+Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
+Icol = 0
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -206,6 +208,22 @@ class MathText(spyral.Sprite):
             self.image = spyral.Image(size=(1, 1))
         else:
             self.image = font.render(str(answers[index]), WHITE)
+        
+        global BoardXcoord
+        global BoardYcoord
+        global Irow
+        global Icol
+
+        BoardXcoord[Irow][Icol] = self.x
+        BoardYcoord[Irow][Icol] = self.y
+        if (Icol != 5):
+            Icol+=1
+        else:
+            Icol = 0
+            if Irow != 4:
+                Irow +=1
+
+
 class Battery(spyral.Sprite):
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
@@ -731,69 +749,7 @@ class CaptainMath(spyral.Scene):
         # has coordinate: (BoardXcoord[a][b], BoardYcoord[a][b])
         global BoardXcoord
         global BoardYcoord
-        # the following are rough coordinates, thus subject to change
-        BoardXcoord[0][0] = 200
-        BoardXcoord[1][0] = 200
-        BoardXcoord[2][0] = 200
-        BoardXcoord[3][0] = 200
-        BoardXcoord[4][0] = 200
-        BoardXcoord[0][1] = 350
-        BoardXcoord[1][1] = 350
-        BoardXcoord[2][1] = 350
-        BoardXcoord[3][1] = 350
-        BoardXcoord[4][1] = 350
-        BoardXcoord[0][2] = 495
-        BoardXcoord[1][2] = 495
-        BoardXcoord[2][2] = 495
-        BoardXcoord[3][2] = 495
-        BoardXcoord[4][2] = 495
-        BoardXcoord[0][3] = 633
-        BoardXcoord[1][3] = 633
-        BoardXcoord[2][3] = 633
-        BoardXcoord[3][3] = 633
-        BoardXcoord[4][3] = 633
-        BoardXcoord[0][4] = 800
-        BoardXcoord[1][4] = 800
-        BoardXcoord[2][4] = 800
-        BoardXcoord[3][4] = 800
-        BoardXcoord[4][4] = 800
-        BoardXcoord[0][5] = 955
-        BoardXcoord[1][5] = 955
-        BoardXcoord[2][5] = 955
-        BoardXcoord[3][5] = 955
-        BoardXcoord[4][5] = 955
-
-        BoardYcoord[0][0] = 180
-        BoardYcoord[0][1] = 180
-        BoardYcoord[0][2] = 180
-        BoardYcoord[0][3] = 180
-        BoardYcoord[0][4] = 180
-        BoardYcoord[0][5] = 180
-        BoardYcoord[1][0] = 275
-        BoardYcoord[1][1] = 275
-        BoardYcoord[1][2] = 275
-        BoardYcoord[1][3] = 275
-        BoardYcoord[1][4] = 275
-        BoardYcoord[1][5] = 275
-        BoardYcoord[2][0] = 390
-        BoardYcoord[2][1] = 390
-        BoardYcoord[2][2] = 390
-        BoardYcoord[2][3] = 390
-        BoardYcoord[2][4] = 390
-        BoardYcoord[2][5] = 390
-        BoardYcoord[3][0] = 500
-        BoardYcoord[3][1] = 500
-        BoardYcoord[3][2] = 500
-        BoardYcoord[3][3] = 500
-        BoardYcoord[3][4] = 500
-        BoardYcoord[3][5] = 500
-        BoardYcoord[4][0] = 620
-        BoardYcoord[4][1] = 620
-        BoardYcoord[4][2] = 620
-        BoardYcoord[4][3] = 620
-        BoardYcoord[4][4] = 620
-        BoardYcoord[4][5] = 620
-    
+        
     def down_left(self,pos,button):
         self.mX = pos[0]
         self.mY = pos[1]
@@ -891,7 +847,7 @@ class CaptainMath(spyral.Scene):
 			for i in range(0, 30):
 				if i == indexOfRightAnswers[j]:
 					answers[i] = problem.right_answers[r]
-					print " " + str(i) + " right" 
+					#print " " + str(i) + " right" 
 					if j < problem.quant_right-1:
 						j+=1
 					r+=1
