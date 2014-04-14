@@ -1062,9 +1062,19 @@ class CaptainMath(spyral.Scene):
         FF = pygame.mixer.Sound("sounds/forceFieldOn.wav")
         FF.play()
         if(isface == "right"):
-          self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png", size = None)
+          if(playerLives == 2):
+          	  self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png", size = None)
+          elif(playerLives == 1):
+          	  self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png", size = None)
+          elif(playerLives == 0):
+          	  self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png", size = None)
         else:
-          self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png", size = None)
+          if(playerLives == 2):
+              self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png", size = None)
+          if(playerLives == 1):
+              self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png", size = None)
+          if(playerLives == 0):
+              self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png", size = None)
           
     def space_unclicked(self):
         global isface
