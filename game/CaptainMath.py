@@ -24,10 +24,14 @@ timeStart = 0
 BoardXcoord = [[0 for x in xrange(6)] for x in xrange(5)] # row = 5 ;col = 6
 BoardYcoord = [[0 for x in xrange(6)] for x in xrange(5)]
 BoardStatus = [[0 for x in xrange(6)] for x in xrange(5)]
-rowNum = 0
-colNum = 0
+rowNum = 4
+colNum = 5
 ProwNum = 0
 PcolNum = 0
+isplayerDead = False
+Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
+Icol = 0
+playerLives = 2
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -52,19 +56,20 @@ class Player(spyral.Sprite):
         spyral.Sprite.__init__(self, scene)
         global playerColor
         global isface
-	global rowNum
+        global rowNum
         global colNum
-	global BoardXcoord
+        global BoardXcoord
         global BoardYcoord
+        global ProwNum
+        global PcolNum
+        global isplayerDead
         playerColor = "red"
+        isplayerDead = False
+        print "new Player created!!!"
         if(playerColor == "red"):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         elif(playerColor == "blue"):
             self.image = spyral.image.Image(filename = "images/entireScenes/hand_blue.png", size = None)
-        #self.x = WIDTH/2
-        #self.y = HEIGHT - 200
-	self.x = BoardXcoord[ProwNum][PcolNum]
-        self.y = BoardYcoord[ProwNum][PcolNum]
         self.anchor = 'center'
         self.moving = False
         left = "left"
@@ -130,8 +135,22 @@ class Player(spyral.Sprite):
     def askquest(self):
         print "askquest"
     def update(self, delta):
-	global ProwNum
-	global PcolNum
+        global ProwNum
+        global PcolNum
+        if (BoardStatus[ProwNum][PcolNum] == -1 and isface == "right"):
+            if (PcolNum != 5):
+                    PcolNum-=1
+            else:
+                    ProwNum+=1
+                    PcolNum=0  
+        if (BoardStatus[ProwNum][PcolNum] == -1 and isface == "left"):
+            if (PcolNum != 5):
+                    PcolNum+=1
+            else:
+                    ProwNum+=1
+                    PcolNum=0 
+        self.x = BoardXcoord[ProwNum][PcolNum]
+        self.y = BoardYcoord[ProwNum][PcolNum]
         paddle_velocity = 500
         #print delta
         if self.moving == 'left':
@@ -194,10 +213,30 @@ class MathText(spyral.Sprite):
             self.image = spyral.Image(size=(1, 1))
         else:
             self.image = font.render(str(answers[index]), WHITE)
+        
+        global BoardXcoord
+        global BoardYcoord
+        global Irow
+        global Icol
+
+        if (index < 30):
+            BoardXcoord[Irow][Icol] = self.x
+            BoardYcoord[Irow][Icol] = self.y
+            if (Icol != 5):
+                Icol+=1
+            else:
+                Icol = 0
+                Irow +=1
+
+
 class Battery(spyral.Sprite):
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
         self.image = spyral.image.Image(filename = "images/misc/BatteryLogo.png", size = None)
+class spaceShipLife(spyral.Sprite):
+    def __init__(self, scene):
+        spyral.Sprite.__init__(self, scene)
+        self.image = spyral.image.Image(filename = "images/spaceship/spaceShipLife.png", size = None)
 
 class Asteroid(spyral.Sprite):
     def __init__(self, scene, index):
@@ -221,15 +260,8 @@ class Enemy(spyral.Sprite):
         self.image = spyral.image.Image(filename = "images/mainEnemyPurpleImages/PurpleEnemySprite.png", size = None)
         #spyral.event.register("pong_score", self._reset)
         spyral.event.register("director.update", self.update)
-        self._reset()
-        
-    def _reset(self):
-        r = 5
-        self.vel_x = r #* math.cos(theta)
-        self.vel_y = r #* math.sin(theta)
         self.anchor = 'center'
-        self.pos = (WIDTH/2, HEIGHT/2)
-                
+
     def update(self):
 	global enemyCollided
 	global eNow  
@@ -241,26 +273,33 @@ class Enemy(spyral.Sprite):
         global timeStart
         global rowNum
         global colNum
-        if (time.time() - timeStart > 1):
-            if (BoardStatus[rowNum][colNum] == -1):
+        if (time.time() - timeStart > 0.5):
+	    ranNum = random.randint(0, 3)
+	    #print ranNum
+            if (ranNum == 0):
+                if (rowNum != 0):
+                    if (BoardStatus[rowNum-1][colNum] != -1):
+                        rowNum-=1
+            elif (ranNum == 1):
+                if (rowNum != 4):
+                    if(BoardStatus[rowNum+1][colNum] != -1):
+                        rowNum+=1
+            elif (ranNum == 2):
+                if (colNum != 0):
+                    if(BoardStatus[rowNum][colNum-1] != -1):
+                        colNum-=1
+            else:
                 if (colNum != 5):
-                    colNum+=1
-                else:
-                    rowNum+=1
-                    colNum=0
+                    if(BoardStatus[rowNum][colNum+1] != -1):
+                        colNum+=1
+            #if (BoardStatus[rowNum][colNum] != -1):
             self.x = BoardXcoord[rowNum][colNum]
             self.y = BoardYcoord[rowNum][colNum]
             timeStart = time.time()
-            colNum+=1
-            if (colNum == 6):
-                colNum = 0
-                rowNum+=1
-            if (rowNum == 5):
-                rowNum = 0
             
-    def collide_asteroid(self, asteroid):
+    def collide_something(self, something):
 	global enemyCollided
-        if(self.collide_sprite(asteroid) and enemyCollided == False):
+        if(self.collide_sprite(something) and enemyCollided == False):
 	    enemyCollided = True
 	    eNow = time.time()
 	            
@@ -415,8 +454,11 @@ class Arrow(spyral.Sprite):
 
 			self.y = HEIGHT *2
 
-
-
+class AnswerCorrect(spyral.Sprite):
+    def __init__(self,scene):
+        spyral.Sprite.__init__(self, scene)
+        self.image = spyral.image.Image(filename = "images/feedback/correctSmaller.png", size = None)
+        self.anchor = 'center'
 class Question(spyral.Sprite):
 
     def __init__(self,scene):
@@ -541,7 +583,8 @@ class Question(spyral.Sprite):
 
             font=spyral.font.Font("fonts/white.ttf",30,(0,255,0))
 
-            self.image=font.render(text)
+            self.image=spyral.image.Image(filename = "images/feedback/Correct.png", size = None)
+            self.x = 400
 
             self.in_answer=0
 
@@ -555,7 +598,8 @@ class Question(spyral.Sprite):
 
             font=spyral.font.Font("fonts/white.ttf",30,(255,0,0))
 
-            self.image=font.render(text)
+            self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
+            self.x = 400
 
             self.in_answer=0
 
@@ -564,12 +608,12 @@ class Question(spyral.Sprite):
                 
 
     def K0(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 0
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
@@ -577,55 +621,55 @@ class Question(spyral.Sprite):
         self.image=font.render(text)
 
     def K1(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 1
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
 
     def K2(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 2
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
 
     def K3(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 3
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
         self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
 
     def K4(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 4
 
-        text=(question1 + str(self.in_answer))
+        text=(self.question1 + str(self.in_answer))
 
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
 
     def K5(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 5
@@ -637,49 +681,49 @@ class Question(spyral.Sprite):
         self.image=font.render(text)
 
     def K6(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 6
 
-        text=(question1 + str(self.in_answer))
-
+        text=(self.question1 + str(self.in_answer))
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
 
     def K7(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 7
 
-        text=(question1 + str(self.in_answer))
-
+        text=(self.question1 + str(self.in_answer))
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
 
     def K8(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 8
 
-        text=(question1 + str(self.in_answer))
-
+        text=(self.question1 + str(self.in_answer))
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
 
     def K9(self):
-
+        self.x = 0
         self.dig_answer = self.dig_answer+1
 
         self.in_answer = self.in_answer*10 + 9
 
-        text=(question1 + str(self.in_answer))
-
+        text=(self.question1 + str(self.in_answer))
+        self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
 
         self.image=font.render(text)
@@ -692,6 +736,8 @@ class CaptainMath(spyral.Scene):
         self.background = spyral.Image("images/fullLevels/planet2_Board.png")
         global isface
         global timeStart
+        global ProwNum
+        global PcolNum
         timeStart = time.time()
         self.mX = 0 #mouse x coordinate
         self.mY = 0 #mouse y coordinate
@@ -715,69 +761,7 @@ class CaptainMath(spyral.Scene):
         # has coordinate: (BoardXcoord[a][b], BoardYcoord[a][b])
         global BoardXcoord
         global BoardYcoord
-        # the following are rough coordinates, thus subject to change
-        BoardXcoord[0][0] = 184
-        BoardXcoord[1][0] = 184
-        BoardXcoord[2][0] = 184
-        BoardXcoord[3][0] = 184
-        BoardXcoord[4][0] = 184
-        BoardXcoord[0][1] = 333
-        BoardXcoord[1][1] = 333
-        BoardXcoord[2][1] = 333
-        BoardXcoord[3][1] = 333
-        BoardXcoord[4][1] = 333
-        BoardXcoord[0][2] = 477
-        BoardXcoord[1][2] = 477
-        BoardXcoord[2][2] = 477
-        BoardXcoord[3][2] = 477
-        BoardXcoord[4][2] = 477
-        BoardXcoord[0][3] = 633
-        BoardXcoord[1][3] = 633
-        BoardXcoord[2][3] = 633
-        BoardXcoord[3][3] = 633
-        BoardXcoord[4][3] = 633
-        BoardXcoord[0][4] = 777
-        BoardXcoord[1][4] = 777
-        BoardXcoord[2][4] = 777
-        BoardXcoord[3][4] = 777
-        BoardXcoord[4][4] = 777
-        BoardXcoord[0][5] = 933
-        BoardXcoord[1][5] = 933
-        BoardXcoord[2][5] = 933
-        BoardXcoord[3][5] = 933
-        BoardXcoord[4][5] = 933
-
-        BoardYcoord[0][0] = 156
-        BoardYcoord[0][1] = 156
-        BoardYcoord[0][2] = 156
-        BoardYcoord[0][3] = 156
-        BoardYcoord[0][4] = 156
-        BoardYcoord[0][5] = 156
-        BoardYcoord[1][0] = 254
-        BoardYcoord[1][1] = 254
-        BoardYcoord[1][2] = 254
-        BoardYcoord[1][3] = 254
-        BoardYcoord[1][4] = 254
-        BoardYcoord[1][5] = 254
-        BoardYcoord[2][0] = 364
-        BoardYcoord[2][1] = 364
-        BoardYcoord[2][2] = 364
-        BoardYcoord[2][3] = 364
-        BoardYcoord[2][4] = 364
-        BoardYcoord[2][5] = 364
-        BoardYcoord[3][0] = 465
-        BoardYcoord[3][1] = 465
-        BoardYcoord[3][2] = 465
-        BoardYcoord[3][3] = 465
-        BoardYcoord[3][4] = 465
-        BoardYcoord[3][5] = 465
-        BoardYcoord[4][0] = 578
-        BoardYcoord[4][1] = 578
-        BoardYcoord[4][2] = 578
-        BoardYcoord[4][3] = 578
-        BoardYcoord[4][4] = 578
-        BoardYcoord[4][5] = 578
-    
+        
     def down_left(self,pos,button):
         self.mX = pos[0]
         self.mY = pos[1]
@@ -796,8 +780,6 @@ class CaptainMath(spyral.Scene):
             print "gamestate = Levelselect"
             self.storytext.kill()
             self.arrow = Arrow(self)
-			
-			
     def return_clicked(self):
 		global gamestate
 		if(gamestate == "Levelselect" and self.arrow.level <=4):
@@ -834,6 +816,12 @@ class CaptainMath(spyral.Scene):
 			self.Battery3 = Battery(self)
 			self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
 			self.Battery3.y = 10
+			self.spaceShipLife1 = spaceShipLife(self)
+			self.spaceShipLife1.x = 1200 - self.spaceShipLife1.width
+			self.spaceShipLife1.y = 0
+			self.spaceShipLife2 = spaceShipLife(self)
+			self.spaceShipLife2.x = 1200 - (self.spaceShipLife1.width*2)
+			self.spaceShipLife2.y = 0
 			 #generate math problem (27 answers needed, because there are 3 asteroids)
 			problem = generatesMultiplesProblems(27, 2)
 
@@ -875,7 +863,7 @@ class CaptainMath(spyral.Scene):
 			for i in range(0, 30):
 				if i == indexOfRightAnswers[j]:
 					answers[i] = problem.right_answers[r]
-					print " " + str(i) + " right" 
+					#print " " + str(i) + " right" 
 					if j < problem.quant_right-1:
 						j+=1
 					r+=1
@@ -908,11 +896,6 @@ class CaptainMath(spyral.Scene):
                 		if (b==6):
                     			b=0
                     			a+=1
-			z=0	
-			for x in range(0, 5):
-				for y in range(0,6):
-					print z, " ", BoardStatus[x][y]
-					z+=1
 			# render asteroids
 			self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
 			self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
@@ -938,9 +921,18 @@ class CaptainMath(spyral.Scene):
     
 
 			if(isface == "right" and forceFieldOn == False and gamestate == "fullLevels"):
-				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRight.png", size = None)
-				self.Laser.x = self.player.x+20
-				self.Laser.y = self.player.y-90
+				if(playerLives == 2):
+					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRight.png", size = None)
+					self.Laser.x = self.player.x+20
+					self.Laser.y = self.player.y-90
+				elif(playerLives == 1):
+					self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRight.png", size = None)
+					self.Laser.x = self.player2.x+20
+					self.Laser.y = self.player2.y-90
+				elif(playerLives == 0):
+					self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRight.png", size = None)
+					self.Laser.x = self.player3.x+20
+					self.Laser.y = self.player3.y-90
 				isface = "right"
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
@@ -948,27 +940,54 @@ class CaptainMath(spyral.Scene):
 				self.Laser.collide_meteor(self.enemy1)
 			elif(isface == "left" and forceFieldOn == False and gamestate == "fullLevels"):
 				isface = "left"
-				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeft.png", size = None)
-				self.Laser.x = self.player.x-300
-				self.Laser.y = self.player.y-90
+				if(playerLives == 2):
+					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeft.png", size = None)
+					self.Laser.x = self.player.x-300
+					self.Laser.y = self.player.y-90
+				elif(playerLives == 1):
+					self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeft.png", size = None)
+					self.Laser.x = self.player2.x-300
+					self.Laser.y = self.player2.y-90
+				elif(playerLives == 0):
+					self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeft.png", size = None)
+					self.Laser.x = self.player3.x-300
+					self.Laser.y = self.player3.y-90
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
 				self.Laser.collide_meteor(self.enemy1)
 			elif(isface == "left" and forceFieldOn == True and gamestate == "fullLevels"):
 				isface = "left"
-				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeftForceField.png", size = None)
-				self.Laser.x = self.player.x-300
-				self.Laser.y = self.player.y-90
+				if(playerLives == 2):
+					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeftForceField.png", size = None)
+					self.Laser.x = self.player.x-300
+					self.Laser.y = self.player.y-90
+				elif(playerLives == 1):
+					self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeftForceField.png", size = None)
+					self.Laser.x = self.player2.x-300
+					self.Laser.y = self.player2.y-90
+				elif(playerLives == 0):
+					self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigLeftForceField.png", size = None)
+					self.Laser.x = self.player3.x-300
+					self.Laser.y = self.player3.y-90
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
 				self.Laser.collide_meteor(self.enemy1)
 			elif(isface == "right" and forceFieldOn == True and gamestate == "fullLevels"):
 				isface = "right"
-				self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRightForceField.png", size = None)
-				self.Laser.x = self.player.x+20
-				self.Laser.y = self.player.y-90
+				if(playerLives == 2):
+					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRightForceField.png", size = None)
+					self.Laser.x = self.player.x+20
+					self.Laser.y = self.player.y-90
+				elif(playerLives == 1):
+					self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRightForceField.png", size = None)
+					self.Laser.x = self.player2.x+20
+					self.Laser.y = self.player2.y-90
+				elif(playerLives == 0):
+					self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingBigRightForceField.png", size = None)
+					self.Laser.x = self.player3.x+20
+					self.Laser.y = self.player3.y-90
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
@@ -983,7 +1002,17 @@ class CaptainMath(spyral.Scene):
 
     def asorbAnswer(self):
         print "hello yo boy"
-        self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+        global ProwNum
+        global PcolNum
+        global BoardXcoord
+        global BoardYcoord
+        global playerLives
+        if(playerLives == 2):
+          self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+        if(playerLives == 1):
+          self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+        if(playerLives == 3):
+          self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
         pygame.mixer.init()
         FF = pygame.mixer.Sound("sounds/ohYeah.wav")
         FF.play()
@@ -992,6 +1021,36 @@ class CaptainMath(spyral.Scene):
           self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         else:
           self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+        if (BoardStatus[ProwNum][PcolNum] == -2):
+          print "Answer Selected is CORRECT!!!"
+          self.AnswerCorrect = AnswerCorrect(self)
+          self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
+          self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
+        else:
+          self.AnswerCorrect = AnswerCorrect(self)
+          self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
+          self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
+          self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
+          if(playerLives == 2):
+            self.player.kill()
+            self.spaceShipLife1.kill()
+          elif(playerLives == 1):
+            self.player2.kill()
+            self.spaceShipLife2.kill()
+          elif(playerLives == 0):
+            self.player3.kill()
+          pygame.mixer.init()
+          deathScream = pygame.mixer.Sound("sounds/deathScream.wav")
+          deathScream.play()
+          asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+          asteroidExplode.play()
+          isplayerDead = True
+          if(playerLives == 2):
+            self.player2 = Player(self)
+            playerLives-= 1
+          elif(playerLives == 1):
+            self.player3 = Player(self)
+            playerLives-= 1
     def forceFieldOn(self):
         print "holla for ya mama"
         global forceFieldOn
@@ -1003,9 +1062,19 @@ class CaptainMath(spyral.Scene):
         FF = pygame.mixer.Sound("sounds/forceFieldOn.wav")
         FF.play()
         if(isface == "right"):
-          self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png", size = None)
+          if(playerLives == 2):
+          	  self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png", size = None)
+          elif(playerLives == 1):
+          	  self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png", size = None)
+          elif(playerLives == 0):
+          	  self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png", size = None)
         else:
-          self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png", size = None)
+          if(playerLives == 2):
+              self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png", size = None)
+          if(playerLives == 1):
+              self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png", size = None)
+          if(playerLives == 0):
+              self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png", size = None)
           
     def space_unclicked(self):
         global isface
@@ -1021,11 +1090,15 @@ class CaptainMath(spyral.Scene):
     def update(self, delta):
         global forceFieldOn
         global forceFieldTime
-        #print forceFieldTime
-        #print time.time()
         global gamestate
         global gameStarted
         global timePassed
+        global rowNum 
+        global colNum 
+        global ProwNum
+        global PcolNum
+        global playerLives
+        global isplayerDead
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
@@ -1049,10 +1122,6 @@ class CaptainMath(spyral.Scene):
 				else:
 					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
 
-			# enemy will NEVER collide with asteroids, so these three line can be delete
-            		self.enemy1.collide_asteroid(self.asteroid1)
-			self.enemy1.collide_asteroid(self.asteroid2)
-			self.enemy1.collide_asteroid(self.asteroid3)
 			
         elif gamestate == "minigame":
 			global SSTheme
@@ -1062,5 +1131,27 @@ class CaptainMath(spyral.Scene):
         #story screen
         elif gamestate == "story":
             self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
-
+        if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False):
+            if(playerLives == 2):
+                self.player.kill()
+            elif(playerLives == 1):
+                self.player2.kill()
+            elif(playerLives == 0):
+                self.player3.kill()
+            pygame.mixer.init()
+            deathScream = pygame.mixer.Sound("sounds/deathScream.wav")
+            deathScream.play()
+            asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+            asteroidExplode.play()
+            isplayerDead = True
+            if(playerLives == 2):
+                self.player2 = Player(self)
+                playerLives-= 1
+                self.spaceShipLife1.kill()
+            elif(playerLives == 1):
+                self.player3 = Player(self)
+                playerLives-= 1
+                self.spaceShipLife2.kill()
+            
+           
 
