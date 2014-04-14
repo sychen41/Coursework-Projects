@@ -214,13 +214,13 @@ class MathText(spyral.Sprite):
         global Irow
         global Icol
 
-        BoardXcoord[Irow][Icol] = self.x
-        BoardYcoord[Irow][Icol] = self.y
-        if (Icol != 5):
-            Icol+=1
-        else:
-            Icol = 0
-            if Irow != 4:
+        if (index < 30):
+            BoardXcoord[Irow][Icol] = self.x
+            BoardYcoord[Irow][Icol] = self.y
+            if (Icol != 5):
+                Icol+=1
+            else:
+                Icol = 0
                 Irow +=1
 
 
@@ -264,7 +264,7 @@ class Enemy(spyral.Sprite):
         global timeStart
         global rowNum
         global colNum
-        if (time.time() - timeStart > 1):
+        if (time.time() - timeStart > 0.5):
 	    ranNum = random.randint(0, 3)
 	    #print ranNum
             if (ranNum == 0):
