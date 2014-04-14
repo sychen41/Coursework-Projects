@@ -28,6 +28,7 @@ rowNum = 4
 colNum = 5
 ProwNum = 0
 PcolNum = 0
+isplayerDead = False
 Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
 Icol = 0
 class font(spyral.Sprite):
@@ -60,7 +61,9 @@ class Player(spyral.Sprite):
         global BoardYcoord
         global ProwNum
         global PcolNum
+        global isplayerDead
         playerColor = "red"
+        isplayerDead = False
         if(playerColor == "red"):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         elif(playerColor == "blue"):
@@ -971,8 +974,18 @@ class CaptainMath(spyral.Scene):
           self.AnswerCorrect = AnswerCorrect(self)
           self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
           self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
-          #if(self.player.collide_sprite(self.mathText)):
-              #print "hey man you know what?"
+        else:
+          self.AnswerCorrect = AnswerCorrect(self)
+          self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
+          self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
+          self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
+          self.player.kill()
+          pygame.mixer.init()
+          deathScream = pygame.mixer.Sound("sounds/deathScream.wav")
+          deathScream.play()
+          asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+          asteroidExplode.play()
+          isplayerDead = True
     def forceFieldOn(self):
         print "holla for ya mama"
         global forceFieldOn
@@ -1002,11 +1015,13 @@ class CaptainMath(spyral.Scene):
     def update(self, delta):
         global forceFieldOn
         global forceFieldTime
-        #print forceFieldTime
-        #print time.time()
         global gamestate
         global gameStarted
         global timePassed
+        global rowNum 
+        global colNum 
+        global ProwNum
+        global PcolNum
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
@@ -1039,5 +1054,12 @@ class CaptainMath(spyral.Scene):
         #story screen
         elif gamestate == "story":
             self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
-
+        if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False):
+            self.player.kill()
+            pygame.mixer.init()
+            deathScream = pygame.mixer.Sound("sounds/deathScream.wav")
+            deathScream.play()
+            asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+            asteroidExplode.play()
+            isplayerDead = True
 
