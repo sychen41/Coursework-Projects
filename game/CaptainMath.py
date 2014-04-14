@@ -31,6 +31,7 @@ PcolNum = 0
 isplayerDead = False
 Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
 Icol = 0
+playerLives = 2
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -64,6 +65,7 @@ class Player(spyral.Sprite):
         global isplayerDead
         playerColor = "red"
         isplayerDead = False
+        print "new Player created!!!"
         if(playerColor == "red"):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         elif(playerColor == "blue"):
@@ -774,8 +776,6 @@ class CaptainMath(spyral.Scene):
             print "gamestate = Levelselect"
             self.storytext.kill()
             self.arrow = Arrow(self)
-			
-			
     def return_clicked(self):
 		global gamestate
 		if(gamestate == "Levelselect" and self.arrow.level <=4):
@@ -960,6 +960,7 @@ class CaptainMath(spyral.Scene):
         global PcolNum
         global BoardXcoord
         global BoardYcoord
+        global playerLives
         self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
         pygame.mixer.init()
         FF = pygame.mixer.Sound("sounds/ohYeah.wav")
@@ -979,13 +980,24 @@ class CaptainMath(spyral.Scene):
           self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
           self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
           self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
-          self.player.kill()
+          if(playerLives == 2):
+            self.player.kill()
+          elif(playerLives == 1):
+            self.player2.kill()
+          elif(playerLives == 0):
+            self.player3.kill()
           pygame.mixer.init()
           deathScream = pygame.mixer.Sound("sounds/deathScream.wav")
           deathScream.play()
           asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
           asteroidExplode.play()
           isplayerDead = True
+          if(playerLives == 2):
+            self.player2 = Player(self)
+            playerLives-= 1
+          elif(playerLives == 1):
+            self.player3 = Player(self)
+            playerLives-= 1
     def forceFieldOn(self):
         print "holla for ya mama"
         global forceFieldOn
@@ -1022,6 +1034,8 @@ class CaptainMath(spyral.Scene):
         global colNum 
         global ProwNum
         global PcolNum
+        global playerLives
+        global isplayerDead
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
@@ -1055,11 +1069,24 @@ class CaptainMath(spyral.Scene):
         elif gamestate == "story":
             self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
         if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False):
-            self.player.kill()
+            if(playerLives == 2):
+                self.player.kill()
+            elif(playerLives == 1):
+                self.player2.kill()
+            elif(playerLives == 0):
+                self.player3.kill()
             pygame.mixer.init()
             deathScream = pygame.mixer.Sound("sounds/deathScream.wav")
             deathScream.play()
             asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
             asteroidExplode.play()
             isplayerDead = True
+            if(playerLives == 2):
+                self.player2 = Player(self)
+                playerLives-= 1
+            elif(playerLives == 1):
+                self.player3 = Player(self)
+                playerLives-= 1
+            
+           
 
