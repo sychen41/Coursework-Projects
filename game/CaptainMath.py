@@ -52,19 +52,17 @@ class Player(spyral.Sprite):
         spyral.Sprite.__init__(self, scene)
         global playerColor
         global isface
-	global rowNum
+        global rowNum
         global colNum
-	global BoardXcoord
+        global BoardXcoord
         global BoardYcoord
+        global ProwNum
+        global PcolNum
         playerColor = "red"
         if(playerColor == "red"):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         elif(playerColor == "blue"):
             self.image = spyral.image.Image(filename = "images/entireScenes/hand_blue.png", size = None)
-        #self.x = WIDTH/2
-        #self.y = HEIGHT - 200
-	self.x = BoardXcoord[ProwNum][PcolNum]
-        self.y = BoardYcoord[ProwNum][PcolNum]
         self.anchor = 'center'
         self.moving = False
         left = "left"
@@ -130,8 +128,22 @@ class Player(spyral.Sprite):
     def askquest(self):
         print "askquest"
     def update(self, delta):
-	global ProwNum
-	global PcolNum
+        global ProwNum
+        global PcolNum
+        if (BoardStatus[ProwNum][PcolNum] == -1 and isface == "right"):
+            if (PcolNum != 5):
+                    PcolNum-=1
+            else:
+                    ProwNum+=1
+                    PcolNum=0  
+        if (BoardStatus[ProwNum][PcolNum] == -1 and isface == "left"):
+            if (PcolNum != 5):
+                    PcolNum+=1
+            else:
+                    ProwNum+=1
+                    PcolNum=0 
+        self.x = BoardXcoord[ProwNum][PcolNum]
+        self.y = BoardYcoord[ProwNum][PcolNum]
         paddle_velocity = 500
         #print delta
         if self.moving == 'left':
@@ -689,6 +701,8 @@ class CaptainMath(spyral.Scene):
         self.background = spyral.Image("images/fullLevels/planet2_Board.png")
         global isface
         global timeStart
+        global ProwNum
+        global PcolNum
         timeStart = time.time()
         self.mX = 0 #mouse x coordinate
         self.mY = 0 #mouse y coordinate
@@ -975,6 +989,10 @@ class CaptainMath(spyral.Scene):
 
     def asorbAnswer(self):
         print "hello yo boy"
+        global ProwNum
+        global PcolNum
+        global BoardXcoord
+        global BoardYcoord
         self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
         pygame.mixer.init()
         FF = pygame.mixer.Sound("sounds/ohYeah.wav")
@@ -984,6 +1002,10 @@ class CaptainMath(spyral.Scene):
           self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         else:
           self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+        if (BoardStatus[ProwNum][PcolNum] == -2):
+          print "Answer Selected is CORRECT!!!"
+          #if(self.player.collide_sprite(self.mathText)):
+              #print "hey man you know what?"
     def forceFieldOn(self):
         print "holla for ya mama"
         global forceFieldOn
