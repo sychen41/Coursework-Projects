@@ -246,28 +246,33 @@ class Enemy(spyral.Sprite):
         global timeStart
         global rowNum
         global colNum
-        if (time.time() - timeStart > 1):
-	    randomNum = random.randint(0, 3)
-	    #print randomNum
-            if (BoardStatus[rowNum][colNum] == -1):
+        if (time.time() - timeStart > 0.5):
+	    ranNum = random.randint(0, 3)
+	    #print ranNum
+            if (ranNum == 0):
+                if (rowNum != 0):
+                    if (BoardStatus[rowNum-1][colNum] != -1):
+                        rowNum-=1
+            elif (ranNum == 1):
+                if (rowNum != 4):
+                    if(BoardStatus[rowNum+1][colNum] != -1):
+                        rowNum+=1
+            elif (ranNum == 2):
+                if (colNum != 0):
+                    if(BoardStatus[rowNum][colNum-1] != -1):
+                        colNum-=1
+            else:
                 if (colNum != 5):
-                    colNum+=1
-                else:
-                    rowNum+=1
-                    colNum=0
+                    if(BoardStatus[rowNum][colNum+1] != -1):
+                        colNum+=1
+            #if (BoardStatus[rowNum][colNum] != -1):
             self.x = BoardXcoord[rowNum][colNum]
             self.y = BoardYcoord[rowNum][colNum]
             timeStart = time.time()
-            colNum+=1
-            if (colNum == 6):
-                colNum = 0
-                rowNum+=1
-            if (rowNum == 5):
-                rowNum = 0
             
-    def collide_asteroid(self, asteroid):
+    def collide_something(self, something):
 	global enemyCollided
-        if(self.collide_sprite(asteroid) and enemyCollided == False):
+        if(self.collide_sprite(something) and enemyCollided == False):
 	    enemyCollided = True
 	    eNow = time.time()
 	            
@@ -727,67 +732,67 @@ class CaptainMath(spyral.Scene):
         global BoardXcoord
         global BoardYcoord
         # the following are rough coordinates, thus subject to change
-        BoardXcoord[0][0] = 184
-        BoardXcoord[1][0] = 184
-        BoardXcoord[2][0] = 184
-        BoardXcoord[3][0] = 184
-        BoardXcoord[4][0] = 184
-        BoardXcoord[0][1] = 333
-        BoardXcoord[1][1] = 333
-        BoardXcoord[2][1] = 333
-        BoardXcoord[3][1] = 333
-        BoardXcoord[4][1] = 333
-        BoardXcoord[0][2] = 477
-        BoardXcoord[1][2] = 477
-        BoardXcoord[2][2] = 477
-        BoardXcoord[3][2] = 477
-        BoardXcoord[4][2] = 477
+        BoardXcoord[0][0] = 200
+        BoardXcoord[1][0] = 200
+        BoardXcoord[2][0] = 200
+        BoardXcoord[3][0] = 200
+        BoardXcoord[4][0] = 200
+        BoardXcoord[0][1] = 350
+        BoardXcoord[1][1] = 350
+        BoardXcoord[2][1] = 350
+        BoardXcoord[3][1] = 350
+        BoardXcoord[4][1] = 350
+        BoardXcoord[0][2] = 495
+        BoardXcoord[1][2] = 495
+        BoardXcoord[2][2] = 495
+        BoardXcoord[3][2] = 495
+        BoardXcoord[4][2] = 495
         BoardXcoord[0][3] = 633
         BoardXcoord[1][3] = 633
         BoardXcoord[2][3] = 633
         BoardXcoord[3][3] = 633
         BoardXcoord[4][3] = 633
-        BoardXcoord[0][4] = 777
-        BoardXcoord[1][4] = 777
-        BoardXcoord[2][4] = 777
-        BoardXcoord[3][4] = 777
-        BoardXcoord[4][4] = 777
-        BoardXcoord[0][5] = 933
-        BoardXcoord[1][5] = 933
-        BoardXcoord[2][5] = 933
-        BoardXcoord[3][5] = 933
-        BoardXcoord[4][5] = 933
+        BoardXcoord[0][4] = 800
+        BoardXcoord[1][4] = 800
+        BoardXcoord[2][4] = 800
+        BoardXcoord[3][4] = 800
+        BoardXcoord[4][4] = 800
+        BoardXcoord[0][5] = 955
+        BoardXcoord[1][5] = 955
+        BoardXcoord[2][5] = 955
+        BoardXcoord[3][5] = 955
+        BoardXcoord[4][5] = 955
 
-        BoardYcoord[0][0] = 156
-        BoardYcoord[0][1] = 156
-        BoardYcoord[0][2] = 156
-        BoardYcoord[0][3] = 156
-        BoardYcoord[0][4] = 156
-        BoardYcoord[0][5] = 156
-        BoardYcoord[1][0] = 254
-        BoardYcoord[1][1] = 254
-        BoardYcoord[1][2] = 254
-        BoardYcoord[1][3] = 254
-        BoardYcoord[1][4] = 254
-        BoardYcoord[1][5] = 254
-        BoardYcoord[2][0] = 364
-        BoardYcoord[2][1] = 364
-        BoardYcoord[2][2] = 364
-        BoardYcoord[2][3] = 364
-        BoardYcoord[2][4] = 364
-        BoardYcoord[2][5] = 364
-        BoardYcoord[3][0] = 465
-        BoardYcoord[3][1] = 465
-        BoardYcoord[3][2] = 465
-        BoardYcoord[3][3] = 465
-        BoardYcoord[3][4] = 465
-        BoardYcoord[3][5] = 465
-        BoardYcoord[4][0] = 578
-        BoardYcoord[4][1] = 578
-        BoardYcoord[4][2] = 578
-        BoardYcoord[4][3] = 578
-        BoardYcoord[4][4] = 578
-        BoardYcoord[4][5] = 578
+        BoardYcoord[0][0] = 180
+        BoardYcoord[0][1] = 180
+        BoardYcoord[0][2] = 180
+        BoardYcoord[0][3] = 180
+        BoardYcoord[0][4] = 180
+        BoardYcoord[0][5] = 180
+        BoardYcoord[1][0] = 275
+        BoardYcoord[1][1] = 275
+        BoardYcoord[1][2] = 275
+        BoardYcoord[1][3] = 275
+        BoardYcoord[1][4] = 275
+        BoardYcoord[1][5] = 275
+        BoardYcoord[2][0] = 390
+        BoardYcoord[2][1] = 390
+        BoardYcoord[2][2] = 390
+        BoardYcoord[2][3] = 390
+        BoardYcoord[2][4] = 390
+        BoardYcoord[2][5] = 390
+        BoardYcoord[3][0] = 500
+        BoardYcoord[3][1] = 500
+        BoardYcoord[3][2] = 500
+        BoardYcoord[3][3] = 500
+        BoardYcoord[3][4] = 500
+        BoardYcoord[3][5] = 500
+        BoardYcoord[4][0] = 620
+        BoardYcoord[4][1] = 620
+        BoardYcoord[4][2] = 620
+        BoardYcoord[4][3] = 620
+        BoardYcoord[4][4] = 620
+        BoardYcoord[4][5] = 620
     
     def down_left(self,pos,button):
         self.mX = pos[0]
@@ -1063,10 +1068,6 @@ class CaptainMath(spyral.Scene):
 				else:
 					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
 
-			# enemy will NEVER collide with asteroids, so these three line can be delete
-            		self.enemy1.collide_asteroid(self.asteroid1)
-			self.enemy1.collide_asteroid(self.asteroid2)
-			self.enemy1.collide_asteroid(self.asteroid3)
 			
         elif gamestate == "minigame":
 			global SSTheme
