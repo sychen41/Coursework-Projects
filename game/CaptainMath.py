@@ -1144,9 +1144,9 @@ class CaptainMath(spyral.Scene):
             if (self.text_objects[0].y <= -550):
                 for i in self.text_objects:
                     i.kill()
-                    gamestate = "Levelselect"
-                    self.arrow = Arrow(self)
-                    print "gamestate = Levelselect"
+                gamestate = "Levelselect"
+                self.arrow = Arrow(self)
+                print "gamestate = Levelselect"
 
         if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False):
             if(playerLives == 2):
