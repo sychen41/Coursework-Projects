@@ -30,6 +30,7 @@ colNum = 5
 ProwNum = 0
 PcolNum = 0
 isplayerDead = False
+isEnemyDead = False
 CorrectAnswers = 0
 Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
 Icol = 0
@@ -43,6 +44,7 @@ class font(spyral.Sprite):
         self.y = 0
         self.moving = False
 class Laser(spyral.Sprite):
+    global isEnemyDead
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
         self.image = spyral.image.Image(filename = "images/misc/laser.png", size = None)
@@ -53,6 +55,13 @@ class Laser(spyral.Sprite):
 	    pygame.mixer.init()
 	    asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
 	    asteroidExplode.play()
+    def collide_enemy(self, Sprite):
+        if self.collide_sprite(Sprite):
+            Sprite.kill()
+        pygame.mixer.init()
+        asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+        asteroidExplode.play()
+        isEnemyDead = True
 class Player(spyral.Sprite):
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
@@ -957,7 +966,7 @@ class CaptainMath(spyral.Scene):
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
-				self.Laser.collide_meteor(self.enemy1)
+				self.Laser.collide_enemy(self.enemy1)
 			elif(isface == "left" and forceFieldOn == False and gamestate == "fullLevels"):
 				isface = "left"
 				if(playerLives == 2):
@@ -1176,7 +1185,7 @@ class CaptainMath(spyral.Scene):
                 self.arrow = Arrow(self)
                 print "gamestate = Levelselect"
 
-        if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False and forceFieldOn == False):
+        if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False and forceFieldOn == False and isEnemyDead == False):
             if(playerLives == 2):
                 self.player.kill()
             elif(playerLives == 1):
