@@ -136,6 +136,12 @@ class Player(spyral.Sprite):
         self.y = HEIGHT/2
     def askquest(self):
         print "askquest"
+    def collide_BlackHolde(self, Sprite):
+        if self.collide_sprite(Sprite):
+            gamestate = "minigame"
+        #pygame.mixer.init()
+        #asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+        #asteroidExplode.play()
     def update(self, delta):
         global ProwNum
         global PcolNum
@@ -1047,7 +1053,7 @@ class CaptainMath(spyral.Scene):
             ranRowNum = random.randint(0, 4)
             ranColNum = random.randint(0, 5)
             self.BlackHole = BlackHole(self)
-            while(BoardStatus[ranRowNum][ranColNum] == -2 and BoardStatus[ranRowNum][ranColNum] == -1):
+            while(BoardStatus[ranRowNum][ranColNum] == -2 or BoardStatus[ranRowNum][ranColNum] == -1):
                 ranRowNum = random.randint(0, 4)
                 ranColNum = random.randint(0, 5)
             self.BlackHole.x = BoardXcoord[ranRowNum][ranColNum]
@@ -1139,6 +1145,7 @@ class CaptainMath(spyral.Scene):
         elif gamestate == "Levelselect":
             self.background = spyral.Image("images/preMadeImages/PlanetMap.png")
         elif gamestate == "fullLevels":
+			#self.player.collide_BlackHolde(self.BlackHole) #might break some shit
 			self.background = spyral.Image("images/fullLevels/planet2_Board.png")
 			if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
 				forceFieldOn = False
