@@ -1,0 +1,3 @@
+bug report:
+
+*somehow the player gets stucked in the last line (it can't go up, only walks left and right. It also appears in the top line if I click down)
