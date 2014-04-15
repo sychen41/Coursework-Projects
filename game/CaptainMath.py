@@ -1144,6 +1144,7 @@ class CaptainMath(spyral.Scene):
         global PcolNum
         global playerLives
         global isplayerDead
+        global isEnemyDead
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
