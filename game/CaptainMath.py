@@ -3,7 +3,6 @@ import random
 import math
 import time
 import pygame
-from spyral import Animation, easing
 from problem import Problem
 from ourmath2 import generatesMultiplesProblems
 
@@ -336,19 +335,30 @@ class Spaceship(spyral.Sprite):
             self.x = WIDTH + 100
 
 
-
 class StoryText(spyral.Sprite):
-    def __init__(self,scene, txt, y):
+    def __init__(self,scene):
         spyral.Sprite.__init__(self, scene)
 
-        font=spyral.font.Font("fonts/Starjedi.ttf",40,(255,255,0))
-        text=txt
+        font=spyral.font.Font("fonts/white.ttf",40,(255,255,255))
+
+        text="This little math captain is blablablabla!"
+
         self.image=font.render(text)
 
         self.anchor = "center"
 
         self.x = WIDTH/2
-        self.y = y
+
+        self.y = HEIGHT/2
+
+        #spyral.event.register("input.mouse.down.left", self.down_left2)
+
+    #def down_left2(self):
+        #gamestate = "LevelSelect"
+
+
+
+        #spyral.event.register ("input.mouse.down.left",self.down_left)
 
 
 
@@ -360,9 +370,9 @@ class Arrow(spyral.Sprite):
 
 		self.image = spyral.image.Image(filename = "images/misc/left_red_arrow.png", size = None)
 
-		self.x = -300
+		self.x = 300
 
-		self.y = -300
+		self.y = 610
 
 		self.level = 1
 
@@ -762,29 +772,14 @@ class CaptainMath(spyral.Scene):
             #print "gamestate = Levelselect"
             gamestate = "story"
             print "gamestate = story"
+            self.storytext = StoryText(self)
 
-            text_array = ["Captain Mathematica,", "comes from a distant", "galaxy where he is", "tasked with protecting", "children everywhere", "from evil Aliens and", "the evil Admiral", "No-HomeWork.", "Help Captain Mathematica", "to save the universe.", "You are the only hope!"]
-            y = 950
-            self.text_objects = []
-            for i in text_array:
-                self.storytext_x = StoryText(self, i, y)
-                self.text_objects.append(self.storytext_x)
-                y += 50
-
-            #self.text_animations = []
-            delta_iteration = 50
-            for n in self.text_objects:
-                self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 18.0)
-                n.animate(self.animation_y)
-                delta_iteration -= 50
 
         elif(gamestate == "story"):
-            for i in self.text_objects:
-                i.kill()
             gamestate = "Levelselect"
             print "gamestate = Levelselect"
+            self.storytext.kill()
             self.arrow = Arrow(self)
-
     def return_clicked(self):
 		global gamestate
 		if(gamestate == "Levelselect" and self.arrow.level <=4):
@@ -1135,15 +1130,7 @@ class CaptainMath(spyral.Scene):
 
         #story screen
         elif gamestate == "story":
-            self.background = spyral.Image("images/Backgrounds/story_bg.jpg")
-
-            if (self.text_objects[0].y <= -550):
-                for i in self.text_objects:
-                    i.kill()
-                    gamestate = "Levelselect"
-                    self.arrow = Arrow(self)
-                    print "gamestate = Levelselect"
-
+            self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
         if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False):
             if(playerLives == 2):
                 self.player.kill()
