@@ -7,3 +7,10 @@ bug report:
 * if player grab one wrong answer, the port will never show up even all correct answers have been grabed.
 
 * if you use the force field and kill the enemy, you are gonna die if go to the last cell in the right-hand side of the line you killed the enemy.
+
+*you can kill the enemy even if he is in the line above you (e.g.: E:Enemy, P:Player, laser: ----)
++--+--+--+--+--+
+|  |  |  |E |  |
++--+--+--+--+--+
+|  |P |--|--|  |
++--+--+--+--+--+
