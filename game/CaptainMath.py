@@ -30,6 +30,7 @@ colNum = 5
 ProwNum = 0
 PcolNum = 0
 isplayerDead = False
+CorrectAnswers = 0
 Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
 Icol = 0
 playerLives = 2
@@ -722,7 +723,12 @@ class Question(spyral.Sprite):
 
         self.image=font.render(text)
 		
-		
+class BlackHole(spyral.Sprite):
+    def __init__(self,scene):
+        spyral.Sprite.__init__(self, scene)
+        self.image = spyral.image.Image(filename = "images/misc/nextLevelPortal.png", size = None)
+        self.anchor = 'center'
+
 class CaptainMath(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
@@ -909,7 +915,6 @@ class CaptainMath(spyral.Scene):
 			self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
 			self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
 			self.asteroid3 = Asteroid(self, indexOfAsteroid[2])
-
 			self.enemy1 = Enemy(self)
     def space_clicked(self):
         global isface
@@ -1016,6 +1021,7 @@ class CaptainMath(spyral.Scene):
         global BoardXcoord
         global BoardYcoord
         global playerLives
+        global CorrectAnswers
         if(playerLives == 2):
           self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
         if(playerLives == 1):
@@ -1035,6 +1041,12 @@ class CaptainMath(spyral.Scene):
           self.AnswerCorrect = AnswerCorrect(self)
           self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
           self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
+          CorrectAnswers+=1
+          if(CorrectAnswers == 8):
+            print "All Answers have been found!!!"
+            self.BlackHole = BlackHole(self)
+            self.BlackHole.x = BoardXcoord[4][2]
+            self.BlackHole.y = BoardYcoord[4][2]
         else:
           self.AnswerCorrect = AnswerCorrect(self)
           self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
