@@ -1052,9 +1052,13 @@ class CaptainMath(spyral.Scene):
           isplayerDead = True
           if(playerLives == 2):
             self.player2 = Player(self)
+            ProwNum = 0
+            PcolNum = 0
             playerLives-= 1
           elif(playerLives == 1):
             self.player3 = Player(self)
+            ProwNum = 0
+            PcolNum = 0
             playerLives-= 1
     def forceFieldOn(self):
         print "holla for ya mama"
@@ -1159,10 +1163,14 @@ class CaptainMath(spyral.Scene):
             isplayerDead = True
             if(playerLives == 2):
                 self.player2 = Player(self)
+                ProwNum = 0
+                PcolNum = 0
                 playerLives-= 1
                 self.spaceShipLife1.kill()
             elif(playerLives == 1):
                 self.player3 = Player(self)
+                ProwNum = 0
+                PcolNum = 0
                 playerLives-= 1
                 self.spaceShipLife2.kill()
             
