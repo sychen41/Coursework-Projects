@@ -14,12 +14,12 @@ def generatesMultiplesProblems(board_size, difficulty):
 		quantity_right = round(board_size * 0.4,0)
 		quantity_wrong = board_size - quantity_right
 
-	if (difficulty==2):
+	elif (difficulty==2):
 		#Defines the number of right answers as 30%
 		quantity_right = round(board_size * 0.3,0)
 		quantity_wrong = board_size - quantity_right
 
-	if (difficulty==3):
+	elif (difficulty==3):
 		#Defines the number of right answers as 20%
 		quantity_right = round(board_size * 0.2,0)
 		quantity_wrong = board_size - quantity_right
@@ -28,10 +28,10 @@ def generatesMultiplesProblems(board_size, difficulty):
 	if (difficulty==1):
 		question = random.randint(4,9)
 
-	if (difficulty==2):
+	elif (difficulty==2):
 		question = random.randint(6,13)
 
-	if (difficulty==3):
+	elif (difficulty==3):
 		question = random.randint(6,13)
 
 	#Instantiates an object "Problem"
@@ -41,9 +41,9 @@ def generatesMultiplesProblems(board_size, difficulty):
 	for i in range (int(quantity_right)):
 		if (difficulty==1):
 			random_number = random.randint(1,3)
-		if (difficulty==2):
+		elif (difficulty==2):
 			random_number = random.randint(2,5)
-		if (difficulty==3):
+		elif (difficulty==3):
 			random_number = random.randint(3,7)
 
 		answer = question * random_number
@@ -58,9 +58,9 @@ def generatesMultiplesProblems(board_size, difficulty):
 		while(its_ok == False):
 			if (difficulty==1):
 				x = (question*random.randint(1,3))+random.randint(6,20)
-			if (difficulty==2):
+			elif (difficulty==2):
 				x = (question*random.randint(1,5))+random.randint(3,10)
-			if (difficulty==3):
+			elif (difficulty==3):
 				x = (question*random.randint(3,5))+random.randint(1,4)
 			if (x % question != 0):
 				its_ok = True
@@ -84,12 +84,12 @@ def generatesFractionsProblems(board_size, difficulty):
 		quantity_right = round(board_size * 0.4,0)
 		quantity_wrong = board_size - quantity_right
 
-	if (difficulty==2):
+	elif (difficulty==2):
 		#Defines the number of right answers as 30%
 		quantity_right = round(board_size * 0.3,0)
 		quantity_wrong = board_size - quantity_right
 
-	if (difficulty==3):
+	elif (difficulty==3):
 		#Defines the number of right answers as 20%
 		quantity_right = round(board_size * 0.2,0)
 		quantity_wrong = board_size - quantity_right
@@ -98,13 +98,13 @@ def generatesFractionsProblems(board_size, difficulty):
 	if (difficulty==1):
 		question = 0
 
-	if (difficulty==2):
+	elif (difficulty==2):
 		termA= random.randint(2,10)
 		termB= random.randint(1,10)
 		decimal_value = termA/termB
 		question = str(termA) + '/' + str(termB)
 
-	if (difficulty==3):
+	elif (difficulty==3):
 		question = 0
 
 	#Instantiates an object "Problem"
@@ -118,12 +118,12 @@ def generatesFractionsProblems(board_size, difficulty):
 		if (difficulty==1):
 			random_number = 0
 
-		if (difficulty==2):
+		elif (difficulty==2):
 			factor = random.randint(2,5)
 			equivalent_a = termA*factor
 			equivalent_b = termB*factor
 
-		if (difficulty==3):
+		elif (difficulty==3):
 			random_number = 0
 
 		answer = str(equivalent_a) + '/' + str(equivalent_b)
@@ -137,7 +137,7 @@ def generatesFractionsProblems(board_size, difficulty):
 		while(its_ok == False):
 			if (difficulty==1):
 				x = 0
-			if (difficulty==2):
+			elif (difficulty==2):
 				factor = random.randint(1,3)
 				wrong_a = termA*factor+random.randint(1,5)
 				factor = random.randint(1,3)
@@ -145,7 +145,7 @@ def generatesFractionsProblems(board_size, difficulty):
 				x = wrong_a/wrong_b
 				answer = str(wrong_a) + '/' + str(wrong_b)
 
-			if (difficulty==3):
+			elif (difficulty==3):
 				x = 0
 
 			if (x != decimal_value):
@@ -163,12 +163,12 @@ def generatesEqualitiesProblems(board_size, difficulty):
 		quantity_right = round(board_size * 0.4,0)
 		quantity_wrong = board_size - quantity_right
 
-	if (difficulty==2):
+	elif (difficulty==2):
 		#Defines the number of right answers as 30%
 		quantity_right = round(board_size * 0.3,0)
 		quantity_wrong = board_size - quantity_right
 
-	if (difficulty==3):
+	elif (difficulty==3):
 		#Defines the number of right answers as 20%
 		quantity_right = round(board_size * 0.2,0)
 		quantity_wrong = board_size - quantity_right
@@ -177,10 +177,10 @@ def generatesEqualitiesProblems(board_size, difficulty):
 	if (difficulty==1):
 		question = random.randint(4,9)
 
-	if (difficulty==2):
+	elif (difficulty==2):
 		question = random.randint(20,60)
 
-	if (difficulty==3):
+	elif (difficulty==3):
 		question = random.randint(6,13)
 
 	#Instantiates an object "Problem"
@@ -191,9 +191,9 @@ def generatesEqualitiesProblems(board_size, difficulty):
 	for i in range (int(quantity_right)):
 		if (difficulty==1):
 			random_number = random.randint(1,3)
-		if (difficulty==2):
+		elif (difficulty==2):
 			random_number = random.randint(10,50)
-		if (difficulty==3):
+		elif (difficulty==3):
 			random_number = random.randint(3,7)
 
 		#decide if + or - opperation:
@@ -216,7 +216,7 @@ def generatesEqualitiesProblems(board_size, difficulty):
 		if (difficulty==1):
 			x = 0
 
-		if (difficulty==2):
+		elif (difficulty==2):
 			random_number = random.randint(10,50)
 			if(question-random_number>=0):
 				#delta = random_number+random.randint(1,10)
@@ -227,7 +227,7 @@ def generatesEqualitiesProblems(board_size, difficulty):
 				b = (question-random_number) - random.randint(1,5)
 				answer = str(random_number) + str(b)
 
-		if (difficulty==3):
+		elif (difficulty==3):
 			x = 0
 			
 		problem.wrong_answers.append(answer)
