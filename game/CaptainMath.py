@@ -56,6 +56,7 @@ class Laser(spyral.Sprite):
 	    asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
 	    asteroidExplode.play()
     def collide_enemy(self, Sprite):
+        global isEnemyDead
         if self.collide_sprite(Sprite):
             Sprite.kill()
         pygame.mixer.init()
@@ -1185,7 +1186,7 @@ class CaptainMath(spyral.Scene):
                 gamestate = "Levelselect"
                 self.arrow = Arrow(self)
                 print "gamestate = Levelselect"
-
+        global isEnemyDead
         if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False and forceFieldOn == False and isEnemyDead == False):
             if(playerLives == 2):
                 self.player.kill()
