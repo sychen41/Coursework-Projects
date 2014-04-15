@@ -181,15 +181,19 @@ class Player(spyral.Sprite):
             global ProwNum
 	    global PcolNum
 	    if (BoardStatus[ProwNum][PcolNum] != -1):
-	        if (ProwNum != 5):
+	        if (ProwNum != 4):
                     ProwNum+=1
             self.y = BoardYcoord[ProwNum][PcolNum]
         if (PcolNum == 6):
             PcolNum = 0
-            ProwNum+=1
         if (ProwNum == 5):
             ProwNum = 0
-
+        if (PcolNum == -1):
+            PcolNum = 5
+        if (ProwNum == -1):
+            ProwNum == 5
+        print ProwNum
+        print PcolNum
 class MathText(spyral.Sprite):
     def __init__(self, scene, index, answers, problem_question):
         spyral.Sprite.__init__(self, scene)
@@ -1016,7 +1020,7 @@ class CaptainMath(spyral.Scene):
           self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
         if(playerLives == 1):
           self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
-        if(playerLives == 3):
+        if(playerLives == 0):
           self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
         pygame.mixer.init()
         FF = pygame.mixer.Sound("sounds/ohYeah.wav")
@@ -1052,9 +1056,13 @@ class CaptainMath(spyral.Scene):
           isplayerDead = True
           if(playerLives == 2):
             self.player2 = Player(self)
+            ProwNum = 0
+            PcolNum = 0
             playerLives-= 1
           elif(playerLives == 1):
             self.player3 = Player(self)
+            ProwNum = 0
+            PcolNum = 0
             playerLives-= 1
     def forceFieldOn(self):
         print "holla for ya mama"
@@ -1140,11 +1148,11 @@ class CaptainMath(spyral.Scene):
             if (self.text_objects[0].y <= -550):
                 for i in self.text_objects:
                     i.kill()
-                    gamestate = "Levelselect"
-                    self.arrow = Arrow(self)
-                    print "gamestate = Levelselect"
+                gamestate = "Levelselect"
+                self.arrow = Arrow(self)
+                print "gamestate = Levelselect"
 
-        if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False):
+        if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False and forceFieldOn == False):
             if(playerLives == 2):
                 self.player.kill()
             elif(playerLives == 1):
@@ -1159,10 +1167,14 @@ class CaptainMath(spyral.Scene):
             isplayerDead = True
             if(playerLives == 2):
                 self.player2 = Player(self)
+                ProwNum = 0
+                PcolNum = 0
                 playerLives-= 1
                 self.spaceShipLife1.kill()
             elif(playerLives == 1):
                 self.player3 = Player(self)
+                ProwNum = 0
+                PcolNum = 0
                 playerLives-= 1
                 self.spaceShipLife2.kill()
             
