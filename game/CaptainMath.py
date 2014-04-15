@@ -1099,6 +1099,7 @@ class CaptainMath(spyral.Scene):
         global PcolNum
         global playerLives
         global isplayerDead
+        global forceFieldOn
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
@@ -1118,11 +1119,19 @@ class CaptainMath(spyral.Scene):
 				FFOff = pygame.mixer.Sound("sounds/forceFieldOff.wav")
 				FFOff.play()
 				if(isface == "right"):
-					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+					if(playerLives == 2):
+						self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+					elif(playerLives == 1):
+						self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+					elif(playerLives == 0):
+						self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
 				else:
-					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
-
-			
+					if(playerLives == 2):
+						self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+					elif(playerLives == 1):
+						self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+					elif(playerLives == 0):
+						self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
         elif gamestate == "minigame":
 			global SSTheme
 			SSTheme.stop()
@@ -1131,7 +1140,7 @@ class CaptainMath(spyral.Scene):
         #story screen
         elif gamestate == "story":
             self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
-        if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False):
+        if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False and forceFieldOn == False):
             if(playerLives == 2):
                 self.player.kill()
             elif(playerLives == 1):
