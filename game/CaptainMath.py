@@ -1044,9 +1044,14 @@ class CaptainMath(spyral.Scene):
           CorrectAnswers+=1
           if(CorrectAnswers == 8):
             print "All Answers have been found!!!"
+            ranRowNum = random.randint(0, 4)
+            ranColNum = random.randint(0, 5)
             self.BlackHole = BlackHole(self)
-            self.BlackHole.x = BoardXcoord[4][2]
-            self.BlackHole.y = BoardYcoord[4][2]
+            while(BoardStatus[ranRowNum][ranColNum] == -2 and BoardStatus[ranRowNum][ranColNum] == -1):
+                ranRowNum = random.randint(0, 4)
+                ranColNum = random.randint(0, 5)
+            self.BlackHole.x = BoardXcoord[ranRowNum][ranColNum]
+            self.BlackHole.y = BoardYcoord[ranRowNum][ranColNum]
         else:
           self.AnswerCorrect = AnswerCorrect(self)
           self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
