@@ -76,6 +76,7 @@ class Player(spyral.Sprite):
         global ProwNum
         global PcolNum
         global isplayerDead
+        global gamestate
         playerColor = "red"
         isplayerDead = False
         if(playerColor == "red"):
@@ -147,6 +148,7 @@ class Player(spyral.Sprite):
     def askquest(self):
         print "askquest"
     def collide_BlackHolde(self, Sprite):
+        global gamestate
         if self.collide_sprite(Sprite):
             print "Collided with Black hole"
             gamestate = "minigame"
@@ -1146,6 +1148,7 @@ class CaptainMath(spyral.Scene):
         global isplayerDead
         global isEnemyDead
         global isBlackholeSet
+        print "What is the gamestate?? " , gamestate
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
