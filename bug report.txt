@@ -1,14 +1,18 @@
-bug report:
+Bug Report:
 
-*somehow the player gets stucked in the last line (it can't go up, only walks left and right. It also appears in the top line if I click down)
+*somehow the player gets stucked in the last line (it can't go up, only walks
+left and right. It also appears in the top line if I click down)
 
 *when player collides with an asteroid, he goes to the block right of the asteroid
 
-* if player grab one wrong answer, the port will never show up even all correct answers have been grabed.
+* if player grab one wrong answer, the port will never show up even all correct
+answers have been grabed.
 
-* if you use the force field and kill the enemy, you are gonna die if go to the last cell in the right-hand side of the line you killed the enemy.
+[fixed]* if you use the force field and kill the enemy, you are gonna die if go
+to the last cell in the right-hand side of the line you killed the enemy.
 
-*you can kill the enemy even if he is in the line above you (e.g.: E:Enemy, P:Player, laser: ----)
+[fixed]*you can kill the enemy even if he is in the line above you (e.g.: E:Enemy,
+  P:Player, laser: ----)
 +--+--+--+--+--+
 |  |  |  |E |  |
 +--+--+--+--+--+
