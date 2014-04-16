@@ -5,7 +5,7 @@ left and right. It also appears in the top line if I click down)
 
 *when player collides with an asteroid, he goes to the block right of the asteroid
 
-* if player grab one wrong answer, the port will never show up even all correct
+[fixed]* if player grab one wrong answer, the port will never show up even all correct
 answers have been grabed.
 
 [fixed]* if you use the force field and kill the enemy, you are gonna die if go
