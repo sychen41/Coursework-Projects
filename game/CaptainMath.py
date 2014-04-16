@@ -31,6 +31,7 @@ ProwNum = 0
 PcolNum = 0
 isplayerDead = False
 isEnemyDead = False
+isBlackholeSet = False
 CorrectAnswers = 0
 Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
 Icol = 0
@@ -77,7 +78,6 @@ class Player(spyral.Sprite):
         global isplayerDead
         playerColor = "red"
         isplayerDead = False
-        print "new Player created!!!"
         if(playerColor == "red"):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         elif(playerColor == "blue"):
@@ -148,6 +148,7 @@ class Player(spyral.Sprite):
         print "askquest"
     def collide_BlackHolde(self, Sprite):
         if self.collide_sprite(Sprite):
+            print "Collided with Black hole"
             gamestate = "minigame"
         #pygame.mixer.init()
         #asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
@@ -209,8 +210,6 @@ class Player(spyral.Sprite):
             PcolNum = 5
         if (ProwNum == -1):
             ProwNum == 5
-        print ProwNum
-        print PcolNum
 class MathText(spyral.Sprite):
     def __init__(self, scene, index, answers, problem_question):
         spyral.Sprite.__init__(self, scene)
@@ -1031,13 +1030,13 @@ class CaptainMath(spyral.Scene):
 			laserCount = laserCount - 1
 
     def asorbAnswer(self):
-        print "hello yo boy"
         global ProwNum
         global PcolNum
         global BoardXcoord
         global BoardYcoord
         global playerLives
         global CorrectAnswers
+        global isBlackholeSet
         if(playerLives == 2):
           self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
         if(playerLives == 1):
@@ -1053,13 +1052,11 @@ class CaptainMath(spyral.Scene):
         else:
           self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
         if (BoardStatus[ProwNum][PcolNum] == -2):
-          print "Answer Selected is CORRECT!!!"
           self.AnswerCorrect = AnswerCorrect(self)
           self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
           self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
           CorrectAnswers+=1
           if(CorrectAnswers == 8):
-            print "All Answers have been found!!!"
             ranRowNum = random.randint(0, 4)
             ranColNum = random.randint(0, 5)
             self.BlackHole = BlackHole(self)
@@ -1068,6 +1065,8 @@ class CaptainMath(spyral.Scene):
                 ranColNum = random.randint(0, 5)
             self.BlackHole.x = BoardXcoord[ranRowNum][ranColNum]
             self.BlackHole.y = BoardYcoord[ranRowNum][ranColNum]
+            isBlackholeSet = True
+            print "Black Hole is set"
         else:
           self.AnswerCorrect = AnswerCorrect(self)
           self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
@@ -1146,6 +1145,7 @@ class CaptainMath(spyral.Scene):
         global playerLives
         global isplayerDead
         global isEnemyDead
+        global isBlackholeSet
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
@@ -1156,19 +1156,21 @@ class CaptainMath(spyral.Scene):
         elif gamestate == "Levelselect":
             self.background = spyral.Image("images/preMadeImages/PlanetMap.png")
         elif gamestate == "fullLevels":
-			#self.player.collide_BlackHolde(self.BlackHole) #might break some shit
-			self.background = spyral.Image("images/fullLevels/planet2_Board.png")
-			if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
-				forceFieldOn = False
-				pygame.mixer.init()
-				FFFailure = pygame.mixer.Sound("sounds/forceFieldFail.wav")
-				FFFailure.play()
-				FFOff = pygame.mixer.Sound("sounds/forceFieldOff.wav")
-				FFOff.play()
-				if(isface == "right"):
-					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
-				else:
-					self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+            print "is the black hole set?? ", isBlackholeSet 
+            if(isBlackholeSet == True):
+                self.player.collide_BlackHolde(self.BlackHole) #might break some shit
+            self.background = spyral.Image("images/fullLevels/planet2_Board.png")
+            if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
+                forceFieldOn = False
+                pygame.mixer.init()
+                FFFailure = pygame.mixer.Sound("sounds/forceFieldFail.wav")
+                FFFailure.play()
+                FFOff = pygame.mixer.Sound("sounds/forceFieldOff.wav")
+                FFOff.play()
+                if(isface == "right"):
+                   self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+                else:
+                   self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
 
 			
         elif gamestate == "minigame":
@@ -1186,8 +1188,6 @@ class CaptainMath(spyral.Scene):
                 gamestate = "Levelselect"
                 self.arrow = Arrow(self)
                 print "gamestate = Levelselect"
-        print "is the enemy dead? ", isEnemyDead
-        print "is the force Field On? ", forceFieldOn
         if(rowNum == ProwNum and colNum == PcolNum and isplayerDead == False and forceFieldOn == False and isEnemyDead == False):
             if(playerLives == 2):
                 self.player.kill()
