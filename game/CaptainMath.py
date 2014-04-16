@@ -1068,7 +1068,7 @@ class CaptainMath(spyral.Scene):
             self.BlackHole.x = BoardXcoord[ranRowNum][ranColNum]
             self.BlackHole.y = BoardYcoord[ranRowNum][ranColNum]
             isBlackholeSet = True
-            print "Black Hole is set"
+            #print "Black Hole is set"
         else:
           self.AnswerCorrect = AnswerCorrect(self)
           self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
@@ -1099,11 +1099,9 @@ class CaptainMath(spyral.Scene):
             PcolNum = 0
             playerLives-= 1
     def forceFieldOn(self):
-        print "holla for ya mama"
         global forceFieldOn
         global forceFieldTime
         forceFieldOn = True
-        print "hey" ,isface
         pygame.mixer.init()
         forceFieldTime = time.time()
         FF = pygame.mixer.Sound("sounds/forceFieldOn.wav")
@@ -1148,7 +1146,10 @@ class CaptainMath(spyral.Scene):
         global isplayerDead
         global isEnemyDead
         global isBlackholeSet
-        print "What is the gamestate?? " , gamestate
+        global CorrectAnswers
+        #print "What is the gamestate?? " , gamestate
+        print "how many correct answers?? " , CorrectAnswers
+
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
@@ -1161,7 +1162,12 @@ class CaptainMath(spyral.Scene):
         elif gamestate == "fullLevels":
             print "is the black hole set?? ", isBlackholeSet 
             if(isBlackholeSet == True):
-                self.player.collide_BlackHolde(self.BlackHole) #might break some shit
+                if(playerLives == 2):
+                    self.player.collide_BlackHolde(self.BlackHole)
+                elif(playerLives == 1):
+                    self.player2.collide_BlackHolde(self.BlackHole)
+                elif(playerLives == 0):
+                    self.player3.collide_BlackHolde(self.BlackHole)
             self.background = spyral.Image("images/fullLevels/planet2_Board.png")
             if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
                 forceFieldOn = False
