@@ -40,6 +40,7 @@ Icol = 0
 playerLives = 2
 answers = [None]*30
 Question = 0
+CorrectAnswersList = list()
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -270,7 +271,7 @@ class MathText(spyral.Sprite):
             #self.y -= HEIGHT/35
             self.image = spyral.Image(size=(1, 1))
         else:
-            self.image = font.render(str(answers[index]), WHITE)   
+            self.image = font.render(str(answers[index]), WHITE)
         global BoardXcoord
         global BoardYcoord
         global Irow
@@ -630,7 +631,7 @@ class CaptainMath(spyral.Scene):
         # has coordinate: (BoardXcoord[a][b], BoardYcoord[a][b])
         global BoardXcoord
         global BoardYcoord
-    
+
     # test method of kill
     def killmath(self):
         self.killMathText()
@@ -1053,7 +1054,6 @@ class CaptainMath(spyral.Scene):
         global isEnemyDead
         global isBlackholeSet
         global CorrectAnswers
-        #print "What is the gamestate?? " , gamestate
         print "how many correct answers?? " , CorrectAnswers
 
         if gamestate == "StartScreen":
@@ -1075,8 +1075,17 @@ class CaptainMath(spyral.Scene):
                     self.player2.collide_BlackHolde(self.BlackHole)
                 elif(playerLives == 0):
                     self.player3.collide_BlackHolde(self.BlackHole)
-                #if(didCollideWithBlackHole == True):
-                    #spyral.Scene.__init__(self, SIZE)
+                #Killing all sprites in Scene
+                if(didCollideWithBlackHole == True):
+                    self.killMathText()
+                    self.player.kill()
+                    self.Battery1.kill()
+                    self.Battery2.kill()
+                    self.Battery3.kill()
+                    self.spaceShipLife1.kill()
+                    self.spaceShipLife2.kill()
+                    self.BlackHole.kill()
+                    self.enemy1.kill()
 		self.killAsteroids()
                 self.killMathText()
             self.background = spyral.Image("images/fullLevels/planet2_Board.png")
@@ -1139,7 +1148,7 @@ class CaptainMath(spyral.Scene):
                 PcolNum = 0
                 playerLives-= 1
                 self.spaceShipLife2.kill()
-                
+
     def killAsteroids(self):
         self.asteroid1.kill()
         self.asteroid2.kill()
@@ -1208,5 +1217,3 @@ class CaptainMath(spyral.Scene):
     	self.mathText28.kill()
     	self.mathText29.kill()
     	self.mathText30.kill()
-    	
-        
