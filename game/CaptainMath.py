@@ -656,29 +656,53 @@ class CaptainMath(spyral.Scene):
             "children everywhere", "from evil Aliens and",
             "the evil Admiral", "No-HomeWork.", "Help Captain Mathematica",
              "to save the universe.", "You are the only hope!"]
-            y = 950
-            self.text_objects = []
-            for i in text_array:
-                self.storytext_x = StoryText(self, i, y)
-                self.text_objects.append(self.storytext_x)
-                y += 50
 
-            #self.text_animations = []
-            delta_iteration = 50
-            for n in self.text_objects:
-                self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 18.0)
-                n.animate(self.animation_y)
-                delta_iteration -= 50
         elif(gamestate =="tutorial"):
             if( self.TutorialCount == 1 and pos[0] >= 20 and pos[0] <= 267 and pos[1]<=782 and pos[1] >=700):
                 gamestate = "story"
                 print "gamestate = story"
+                text_array = ["Captain Mathematica,", "comes from a distant",
+                "galaxy where he is", "tasked with protecting",
+                "children everywhere", "from evil Aliens and",
+                "the evil Admiral", "No-HomeWork.", "Help Captain Mathematica",
+                "to save the universe.", "You are the only hope!"]
+                y = 950
+                self.text_objects = []
+                for i in text_array:
+                    self.storytext_x = StoryText(self, i, y)
+                    self.text_objects.append(self.storytext_x)
+                    y += 50
+
+                #self.text_animations = []
+                delta_iteration = 50
+                for n in self.text_objects:
+                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 18.0)
+                    n.animate(self.animation_y)
+                    delta_iteration -= 50
             elif(self.TutorialCount < 4):
                 self.TutorialCount += 1 
                 print "tutorial"
             elif(self.TutorialCount == 4):
                 gamestate = "story"
                 print "gamestate = story"
+                text_array = ["Captain Mathematica,", "comes from a distant",
+                "galaxy where he is", "tasked with protecting",
+                "children everywhere", "from evil Aliens and",
+                "the evil Admiral", "No-HomeWork.", "Help Captain Mathematica",
+                "to save the universe.", "You are the only hope!"]
+                y = 950
+                self.text_objects = []
+                for i in text_array:
+                    self.storytext_x = StoryText(self, i, y)
+                    self.text_objects.append(self.storytext_x)
+                    y += 50
+
+                #self.text_animations = []
+                delta_iteration = 50
+                for n in self.text_objects:
+                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 18.0)
+                    n.animate(self.animation_y)
+                    delta_iteration -= 50
         elif(gamestate == "story"):
             for i in self.text_objects:
                 i.kill()
