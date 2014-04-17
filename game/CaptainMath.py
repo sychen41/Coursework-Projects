@@ -38,6 +38,8 @@ mathTextGroup = pygame.sprite.Group()
 Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
 Icol = 0
 playerLives = 2
+answers = [None]*30
+Question = 0
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -332,7 +334,7 @@ class Enemy(spyral.Sprite):
         global timeStart
         global rowNum
         global colNum
-        if (time.time() - timeStart > 0.5):
+        if (time.time() - timeStart > 2):
 	    ranNum = random.randint(0, 3)
 	    #print ranNum
             if (ranNum == 0):
@@ -814,11 +816,18 @@ class CaptainMath(spyral.Scene):
         spyral.event.register("input.keyboard.down.f", self.forceFieldOn)
         spyral.event.register("input.mouse.down.left", self.down_left)
         spyral.event.register("input.keyboard.down.return", self.return_clicked)
+        #spyral.event.register("input.keyboard.down.j", self.killmath)
 
         # build coordinate matrix so that a cell(a,b) of the board
         # has coordinate: (BoardXcoord[a][b], BoardYcoord[a][b])
         global BoardXcoord
         global BoardYcoord
+    
+    # test method of kill
+    def killmath(self):
+        self.killMathText()
+        self.killAsteroids()
+        #self.mathText.kill()
 
     def down_left(self,pos,button):
         self.mX = pos[0]
@@ -937,7 +946,7 @@ class CaptainMath(spyral.Scene):
 			k=0
 			r=0
 			w=0
-			answers = [None]*30
+			global answers
 			for i in range(0, 30):
 				if i == indexOfRightAnswers[j]:
 					answers[i] = problem.right_answers[r]
@@ -955,8 +964,11 @@ class CaptainMath(spyral.Scene):
 						w+=1
 
 			# display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
-			for x in range(0, 31):
-				self.mathText = MathText(self, x, answers, problem.question)
+			global Question
+			Question = problem.question
+			self.createMathText()
+			#for x in range(0, 31):
+				#self.mathText = MathText(self, x, answers, problem.question)
 				#mathTextGroup.add(self.mathText)
             		# fill the global BoardStatus with answers: -1 for asteroids and -2 for right answers
             		global BoardStatus
@@ -1262,7 +1274,8 @@ class CaptainMath(spyral.Scene):
                     self.player3.collide_BlackHolde(self.BlackHole)
                 #if(didCollideWithBlackHole == True):
                     #spyral.Scene.__init__(self, SIZE)
-                self.mathText.kill() # only kills math heading
+		self.killAsteroids()
+                self.killMathText()
             self.background = spyral.Image("images/fullLevels/planet2_Board.png")
             if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
                 forceFieldOn = False
@@ -1323,3 +1336,74 @@ class CaptainMath(spyral.Scene):
                 PcolNum = 0
                 playerLives-= 1
                 self.spaceShipLife2.kill()
+                
+    def killAsteroids(self):
+        self.asteroid1.kill()
+        self.asteroid2.kill()
+        self.asteroid3.kill()
+    def createMathText(self):
+    	self.mathText0 = MathText(self, 0, answers, Question)
+        self.mathText1 = MathText(self, 1, answers, Question)
+        self.mathText2 = MathText(self, 2, answers, Question)
+        self.mathText3 = MathText(self, 3, answers, Question)
+        self.mathText4 = MathText(self, 4, answers, Question)
+        self.mathText5 = MathText(self, 5, answers, Question)
+        self.mathText6 = MathText(self, 6, answers, Question)
+        self.mathText7 = MathText(self, 7, answers, Question)
+        self.mathText8 = MathText(self, 8, answers, Question)
+        self.mathText9 = MathText(self, 9, answers, Question)
+        self.mathText10 = MathText(self, 10, answers, Question)
+        self.mathText11 = MathText(self, 11, answers, Question)
+        self.mathText12 = MathText(self, 12, answers, Question)
+        self.mathText13 = MathText(self, 13, answers, Question)
+        self.mathText14 = MathText(self, 14, answers, Question)
+        self.mathText15 = MathText(self, 15, answers, Question)
+        self.mathText16 = MathText(self, 16, answers, Question)
+        self.mathText17 = MathText(self, 17, answers, Question)
+        self.mathText18 = MathText(self, 18, answers, Question)
+        self.mathText19 = MathText(self, 19, answers, Question)
+        self.mathText20 = MathText(self, 20, answers, Question)
+        self.mathText21 = MathText(self, 21, answers, Question)
+        self.mathText22 = MathText(self, 22, answers, Question)
+        self.mathText23 = MathText(self, 23, answers, Question)
+        self.mathText24 = MathText(self, 24, answers, Question)
+        self.mathText25 = MathText(self, 25, answers, Question)
+        self.mathText26 = MathText(self, 26, answers, Question)
+        self.mathText27 = MathText(self, 27, answers, Question)
+        self.mathText28 = MathText(self, 28, answers, Question)
+        self.mathText29 = MathText(self, 29, answers, Question)
+        self.mathText30 = MathText(self, 30, answers, Question)
+    def killMathText(self):
+    	self.mathText0.kill()
+    	self.mathText1.kill()
+    	self.mathText2.kill()
+    	self.mathText3.kill()
+    	self.mathText4.kill()
+    	self.mathText5.kill()
+    	self.mathText6.kill()
+    	self.mathText7.kill()
+    	self.mathText8.kill()
+    	self.mathText9.kill()
+    	self.mathText10.kill()
+    	self.mathText11.kill()
+    	self.mathText12.kill()
+    	self.mathText13.kill()
+    	self.mathText14.kill()
+    	self.mathText15.kill()
+    	self.mathText16.kill()
+    	self.mathText17.kill()
+    	self.mathText18.kill()
+    	self.mathText19.kill()
+    	self.mathText20.kill()
+    	self.mathText21.kill()
+    	self.mathText22.kill()
+    	self.mathText23.kill()
+    	self.mathText24.kill()
+    	self.mathText25.kill()
+    	self.mathText26.kill()
+    	self.mathText27.kill()
+    	self.mathText28.kill()
+    	self.mathText29.kill()
+    	self.mathText30.kill()
+    	
+        
