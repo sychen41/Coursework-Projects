@@ -670,7 +670,10 @@ class CaptainMath(spyral.Scene):
                 n.animate(self.animation_y)
                 delta_iteration -= 50
         elif(gamestate =="tutorial"):
-            if(self.TutorialCount < 4):
+            if( self.TutorialCount == 1 and pos[0] >= 20 and pos[0] <= 267 and pos[1]<=782 and pos[1] >=700):
+                gamestate = "story"
+                print "gamestate = story"
+            elif(self.TutorialCount < 4):
                 self.TutorialCount += 1 
                 print "tutorial"
             elif(self.TutorialCount == 4):
