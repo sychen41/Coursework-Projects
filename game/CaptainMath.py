@@ -922,6 +922,7 @@ class CaptainMath(spyral.Scene):
         global playerLives
         global CorrectAnswers
         global isBlackholeSet
+        global CorrectAnswersList
         if(playerLives == 2):
           self.player.image = spyral.image.Image(filename =
           "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
@@ -947,6 +948,7 @@ class CaptainMath(spyral.Scene):
           self.AnswerCorrect = AnswerCorrect(self)
           self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
           self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
+          CorrectAnswersList.append(self.AnswerCorrect) #sean
           CorrectAnswers+=1
           if(CorrectAnswers == 8):
             ranRowNum = random.randint(0, 4)
@@ -1054,6 +1056,7 @@ class CaptainMath(spyral.Scene):
         global isEnemyDead
         global isBlackholeSet
         global CorrectAnswers
+        global CorrectAnswersList
         print "how many correct answers?? " , CorrectAnswers
 
         if gamestate == "StartScreen":
@@ -1077,6 +1080,8 @@ class CaptainMath(spyral.Scene):
                     self.player3.collide_BlackHolde(self.BlackHole)
                 #Killing all sprites in Scene
                 if(didCollideWithBlackHole == True):
+                    for item in CorrectAnswersList:
+                      item.kill()
                     self.killMathText()
                     self.player.kill()
                     self.Battery1.kill()
