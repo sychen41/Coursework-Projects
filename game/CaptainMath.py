@@ -610,6 +610,7 @@ class CaptainMath(spyral.Scene):
         timeStart = time.time()
         self.mX = 0 #mouse x coordinate
         self.mY = 0 #mouse y coordinate
+        self.TutorialCount = 1
         left = "left"
         right="right"
         up = "up"
@@ -646,8 +647,8 @@ class CaptainMath(spyral.Scene):
         if(gamestate == "StartScreen" and pos[0] >= 500 and pos[0] <= 700 and pos[1] >=340 and pos[1] <= 450 ):
 			#gamestate = "Levelselect"
             #print "gamestate = Levelselect"
-            gamestate = "story"
-            print "gamestate = story"
+            gamestate = "tutorial"
+            print "gamestate = tutorial"
 
 
             text_array = ["Captain Mathematica,", "comes from a distant",
@@ -668,14 +669,20 @@ class CaptainMath(spyral.Scene):
                 self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 18.0)
                 n.animate(self.animation_y)
                 delta_iteration -= 50
-
+        elif(gamestate =="tutorial"):
+            if(self.TutorialCount < 4):
+                self.TutorialCount += 1 
+                print "tutorial"
+            elif(self.TutorialCount == 4):
+                gamestate = "story"
+                print "gamestate = story"
         elif(gamestate == "story"):
             for i in self.text_objects:
                 i.kill()
             gamestate = "Levelselect"
             print "gamestate = Levelselect"
             self.arrow = Arrow(self)
-
+		
     def return_clicked(self):
 		global gamestate
 		if(gamestate == "Levelselect" and self.arrow.level <=4):
@@ -1057,7 +1064,7 @@ class CaptainMath(spyral.Scene):
         global isBlackholeSet
         global CorrectAnswers
         global CorrectAnswersList
-        print "how many correct answers?? " , CorrectAnswers
+        #print "how many correct answers?? " , CorrectAnswers
 
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
@@ -1126,6 +1133,15 @@ class CaptainMath(spyral.Scene):
                 gamestate = "Levelselect"
                 self.arrow = Arrow(self)
                 print "gamestate = Levelselect"
+        elif gamestate =="tutorial":
+            if self.TutorialCount == 1:
+                self.background = spyral.Image("images/tutorials/objectAndKeys.png")
+            if self.TutorialCount == 2:
+                self.background = spyral.Image("images/tutorials/tutAnswerSelection.png")
+            if self.TutorialCount == 3:
+                self.background = spyral.Image("images/tutorials/tutFF.png")
+            if self.TutorialCount == 4:
+                self.background = spyral.Image("images/tutorials/tutShooting.png")
         if(rowNum == ProwNum and colNum == PcolNum and
          isplayerDead == False and forceFieldOn == False
          and isEnemyDead == False):
