@@ -368,146 +368,76 @@ class Enemy(spyral.Sprite):
 class Spaceship(spyral.Sprite):
 
     def __init__(self, scene):
-
 		spyral.Sprite.__init__(self, scene)
-
-		self.image = spyral.image.Image(filename =
-    "images/spaceship/spaceshipRightmoving.png", size = None)
-
+		self.image = spyral.image.Image(filename ="images/spaceship/spaceshipRightmoving.png", size = None)
 		self.x = 0
-
 		self.y = HEIGHT/2
-
 		self.moving = False
-
 		spyral.event.register("director.update", self.update)
-
-
-
     def update(self, delta):
-
         if gamestate == "minigame":
-
             if self.x<=WIDTH -100:
-
                 self.x +=5
-
         else:
-
             self.x = WIDTH + 100
-
-
 
 class StoryText(spyral.Sprite):
     def __init__(self,scene, txt, y):
         spyral.Sprite.__init__(self, scene)
-
         font=spyral.font.Font("fonts/Starjedi.ttf",40,(255,255,0))
         text=txt
         self.image=font.render(text)
-
         self.anchor = "center"
-
         self.x = WIDTH/2
         self.y = y
 
-
-
 class Arrow(spyral.Sprite):
-
 	def __init__(self,scene):
-
 		spyral.Sprite.__init__(self, scene)
-
-		self.image = spyral.image.Image(filename =
-    "images/misc/left_red_arrow.png", size = None)
-
+		self.image = spyral.image.Image(filename ="images/misc/left_red_arrow.png", size = None)
 		self.x = -300
-
 		self.y = -300
-
 		self.level = 1
-
 		spyral.event.register("director.update", self.update)
-
 		spyral.event.register("input.keyboard.down.left", self.pre_level)
-
 		spyral.event.register("input.keyboard.up.left", self.stop)
-
 		spyral.event.register("input.keyboard.down.right", self.next_level)
-
 		spyral.event.register("input.keyboard.up.right", self.stop)
-
 		spyral.event.register("input.keyboard.down.s", self.select_level)
 
-
-
 	def select_level(self):
-
 		if self.level <=4:
-
 			gamestate = "fullLevels"
-
 			print "fullLevels"
 
 	def pre_level(self):
-
 		if self.level >= 2:
-
 		    self.level -=1
-
         print "next level"
-
 	def next_level(self):
-
 		if self.level <= 3:
-
 		    self.level +=1
-
         print "next level"
-
 	def stop(self):
-
 		self.level = self.level
-
 	def update(self):
-
 		if self.level ==1 and gamestate == "Levelselect":
-
 			self.x= 300
-
 			self.y= 610
-
 		elif self.level == 2 and gamestate == "Levelselect":
-
 			self.x = 300
-
 			self.y = 140
-
 		elif self.level == 3 and gamestate == "Levelselect":
-
-			self.image = spyral.image.Image(filename =
-      "images/misc/left_red_arrow.png", size = None)
-
+			self.image = spyral.image.Image(filename ="images/misc/left_red_arrow.png", size = None)
 			self.x = 700
-
 			self.y = 340
-
 		elif self.level == 4 and gamestate == "Levelselect":
-
-			self.image = spyral.image.Image(filename =
-      "images/misc/right_red_arrow.png", size = None)
-
+			self.image = spyral.image.Image(filename ="images/misc/right_red_arrow.png", size = None)
 			self.x = 730
-
 			self.y = 100
-
 		else:
-
 			self.x = WIDTH *2
-
 			self.y = HEIGHT *2
-
 class AnswerCorrect(spyral.Sprite):
     def __init__(self,scene):
         spyral.Sprite.__init__(self, scene)
@@ -515,272 +445,150 @@ class AnswerCorrect(spyral.Sprite):
         "images/feedback/correctSmaller.png", size = None)
         self.anchor = 'center'
 class Question(spyral.Sprite):
-
     def __init__(self,scene):
-
         spyral.Sprite.__init__(self, scene)
-
-
-
         self.x=00
-
         self.y=150
-
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
         self.question1 = "Ronnie has 10 dollar, \n the price of an apple is 2 dollar,how many apples she can buy ?"
         text=(self.question1+"____")
-
         self.image=font.render(text)
-
-
-
-
-
         self.x=0
-
         self.y=150
-
         self.done ='0'
-
         self.turn = 0
-
         self.correct = '0'
-
         self.a = 0
-
         self.b = 0
-
         self.answer = self.a + self.b
-
         self.in_answer=0
-
         self.dig_answer=0
         self.answer = 5
         self.lock = False
-
         self.win = 'False'
-
         spyral.event.register ("input.mouse.down.left",self.down_left)
-
         spyral.event.register ("input.keyboard.down.number_0",self.K0)
-
         spyral.event.register ('input.keyboard.down.number_1',self.K1)
-
         spyral.event.register ('input.keyboard.down.number_2',self.K2)
-
         spyral.event.register ('input.keyboard.down.number_3',self.K3)
-
         spyral.event.register ('input.keyboard.down.number_4',self.K4)
-
         spyral.event.register ('input.keyboard.down.number_5',self.K5)
-
         spyral.event.register ('input.keyboard.down.number_6',self.K6)
-
         spyral.event.register ('input.keyboard.down.number_7',self.K7)
-
         spyral.event.register ('input.keyboard.down.number_8',self.K8)
-
         spyral.event.register ('input.keyboard.down.number_9',self.K9)
-
         spyral.event.register ('input.keyboard.down.return',self.check_answer)
-
-
-
         time.sleep(0.1)
 
-
-
-
     def down_left(self, pos,button):
-
         if self.win == 'False':
-
             if(gamestate == 'minigame' ):
-
                 self.correct='0'
-
                 print "turn 1 question"
-
                 text=(self.question1+"____")
-
                 #text=("Nyasia always takes the same route when she walks her dog. First, she walks 7 blocks to the park. Then she walks 9 blocks to the elementary school. Finally, she walks12 blocks to get back home. Nyasia walks her dog 2 times each day. How many blocks does Nyasia's dog walk each day?")
-
-
-
                 font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
                 self.image=font.render(text)
-
-
-
-
-
-
-
         else:
-
             text=("CONGRATULATION!! " + self.win + "  WIN!!")
-
             font=spyral.font.Font("fonts/white.ttf",50,(0,255,255))
-
             self.image=font.render(text)
-
-
-
     def check_answer(self):
 	time.sleep(0.1)
         if self.in_answer == self.answer and gamestate == "minigame" and self.lock:
-
             self.correct = '1'
-
             text=(self.question1 + str(self.in_answer) + " CORRECT!!!")
-
             font=spyral.font.Font("fonts/white.ttf",30,(0,255,0))
-
             self.image=spyral.image.Image(filename = "images/feedback/Correct.png", size = None)
             self.x = 400
-
             self.in_answer=0
-
-
-
         elif self.in_answer != self.answer and gamestate == "minigame" and self.lock:
-
             self.correct = '0'
-
             text=(self.question1 + str(self.in_answer) +  " INCORRECT!!!")
-
             font=spyral.font.Font("fonts/white.ttf",30,(255,0,0))
-
             self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
             self.x = 400
-
             self.in_answer=0
-
-
-
-
-
     def K0(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 0
-
         text=(self.question1 + str(self.in_answer))
-
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
-
         self.image=font.render(text)
-
     def K1(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 1
-
         text=(self.question1 + str(self.in_answer))
-
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
-
     def K2(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 2
-
         text=(self.question1 + str(self.in_answer))
-
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
-
     def K3(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 3
-
         text=(self.question1 + str(self.in_answer))
         self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
         self.image=font.render(text)
 
     def K4(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 4
-
         text=(self.question1 + str(self.in_answer))
-
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
-
     def K5(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 5
-
         text=(self.question1 + str(self.in_answer))
-
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.lock = True
         self.image=font.render(text)
-
     def K6(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 6
-
         text=(self.question1 + str(self.in_answer))
         self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
         self.image=font.render(text)
-
     def K7(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 7
-
         text=(self.question1 + str(self.in_answer))
         self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
         self.image=font.render(text)
-
     def K8(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 8
-
         text=(self.question1 + str(self.in_answer))
         self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
         self.image=font.render(text)
-
     def K9(self):
         self.x = 0
         self.dig_answer = self.dig_answer+1
-
         self.in_answer = self.in_answer*10 + 9
-
         text=(self.question1 + str(self.in_answer))
         self.lock = True
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-
         self.image=font.render(text)
 
 class BlackHole(spyral.Sprite):
@@ -994,9 +802,7 @@ class CaptainMath(spyral.Scene):
     def space_clicked(self):
         global isface
         global laserCount
-
         if gamestate == "fullLevels":
-
 			if(laserCount == 0):
 				pygame.mixer.init()
 				noAmmo = pygame.mixer.Sound("sounds/emptyGun.wav")
@@ -1006,9 +812,6 @@ class CaptainMath(spyral.Scene):
 			pygame.mixer.init()
 			sounda = pygame.mixer.Sound("sounds/lasershot.wav")
 			sounda.play()
-
-
-
 			if(isface == "right" and forceFieldOn == False and gamestate == "fullLevels"):
 				if(playerLives == 2):
 					self.player.image = spyral.image.Image(filename =
