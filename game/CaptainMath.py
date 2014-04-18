@@ -194,6 +194,8 @@ class Player(spyral.Sprite):
     def update(self, delta):
         global ProwNum
         global PcolNum
+        global gamestate
+        global isBlackholeSet
         if (BoardStatus[ProwNum][PcolNum] == -1 and isface == "right"):
             if (PcolNum != 5):
                     PcolNum-=1
