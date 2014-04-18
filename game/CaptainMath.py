@@ -41,6 +41,7 @@ playerLives = 2
 answers = [None]*30
 Question = 0
 CorrectAnswersList = list()
+WrongAnswersList = list()
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -186,7 +187,7 @@ class Player(spyral.Sprite):
         if self.collide_sprite(Sprite):
             print "Collided with Black hole"
             didCollideWithBlackHole = True
-            gamestate = "minigame"
+            gamestate = "levelCleared"
         #pygame.mixer.init()
         #asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
         #asteroidExplode.play()
@@ -957,6 +958,7 @@ class CaptainMath(spyral.Scene):
         global CorrectAnswers
         global isBlackholeSet
         global CorrectAnswersList
+        global WrongAnswersList
         if(playerLives == 2):
           self.player.image = spyral.image.Image(filename =
           "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
@@ -997,6 +999,7 @@ class CaptainMath(spyral.Scene):
             #print "Black Hole is set"
         else:
           self.AnswerCorrect = AnswerCorrect(self)
+          WrongAnswersList.append(self.AnswerCorrect)
           self.AnswerCorrect.image = spyral.image.Image(filename =
            "images/feedback/tombstone.png", size = None)
           self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
@@ -1112,12 +1115,19 @@ class CaptainMath(spyral.Scene):
                     self.player2.collide_BlackHolde(self.BlackHole)
                 elif(playerLives == 0):
                     self.player3.collide_BlackHolde(self.BlackHole)
+                for item in CorrectAnswersList:
+                    item.kill()
+                for item in WrongAnswersList:
+                	item.kill()
                 #Killing all sprites in Scene
                 if(didCollideWithBlackHole == True):
-                    for item in CorrectAnswersList:
-                      item.kill()
                     self.killMathText()
-                    self.player.kill()
+                    if(playerLives == 2):
+                    	self.player.kill()
+                    if(playerLives == 1):
+                    	self.player2.kill()
+                    if(playerLives == 0):
+                    	self.player3.kill()
                     self.Battery1.kill()
                     self.Battery2.kill()
                     self.Battery3.kill()
@@ -1125,6 +1135,10 @@ class CaptainMath(spyral.Scene):
                     self.spaceShipLife2.kill()
                     self.BlackHole.kill()
                     self.enemy1.kill()
+                    pygame.mixer.stop()
+                    pygame.mixer.init()
+                    levelClearedTheme = pygame.mixer.Sound("sounds/levelCleared.wav")
+                    levelClearedTheme.play()
 		self.killAsteroids()
                 self.killMathText()
             self.background = spyral.Image("images/fullLevels/planet2_Board.png")
@@ -1149,7 +1163,10 @@ class CaptainMath(spyral.Scene):
 			global SSTheme
 			SSTheme.stop()
 			self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
-
+        elif gamestate == "levelCleared":
+            global SSTheme
+            SSTheme.stop()
+            self.background = spyral.Image("images/entireScenes/levelClearedPlanetDestruction.png")
         #story screen
         elif gamestate == "story":
             self.background = spyral.Image("images/Backgrounds/story_bg.jpg")
