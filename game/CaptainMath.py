@@ -723,7 +723,7 @@ class CaptainMath(spyral.Scene):
             print "gamestate = Levelselect"
             self.arrow = Arrow(self)
         elif(gamestate == "levelCleared"):
-	    gamestate = "minigame"
+            gamestate = "minigame"
             self.spaceship.x = 0
             self.spaceship.y = HEIGHT/2
             self.question.x = 0
