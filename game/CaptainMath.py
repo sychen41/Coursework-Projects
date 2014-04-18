@@ -43,6 +43,7 @@ answers = [None]*30
 Question = 0
 CorrectAnswersList = list()
 WrongAnswersList = list()
+needSpaceShipSound = False
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -387,10 +388,19 @@ class Spaceship(spyral.Sprite):
 		self.x = 0
 		self.y = HEIGHT/2
 		self.moving = False
+		global needSpaceShipSound
 		spyral.event.register("director.update", self.update)
     def update(self, delta):
+    	global needSpaceShipSound
         if gamestate == "minigame":
             if self.x<=WIDTH -100:
+                if(needSpaceShipSound == True):
+                    pygame.mixer.init()
+                    SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
+                    SSF.play()
+                    SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
+                    SST.play()
+                    needSpaceShipSound = False
                 self.x +=5
         else:
             self.x = WIDTH + 100
@@ -657,6 +667,7 @@ class CaptainMath(spyral.Scene):
         self.mY = pos[1]
         print pos, button
         global gamestate
+        global needSpaceShipSound
         if(gamestate == "StartScreen" and pos[0] >= 500 and pos[0] <= 700 and pos[1] >=340 and pos[1] <= 450 ):
 			#gamestate = "Levelselect"
             #print "gamestate = Levelselect"
@@ -722,31 +733,39 @@ class CaptainMath(spyral.Scene):
             gamestate = "Levelselect"
             print "gamestate = Levelselect"
             self.arrow = Arrow(self)
+<<<<<<< HEAD
         #elif(gamestate == "levelCleared"):
 	    #gamestate = "minigame"
          #   self.spaceship.x = 0
           #  self.spaceship.y = HEIGHT/2
            # self.question.x = 0
+=======
+        elif(gamestate == "levelCleared"):
+	    gamestate = "minigame"
+	    needSpaceShipSound = True
+            self.spaceship.x = 0
+            self.spaceship.y = HEIGHT/2
+            self.question.x = 0
+>>>>>>> Boyang-test1
 		    
     def return_clicked(self):
 		global gamestate
+		global needSpaceShipSound
 		if(gamestate == "Levelselect" and self.arrow.level <=4):
 			self.question = Question(self)
                         print "gamestate = minigame"
                         self.arrow.level = 5
 			self.spaceship = Spaceship(self)
                         gamestate = "minigame"
-
-			pygame.mixer.init()
-			SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
-			SSF.play()
+                        needSpaceShipSound = True
 			SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
 			SST.play()
 		elif(gamestate == "minigame" and self.question.correct == '1'):
 			global SST
 			global SSF
-			SSF.stop()
-			SST.stop()
+			#SSF.stop()
+			pygame.mixer.stop()
+			#SST.stop()
 			gamestate = "fullLevels"
                         self.background = spyral.Image("images/fullLevels/planet2_Board.png")
 			pygame.mixer.init()
