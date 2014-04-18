@@ -11,6 +11,7 @@ from ourmath2 import generatesMultiplesProblems
 WIDTH = 1200
 HEIGHT = 800
 BG_COLOR = (0,0,0)
+GOLDEN = (218,165,32)
 WHITE = (255, 255, 255)
 SIZE = (WIDTH, HEIGHT)
 isface = "right"
@@ -267,8 +268,6 @@ class MathText(spyral.Sprite):
         self.x = col*w + WIDTH/40 + origin_x
         self.y = row*h + HEIGHT/40 + origin_y
         font = spyral.Font(None, WIDTH/20)
-        GOLDEN = (218,165,32)
-        WHITE = (255, 255, 255)
         if index == 30:
             self.x = WIDTH*7/20
             self.y = HEIGHT/12
@@ -390,11 +389,11 @@ class Spaceship(spyral.Sprite):
 		spyral.event.register("director.update", self.update)
     def update(self, delta):
         if gamestate == "minigame":
-	    pygame.mixer.init()
-	    SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
-	    SSF.play()
+            pygame.mixer.init()
+            SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
+            SSF.play()
             SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
-	    SST.play()
+            SST.play()
             if self.x<=WIDTH -100:
                 self.x +=5
         else:
@@ -616,6 +615,13 @@ class BlackHole(spyral.Sprite):
         self.image = spyral.image.Image(filename = "images/misc/nextLevelPortal.png", size = None)
         self.anchor = 'center'
 
+class TempText(spyral.Sprite):
+    def __init__(self,scene):
+        spyral.Sprite.__init__(self, scene)
+        font = spyral.Font(None, WIDTH/20)
+        self.image = font.render("click Enter to continue! ", GOLDEN)
+        self.anchor = 'center'
+
 class CaptainMath(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
@@ -727,141 +733,148 @@ class CaptainMath(spyral.Scene):
             gamestate = "Levelselect"
             print "gamestate = Levelselect"
             self.arrow = Arrow(self)
+        
+		    
+    def return_clicked(self):
+        global gamestate
+        if(gamestate == "Levelselect" and self.arrow.level <=4):
+            self.question = Question(self)
+            print "gamestate = minigame"
+            self.arrow.level = 5
+            self.spaceship = Spaceship(self)
+            gamestate = "minigame"
+
+            pygame.mixer.init()
+            #SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
+            #SSF.play()
+            #SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
+            #SST.play()
+        elif(gamestate == "minigame"):# and self.question.correct == '1'):
+            global SST
+            global SSF
+            #SSF.stop()
+            #SST.stop()
+            pygame.mixer.stop()
+            gamestate = "fullLevels"
+            global isBlackholeSet
+            global didCollideWithBlackHole
+            isBlackholeSet = False
+            didCollideWithBlackHole = False
+            self.background = spyral.Image("images/fullLevels/planet2_Board.png")
+            pygame.mixer.init()
+            MainTheme = pygame.mixer.Sound("sounds/mainTheme.wav")
+            MainTheme.play()
+            self.question.x = WIDTH+1
+            self.player = Player(self)
+            #self.player.x = 155
+            #self.player.y = 100
+            self.Battery1 = Battery(self)
+            self.Battery1.x = 0
+            self.Battery1.y = 10
+            self.Battery2 = Battery(self)
+            self.Battery2.x = self.Battery1.width + 10
+            self.Battery2.y = 10
+            self.Battery3 = Battery(self)
+            self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
+            self.Battery3.y = 10
+            self.spaceShipLife1 = spaceShipLife(self)
+            self.spaceShipLife1.x = 1200 - self.spaceShipLife1.width
+            self.spaceShipLife1.y = 0
+            self.spaceShipLife2 = spaceShipLife(self)
+            self.spaceShipLife2.x = 1200 - (self.spaceShipLife1.width*2)
+            self.spaceShipLife2.y = 0
+            #generate math problem (27 answers needed, because there are 3 asteroids)
+            problem = generatesMultiplesProblems(27, 2)
+
+            # The following block makes right and wrong answers and asteroids
+            # randomly displayed on the board.
+            # init array to contain indexes of right answers
+            indexOfRightAnswers = [None]*int(problem.quant_right)
+            # init array to contain random indexes of right answers and three asteroids
+            len1 = int(problem.quant_right)+3 # length of randomIndexes
+            randomIndexes = [None]*len1
+            primeNums = [5, 7, 11, 13, 17, 19, 23, 29]
+            # randomly pick one prime number from the primeNum
+            randomNum = random.randint(0, 7)
+            current = primeNums[randomNum] # some start value
+            # fill the randomIndexes array with non-repeat numbers, range is 0-28
+            modulo = 29 # prime
+            incrementor = 17180131327 # relative prime
+            for i in range(0, len1):
+                current = (current + incrementor) % modulo
+                randomIndexes[i] = current
+            # fill indexOfAsteroid with the last 3 numbers in randomIndexes
+            indexOfAsteroid = [randomIndexes[len1-1],randomIndexes[len1-2],randomIndexes[len1-3]]
+            # fill indexOfRightAnswers with rest numbers in randomIndexes
+            for i in range(0, len(indexOfRightAnswers)):
+                indexOfRightAnswers[i] = randomIndexes[i]
+            # both array HAVE TO BE ASCENDING order
+            indexOfRightAnswers.sort()
+            indexOfAsteroid.sort()
+            # generate the array: answers
+            # when index is in indexOfRightAnswers, assign the location with a RIGHT answer
+            # when index is in indexOfAsteroid, assign the location with -1
+            # otherwise, assgin the location with a WRONG answer
+            j=0
+            k=0
+            r=0
+            w=0
+            global answers
+            for i in range(0, 30):
+                if i == indexOfRightAnswers[j]:
+                    answers[i] = problem.right_answers[r]
+                    #print " " + str(i) + " right"
+                    if j < problem.quant_right-1:
+                        j+=1
+                    r+=1
+                elif i == indexOfAsteroid[k]:
+                    answers[i] = -1 # -1 represent an asteroid
+                    if k < len(indexOfAsteroid)-1:
+                        k+=1
+                else:
+                    answers[i] = problem.wrong_answers[w]
+                    if w < problem.quant_wrong-1:
+                        w+=1
+
+            # display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
+            global Question
+            Question = problem.question
+            global Irow
+            global Icol
+            Irow = 0
+            Icol = 0
+            self.createMathText()
+            #for x in range(0, 31):
+                #self.mathText = MathText(self, x, answers, problem.question)
+                #mathTextGroup.add(self.mathText)
+            # fill the global BoardStatus with answers: -1 for asteroids and -2 for right answers
+            global BoardStatus
+            a = 0
+            b = 0
+            y = 0
+            for x in range(0, 30):
+                if (x == indexOfRightAnswers[y]):
+                    BoardStatus[a][b] = -2
+                    if (y < len(indexOfRightAnswers)-1):
+                        y+=1
+                else:
+                    BoardStatus[a][b] = answers[x]
+                b+=1
+                if (b==6):
+                    b=0
+                    a+=1
+            # render asteroids
+            self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
+            self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
+            self.asteroid3 = Asteroid(self, indexOfAsteroid[2])
+            self.enemy1 = Enemy(self)
         elif(gamestate == "levelCleared"):
             gamestate = "minigame"
             self.spaceship.x = 0
             self.spaceship.y = HEIGHT/2
             self.question.x = 0
-		    
-    def return_clicked(self):
-		global gamestate
-		if(gamestate == "Levelselect" and self.arrow.level <=4):
-			self.question = Question(self)
-                        print "gamestate = minigame"
-                        self.arrow.level = 5
-			self.spaceship = Spaceship(self)
-                        gamestate = "minigame"
+            self.TempText1 = TempText(self)
 
-			pygame.mixer.init()
-			#SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
-			#SSF.play()
-			#SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
-			#SST.play()
-		elif(gamestate == "minigame" and self.question.correct == '1'):
-			global SST
-			global SSF
-			#SSF.stop()
-			#SST.stop()
-                        pygame.mixer.stop()
-			gamestate = "fullLevels"
-			pygame.mixer.init()
-			MainTheme = pygame.mixer.Sound("sounds/mainTheme.wav")
-			MainTheme.play()
-			self.question.x = WIDTH+1
-			self.player = Player(self)
-			#self.player.x = 155
-			#self.player.y = 100
-			self.Battery1 = Battery(self)
-			self.Battery1.x = 0
-			self.Battery1.y = 10
-			self.Battery2 = Battery(self)
-			self.Battery2.x = self.Battery1.width + 10
-			self.Battery2.y = 10
-			self.Battery3 = Battery(self)
-			self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
-			self.Battery3.y = 10
-			self.spaceShipLife1 = spaceShipLife(self)
-			self.spaceShipLife1.x = 1200 - self.spaceShipLife1.width
-			self.spaceShipLife1.y = 0
-			self.spaceShipLife2 = spaceShipLife(self)
-			self.spaceShipLife2.x = 1200 - (self.spaceShipLife1.width*2)
-			self.spaceShipLife2.y = 0
-			 #generate math problem (27 answers needed, because there are 3 asteroids)
-			problem = generatesMultiplesProblems(27, 2)
-
-			# The following block makes right and wrong answers and asteroids
-			# randomly displayed on the board.
-
-			# init array to contain indexes of right answers
-			indexOfRightAnswers = [None]*int(problem.quant_right)
-			# init array to contain random indexes of right answers and three asteroids
-			len1 = int(problem.quant_right)+3 # length of randomIndexes
-			randomIndexes = [None]*len1
-			primeNums = [5, 7, 11, 13, 17, 19, 23, 29]
-			# randomly pick one prime number from the primeNum
-			randomNum = random.randint(0, 7)
-			current = primeNums[randomNum] # some start value
-			# fill the randomIndexes array with non-repeat numbers, range is 0-28
-			modulo = 29 # prime
-			incrementor = 17180131327 # relative prime
-			for i in range(0, len1):
-				current = (current + incrementor) % modulo
-				randomIndexes[i] = current
-			# fill indexOfAsteroid with the last 3 numbers in randomIndexes
-			indexOfAsteroid = [randomIndexes[len1-1],randomIndexes[len1-2],randomIndexes[len1-3]]
-			# fill indexOfRightAnswers with rest numbers in randomIndexes
-			for i in range(0, len(indexOfRightAnswers)):
-				indexOfRightAnswers[i] = randomIndexes[i]
-			# both array HAVE TO BE ASCENDING order
-			indexOfRightAnswers.sort()
-			indexOfAsteroid.sort()
-			# generate the array: answers
-			# when index is in indexOfRightAnswers, assign the location with a RIGHT answer
-			# when index is in indexOfAsteroid, assign the location with -1
-			# otherwise, assgin the location with a WRONG answer
-			j=0
-			k=0
-			r=0
-			w=0
-			global answers
-			for i in range(0, 30):
-			    if i == indexOfRightAnswers[j]:
-			        answers[i] = problem.right_answers[r]
-				#print " " + str(i) + " right"
-			        if j < problem.quant_right-1:
-				    j+=1
-				r+=1
-			    elif i == indexOfAsteroid[k]:
-				answers[i] = -1 # -1 represent an asteroid
-			        if k < len(indexOfAsteroid)-1:
-				    k+=1
-			    else:
-				answers[i] = problem.wrong_answers[w]
-				if w < problem.quant_wrong-1:
-				    w+=1
-
-			# display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
-			global Question
-			Question = problem.question
-            		global Irow
-            		global Icol
-                        Irow = 0
-            	        Icol = 0
-			self.createMathText()
-			#for x in range(0, 31):
-				#self.mathText = MathText(self, x, answers, problem.question)
-				#mathTextGroup.add(self.mathText)
-            		# fill the global BoardStatus with answers: -1 for asteroids and -2 for right answers
-            		global BoardStatus
-            		a = 0
-            		b = 0
-			y = 0
-            		for x in range(0, 30):
-				if (x == indexOfRightAnswers[y]):
-                			BoardStatus[a][b] = -2
-					if (y < len(indexOfRightAnswers)-1):
-						y+=1
-                		else:
-					BoardStatus[a][b] = answers[x]
-                		b+=1
-                		if (b==6):
-                    			b=0
-                    			a+=1
-			# render asteroids
-			self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
-			self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
-			self.asteroid3 = Asteroid(self, indexOfAsteroid[2])
-			self.enemy1 = Enemy(self)
     def space_clicked(self):
         global isface
         global laserCount
@@ -1161,6 +1174,7 @@ class CaptainMath(spyral.Scene):
                 	item.kill()
                 #Killing all sprites in Scene
                 if(didCollideWithBlackHole == True):
+                    gamestate = "levelCleared"
                     self.killMathText()
                     self.killAsteroids()
                     if(playerLives == 2):
@@ -1180,7 +1194,7 @@ class CaptainMath(spyral.Scene):
                     pygame.mixer.init()
                     levelClearedTheme = pygame.mixer.Sound("sounds/levelCleared.wav")
                     levelClearedTheme.play()
-            self.background = spyral.Image("images/fullLevels/planet2_Board.png")
+            #self.background = spyral.Image("images/fullLevels/planet2_Board.png")
             if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
                 forceFieldOn = False
                 pygame.mixer.init()
