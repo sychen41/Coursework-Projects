@@ -31,6 +31,7 @@ ProwNum = 0
 PcolNum = 0
 isplayerDead = False
 isEnemyDead = False
+EnemyDeadTime = 0
 isBlackholeSet = False
 CorrectAnswers = 0
 didCollideWithBlackHole = False
@@ -65,6 +66,8 @@ class Laser(spyral.Sprite):
 	    asteroidExplode.play()
     def collide_enemy(self, Sprite):
         global isEnemyDead
+        global EnemyDeadTime
+        EnemyDeadTime = time.time()
         if self.collide_sprite(Sprite):
             Sprite.kill()
         pygame.mixer.init()
@@ -326,6 +329,8 @@ class Enemy(spyral.Sprite):
         #spyral.event.register("pong_score", self._reset)
         spyral.event.register("director.update", self.update)
         self.anchor = 'center'
+        global isEnemyDead
+        isEnemyDead = False
 
     def update(self):
 	global enemyCollided
@@ -794,24 +799,28 @@ class CaptainMath(spyral.Scene):
 			w=0
 			global answers
 			for i in range(0, 30):
-				if i == indexOfRightAnswers[j]:
-					answers[i] = problem.right_answers[r]
-					#print " " + str(i) + " right"
-					if j < problem.quant_right-1:
-						j+=1
-					r+=1
-				elif i == indexOfAsteroid[k]:
-					answers[i] = -1 # -1 represent an asteroid
-					if k < len(indexOfAsteroid)-1:
-						k+=1
-				else:
-					answers[i] = problem.wrong_answers[w]
-					if w < problem.quant_wrong-1:
-						w+=1
+			    if i == indexOfRightAnswers[j]:
+			        answers[i] = problem.right_answers[r]
+				#print " " + str(i) + " right"
+			        if j < problem.quant_right-1:
+				    j+=1
+				r+=1
+			    elif i == indexOfAsteroid[k]:
+				answers[i] = -1 # -1 represent an asteroid
+			        if k < len(indexOfAsteroid)-1:
+				    k+=1
+			    else:
+				answers[i] = problem.wrong_answers[w]
+				if w < problem.quant_wrong-1:
+				    w+=1
 
 			# display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
 			global Question
 			Question = problem.question
+            		global Irow
+            		global Icol
+                        Irow = 0
+            	        Icol = 0
 			self.createMathText()
 			#for x in range(0, 31):
 				#self.mathText = MathText(self, x, answers, problem.question)
@@ -1112,6 +1121,8 @@ class CaptainMath(spyral.Scene):
         elif gamestate == "fullLevels":
             print "is the black hole set?? ", isBlackholeSet
             global didCollideWithBlackHole
+            if (isEnemyDead == True and time.time() - EnemyDeadTime > 10):
+                self.enemy1 = Enemy(self)
             if(isBlackholeSet == True):
                 if(playerLives == 2):
                     self.player.collide_BlackHolde(self.BlackHole)
