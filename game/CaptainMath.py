@@ -722,11 +722,11 @@ class CaptainMath(spyral.Scene):
             gamestate = "Levelselect"
             print "gamestate = Levelselect"
             self.arrow = Arrow(self)
-        #elif(gamestate == "levelCleared"):
-	    #gamestate = "minigame"
-         #   self.spaceship.x = 0
-          #  self.spaceship.y = HEIGHT/2
-           # self.question.x = 0
+        elif(gamestate == "levelCleared"):
+            gamestate = "minigame"
+            self.spaceship.x = 0
+            self.spaceship.y = HEIGHT/2
+            self.question.x = 0
 		    
     def return_clicked(self):
 		global gamestate
@@ -748,7 +748,6 @@ class CaptainMath(spyral.Scene):
 			SSF.stop()
 			SST.stop()
 			gamestate = "fullLevels"
-                        self.background = spyral.Image("images/fullLevels/planet2_Board.png")
 			pygame.mixer.init()
 			MainTheme = pygame.mixer.Sound("sounds/mainTheme.wav")
 			MainTheme.play()
@@ -1156,7 +1155,6 @@ class CaptainMath(spyral.Scene):
                 	item.kill()
                 #Killing all sprites in Scene
                 if(didCollideWithBlackHole == True):
-                    gamestate = "minigame"
                     self.killMathText()
                     self.killAsteroids()
                     if(playerLives == 2):
@@ -1176,7 +1174,7 @@ class CaptainMath(spyral.Scene):
                     pygame.mixer.init()
                     levelClearedTheme = pygame.mixer.Sound("sounds/levelCleared.wav")
                     levelClearedTheme.play()
-            #self.background = spyral.Image("images/fullLevels/planet2_Board.png")
+            self.background = spyral.Image("images/fullLevels/planet2_Board.png")
             if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
                 forceFieldOn = False
                 pygame.mixer.init()
