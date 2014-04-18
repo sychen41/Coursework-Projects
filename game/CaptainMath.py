@@ -456,7 +456,7 @@ class AnswerCorrect(spyral.Sprite):
 class Question(spyral.Sprite):
     def __init__(self,scene):
         spyral.Sprite.__init__(self, scene)
-        self.x=00
+        self.x=0
         self.y=150
         font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
         self.question1 = "Ronnie has 10 dollar, \n the price of an apple is 2 dollar,how many apples she can buy ?"
@@ -717,7 +717,12 @@ class CaptainMath(spyral.Scene):
             gamestate = "Levelselect"
             print "gamestate = Levelselect"
             self.arrow = Arrow(self)
-		
+        elif(gamestate == "levelCleared"):
+	    gamestate = "minigame"
+            self.spaceship.x = 0
+            self.spaceship.y = HEIGHT/2
+            self.question.x = 0
+		    
     def return_clicked(self):
 		global gamestate
 		if(gamestate == "Levelselect" and self.arrow.level <=4):
