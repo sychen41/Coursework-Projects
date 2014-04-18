@@ -44,6 +44,7 @@ answers = [None]*30
 Question = 0
 CorrectAnswersList = list()
 WrongAnswersList = list()
+isSpaceShipSoundNeeded = False
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -381,6 +382,7 @@ class Enemy(spyral.Sprite):
 class Spaceship(spyral.Sprite):
 
     def __init__(self, scene):
+		global isSpaceShipSoundNeeded
 		spyral.Sprite.__init__(self, scene)
 		self.image = spyral.image.Image(filename ="images/spaceship/spaceshipRightmoving.png", size = None)
 		self.x = 0
@@ -388,12 +390,15 @@ class Spaceship(spyral.Sprite):
 		self.moving = False
 		spyral.event.register("director.update", self.update)
     def update(self, delta):
+    	global isSpaceShipSoundNeeded
         if gamestate == "minigame":
-            pygame.mixer.init()
-            SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
-            SSF.play()
-            SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
-            SST.play()
+            if(isSpaceShipSoundNeeded == True):
+                pygame.mixer.init()
+                SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
+                SSF.play()
+                SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
+                SST.play()
+                isSpaceShipSoundNeeded = False
             if self.x<=WIDTH -100:
                 self.x +=5
         else:
@@ -737,14 +742,15 @@ class CaptainMath(spyral.Scene):
 		    
     def return_clicked(self):
         global gamestate
+        global isSpaceShipSoundNeeded
         if(gamestate == "Levelselect" and self.arrow.level <=4):
             self.question = Question(self)
             print "gamestate = minigame"
             self.arrow.level = 5
             self.spaceship = Spaceship(self)
             gamestate = "minigame"
-
-            pygame.mixer.init()
+            isSpaceShipSoundNeeded = True
+            #pygame.mixer.init()
             #SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
             #SSF.play()
             #SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
@@ -752,6 +758,7 @@ class CaptainMath(spyral.Scene):
         elif(gamestate == "minigame"):# and self.question.correct == '1'):
             global SST
             global SSF
+            global isSpaceShipSoundNeeded
             #SSF.stop()
             #SST.stop()
             pygame.mixer.stop()
@@ -870,6 +877,7 @@ class CaptainMath(spyral.Scene):
             self.enemy1 = Enemy(self)
         elif(gamestate == "levelCleared"):
             gamestate = "minigame"
+            isSpaceShipSoundNeeded = True
             self.spaceship.x = 0
             self.spaceship.y = HEIGHT/2
             self.question.x = 0
