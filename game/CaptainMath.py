@@ -990,7 +990,9 @@ class CaptainMath(spyral.Scene):
             ranRowNum = random.randint(0, 4)
             ranColNum = random.randint(0, 5)
             self.BlackHole = BlackHole(self)
-            while(BoardStatus[ranRowNum][ranColNum] == -2 or BoardStatus[ranRowNum][ranColNum] == -1):
+            while(BoardStatus[ranRowNum][ranColNum] == -2 or 
+                BoardStatus[ranRowNum][ranColNum] == -1 or 
+                ranRowNum == ProwNum or ranColNum == PcolNum):
                 ranRowNum = random.randint(0, 4)
                 ranColNum = random.randint(0, 5)
             self.BlackHole.x = BoardXcoord[ranRowNum][ranColNum]
