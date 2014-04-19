@@ -777,12 +777,15 @@ class CaptainMath(spyral.Scene):
                 gamestate = "Levelselect"
                 currentLevel = 1
                 currentPlanet+=1
+                if (currentPlanet == 5):
+                    gamestate = "end"
             #isSpaceShipSoundNeeded = True
             #self.spaceship.x = 0
             #self.spaceship.y = HEIGHT/2
             #self.question.x = 0
             #self.TempText1 = TempText(self)
-        
+        elif (gamestate == "end"):
+            self.tempText2 = TempText(self, "YOU SAVED THE uNIVERSE!!", 400)
 		    
     #def return_clicked(self):
         
@@ -791,6 +794,7 @@ class CaptainMath(spyral.Scene):
             global gamestate
             global isSpaceShipSoundNeeded
             print "currentLevel: " + str(currentLevel)
+            print "currentPlanet: " + str(currentPlanet)
             for i in self.tempTexts:
                 i.kill()
             self.spaceship.kill()
@@ -1219,8 +1223,8 @@ class CaptainMath(spyral.Scene):
                 self.background = spyral.Image("images/preMadeImages/goingToAlgebraXPlanet.png")
             elif (currentPlanet == 4):
                 self.background = spyral.Image("images/preMadeImages/goingToZardashPlanet.png")
-            else:
-                self.background = spyral.Image("images/preMadeImages/AwesomeBossFight.png")
+        elif gamestate == "end":
+            self.background = spyral.Image("images/preMadeImages/AwesomeBossFight.png")
         elif gamestate == "fullLevels":
             #print "is the black hole set?? ", isBlackholeSet
             global didCollideWithBlackHole
