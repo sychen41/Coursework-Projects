@@ -484,18 +484,23 @@ class Question(spyral.Sprite):
         self.a = 0
         self.b = 0
         self.answer = self.a + self.b
-        self.in_answer=0
-        self.dig_answer=0
+        self.in_answer = 0
+        self.in_answer_denominator = 0
         if randomMiniGame == 1:
             self.answer = 12
+            self.answer_denominator = 0
         elif randomMiniGame == 2:
             self.answer = 1413
+            self.answer_denominator = 0
         elif randomMiniGame == 3:
             self.answer = 3
+            self.answer_denominator = 0
         elif randomMiniGame == 4:
             self.answer = 5
+            self.answer_denominator = 8
         self.lock = False
         self.win = 'False'
+        self.hasSlash = False
         spyral.event.register ("input.keyboard.down.number_0",self.K0)
         spyral.event.register ('input.keyboard.down.number_1',self.K1)
         spyral.event.register ('input.keyboard.down.number_2',self.K2)
@@ -506,11 +511,12 @@ class Question(spyral.Sprite):
         spyral.event.register ('input.keyboard.down.number_7',self.K7)
         spyral.event.register ('input.keyboard.down.number_8',self.K8)
         spyral.event.register ('input.keyboard.down.number_9',self.K9)
+        spyral.event.register ('input.keyboard.down.slash',self.slash)
         spyral.event.register("input.keyboard.down.return", self.check_answer)
 
  
     def check_answer(self):
-        if self.in_answer == self.answer and gamestate == "minigame" and self.lock:
+        if self.in_answer == self.answer and self.in_answer_denominator == self.answer_denominator and gamestate == "minigame" and self.lock:
             global gamestate
             gamestate = "maingame"
             self.x=300
@@ -526,75 +532,112 @@ class Question(spyral.Sprite):
             self.correct = '0'
             self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
             self.in_answer=0
+    def slash(self):
+        self.hasSlash = True
+        self.in_answer = self.in_answer
+        text=("Your Answer: " + str(self.in_answer) +"/" + "  Press ENTER to check")
+        font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
+        self.lock = True
+        self.image=font.render(text)
     def K0(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 0
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+0
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 0
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
         self.lock = True
         self.image=font.render(text)
     def K1(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 1
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+1
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 1
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
         self.lock = True
         self.image=font.render(text)
     def K2(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 2
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+2
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 2
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
         self.lock = True
         self.image=font.render(text)
     def K3(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 3
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
-        self.lock = True
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+3
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 8
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
+        self.lock = True
         self.image=font.render(text)
     def K4(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 4
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+4
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 4
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
         self.lock = True
         self.image=font.render(text)
     def K5(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 5
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+5
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 5
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
         self.lock = True
         self.image=font.render(text)
     def K6(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 6
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
-        self.lock = True
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+6
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 6
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
+        self.lock = True
         self.image=font.render(text)
     def K7(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 7
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
-        self.lock = True
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+7
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 7
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
+        self.lock = True
         self.image=font.render(text)
     def K8(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 8
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
-        self.lock = True
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+8
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 8
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
+        self.lock = True
         self.image=font.render(text)
     def K9(self):
-        self.dig_answer = self.dig_answer+1
-        self.in_answer = self.in_answer*10 + 9
-        text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
-        self.lock = True
+        if self.hasSlash:
+            self.in_answer_denominator = self.in_answer_denominator*10+9
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = self.in_answer*10 + 9
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
+        self.lock = True
         self.image=font.render(text)
 
 class BlackHole(spyral.Sprite):
@@ -739,7 +782,7 @@ class CaptainMath(spyral.Scene):
             print "gamestate = Levelselect"
             #self.arrow = Arrow(self)
         elif(gamestate == "Levelselect"):# and self.arrow.level <=4):
-            randomMiniGame = random.randint(0,4)
+            randomMiniGame = random.randint(1,4)
             self.background = spyral.Image("images/preMadeImages/miniGameQuestion"+ str(randomMiniGame) +".png")
             self.tempTexts = []
             '''''
