@@ -21,7 +21,7 @@ to the last cell in the right-hand side of the line you killed the enemy.
 
 #6: *you can click "t" on one right answer for eight times, black hole will show
 
-#7: Click event for transitioning from level cleared thumbs up scree to minigame
+#7: [fixed] Click event for transitioning from level cleared thumbs up scree to minigame
     was removed, need a click event so player can skip this screen
 
 #8: When transitioning to the new level the old board is still there even though
