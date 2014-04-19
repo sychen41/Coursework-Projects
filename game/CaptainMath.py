@@ -383,13 +383,14 @@ class Enemy(spyral.Sprite):
 class Spaceship(spyral.Sprite):
 
     def __init__(self, scene):
-		global isSpaceShipSoundNeeded
-		spyral.Sprite.__init__(self, scene)
-		self.image = spyral.image.Image(filename ="images/spaceship/spaceshipRightmoving.png", size = None)
-		self.x = 0
-		self.y = HEIGHT/2
-		self.moving = False
-		spyral.event.register("director.update", self.update)
+        global isSpaceShipSoundNeeded
+        global minigame_timeout
+        spyral.Sprite.__init__(self, scene)
+        self.image = spyral.image.Image(filename ="images/spaceship/spaceshipRightmoving.png", size = None)
+        self.x = 0
+        self.y = HEIGHT/2
+        minigame_timeout = False
+        spyral.event.register("director.update", self.update)
     def update(self, delta):
     	global isSpaceShipSoundNeeded
         if gamestate == "minigame":
@@ -400,8 +401,10 @@ class Spaceship(spyral.Sprite):
                 SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
                 SST.play()
                 isSpaceShipSoundNeeded = False
-            if self.x<=WIDTH -100:
-                self.x +=5
+            if self.x<=WIDTH:
+                self.x +=1
+            else:
+                minigame_timeout = True
         else:
             self.x = WIDTH + 100
 
@@ -517,7 +520,8 @@ class Question(spyral.Sprite):
 
  
     def check_answer(self):
-        if self.in_answer == self.answer and self.in_answer_denominator == self.answer_denominator and gamestate == "minigame" and self.lock:
+        global minigame_timeout
+        if self.in_answer == self.answer and self.in_answer_denominator == self.answer_denominator and gamestate == "minigame" and self.lock and minigame_timeout == False:
             global gamestate
             gamestate = "maingame"
             self.x=300
@@ -525,7 +529,7 @@ class Question(spyral.Sprite):
             self.correct = '1'
             self.image=spyral.image.Image(filename = "images/feedback/Correct.png", size = None)
             self.in_answer=0
-        elif self.in_answer != self.answer and gamestate == "minigame" and self.lock:
+        elif self.in_answer != self.answer or self.in_answer_denominator != self.answer_denominator and gamestate == "minigame" and self.lock and minigame_timeout == False:
             global gamestate
             gamestate = "maingame"
             self.x=300
@@ -534,6 +538,8 @@ class Question(spyral.Sprite):
             self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
             self.in_answer=0
     def slash(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         self.hasSlash = True
         self.in_answer = self.in_answer
         text=("Your Answer: " + str(self.in_answer) +"/" + "  Press ENTER to check")
@@ -541,6 +547,8 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
     def K0(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+0
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
@@ -551,6 +559,8 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
     def K1(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+1
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
@@ -561,6 +571,8 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
     def K2(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+2
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
@@ -571,16 +583,20 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
     def K3(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+3
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
         else:
-            self.in_answer = self.in_answer*10 + 8
+            self.in_answer = self.in_answer*10 + 3
             text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
         self.lock = True
         self.image=font.render(text)
     def K4(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+4
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
@@ -591,6 +607,8 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
     def K5(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+5
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
@@ -601,6 +619,8 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
     def K6(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+6
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
@@ -611,6 +631,8 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
     def K7(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+7
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
@@ -621,6 +643,8 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
     def K8(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+8
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
@@ -631,6 +655,8 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
     def K9(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
         if self.hasSlash:
             self.in_answer_denominator = self.in_answer_denominator*10+9
             text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
@@ -796,8 +822,8 @@ class CaptainMath(spyral.Scene):
                 self.tempTexts.append(self.tempText1)
                 y += 50
             '''''
-            self.question = Question(self)
             self.spaceship = Spaceship(self)
+            self.question = Question(self)
             gamestate = "minigame"
             print "gamestate = minigame"
             isSpaceShipSoundNeeded = True
@@ -813,6 +839,7 @@ class CaptainMath(spyral.Scene):
             global currentPlanet
             global isTransportSoundNeeded
             global isGameEnd
+            self.spaceship.minigame_timeout = False
             currentLevel+=1
             if (currentLevel>2): # 2 level for each planet. (will be changed to 3)
                 gamestate = "Levelselect"
