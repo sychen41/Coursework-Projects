@@ -30,3 +30,5 @@ to the last cell in the right-hand side of the line you killed the enemy.
 #9: Ghost Enemy can kill player2 and player3
 
 #10: Player is moving way to fast now. Have to fix his movement
+
+#11: Player cannot be killed in level2
