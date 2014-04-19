@@ -486,7 +486,14 @@ class Question(spyral.Sprite):
         self.answer = self.a + self.b
         self.in_answer=0
         self.dig_answer=0
-        self.answer = 5
+        if randomMiniGame == 1:
+            self.answer = 12
+        elif randomMiniGame == 2:
+            self.answer = 1413
+        elif randomMiniGame == 3:
+            self.answer = 3
+        elif randomMiniGame == 4:
+            self.answer = 5
         self.lock = False
         self.win = 'False'
         spyral.event.register ("input.keyboard.down.number_0",self.K0)
@@ -501,19 +508,7 @@ class Question(spyral.Sprite):
         spyral.event.register ('input.keyboard.down.number_9',self.K9)
         spyral.event.register("input.keyboard.down.return", self.check_answer)
 
-    def down_left(self, pos,button):
-        if self.win == 'False':
-            if(gamestate == 'minigame' ):
-                self.correct='0'
-                print "turn 1 question"
-                text=("____")
-                #text=("Nyasia always takes the same route when she walks her dog. First, she walks 7 blocks to the park. Then she walks 9 blocks to the elementary school. Finally, she walks12 blocks to get back home. Nyasia walks her dog 2 times each day. How many blocks does Nyasia's dog walk each day?")
-                font=spyral.font.Font("fonts/white.ttf",30,(255,255,255))
-                self.image=font.render(text)
-        else:
-            text=("CONGRATULATION!! " + self.win + "  WIN!!")
-            font=spyral.font.Font("fonts/white.ttf",50,(0,255,255))
-            self.image=font.render(text)
+ 
     def check_answer(self):
         if self.in_answer == self.answer and gamestate == "minigame" and self.lock:
             global gamestate
@@ -675,6 +670,7 @@ class CaptainMath(spyral.Scene):
         self.mY = pos[1]
         print pos, button
         global gamestate
+        global randomMiniGame
         if(gamestate == "StartScreen" and pos[0] >= 500 and pos[0] <= 700 and pos[1] >=340 and pos[1] <= 450 ):
 			#gamestate = "Levelselect"
             #print "gamestate = Levelselect"
@@ -743,19 +739,20 @@ class CaptainMath(spyral.Scene):
             print "gamestate = Levelselect"
             #self.arrow = Arrow(self)
         elif(gamestate == "Levelselect"):# and self.arrow.level <=4):
-            self.background = spyral.Image("images/Backgrounds/galaxybg.jpg")
-
+            randomMiniGame = random.randint(0,4)
+            self.background = spyral.Image("images/preMadeImages/miniGameQuestion"+ str(randomMiniGame) +".png")
+            self.tempTexts = []
+            '''''
             world_problem_array = ["Ronnie has 10 dollar,", "the price of an apple is 2 dollar,", 
             "how many apples she can buy?"]
             y = 100
-            self.tempTexts = []
+            
             for i in world_problem_array:
                 self.tempText1 = TempText(self, i, y)
                 self.tempTexts.append(self.tempText1)
                 y += 50
-
+            '''''
             self.question = Question(self)
-            #self.arrow.level = 5
             self.spaceship = Spaceship(self)
             gamestate = "minigame"
             print "gamestate = minigame"
