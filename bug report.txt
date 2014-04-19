@@ -24,5 +24,5 @@ to the last cell in the right-hand side of the line you killed the enemy.
 #7: [fixed] Click event for transitioning from level cleared thumbs up scree to minigame
     was removed, need a click event so player can skip this screen
 
-#8: When transitioning to the new level the old board is still there even though
+#8: [fixed] When transitioning to the new level the old board is still there even though
     the problem says a different multiple
