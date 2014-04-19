@@ -31,4 +31,4 @@ to the last cell in the right-hand side of the line you killed the enemy.
 
 #10: Player is moving way to fast now. Have to fix his movement
 
-#11: Player cannot be killed in level2
+#11: [fixed] Player cannot be killed in level2
