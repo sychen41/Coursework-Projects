@@ -745,6 +745,8 @@ class CaptainMath(spyral.Scene):
             self.arrow = Arrow(self)
             global currentLevel
             currentLevel+=1
+            if (currentLevel>3):
+                currentLevel = 1
             #isSpaceShipSoundNeeded = True
             #self.spaceship.x = 0
             #self.spaceship.y = HEIGHT/2
