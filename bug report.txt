@@ -1,20 +1,28 @@
 Bug Report:
 
-*somehow the player gets stucked in the last line (it can't go up, only walks
+#1: *somehow the player gets stucked in the last line (it can't go up, only walks
 left and right. It also appears in the top line if I click down)
 
-*when player collides with an asteroid, he goes to the block right of the asteroid
+#2: *when player collides with an asteroid, he goes to the block right of the asteroid
 
-[fixed]* if player grab one wrong answer, the port will never show up even all correct
+#3: [fixed]* if player grab one wrong answer, the port will never show up even all correct
 answers have been grabed.
 
-[fixed]* if you use the force field and kill the enemy, you are gonna die if go
+#4: [fixed]* if you use the force field and kill the enemy, you are gonna die if go
 to the last cell in the right-hand side of the line you killed the enemy.
 
-[fixed]*you can kill the enemy even if he is in the line above you (e.g.: E:Enemy,
+#5: [fixed]*you can kill the enemy even if he is in the line above you (e.g.: E:Enemy,
   P:Player, laser: ----)
 +--+--+--+--+--+
 |  |  |  |E |  |
 +--+--+--+--+--+
 |  |P |--|--|  |
 +--+--+--+--+--+
+
+#6: *you can click "t" on one right answer for eight times, black hole will show
+
+#7: [fixed] Click event for transitioning from level cleared thumbs up scree to minigame
+    was removed, need a click event so player can skip this screen
+
+#8: When transitioning to the new level the old board is still there even though
+    the problem says a different multiple
