@@ -41,7 +41,7 @@ Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
 Icol = 0
 playerLives = 2
 answers = [None]*30
-Question = 0
+QuestionName = 0
 CorrectAnswersList = list()
 WrongAnswersList = list()
 isSpaceShipSoundNeeded = False
@@ -765,6 +765,10 @@ class CaptainMath(spyral.Scene):
             gamestate = "fullLevels"
             global isBlackholeSet
             global didCollideWithBlackHole
+            global laserCount
+            global playerLives
+            laserCount = 3
+            playerLives = 2
             isBlackholeSet = False
             didCollideWithBlackHole = False
             self.background = spyral.Image("images/fullLevels/planet2_Board.png")
@@ -792,7 +796,13 @@ class CaptainMath(spyral.Scene):
             self.spaceShipLife2.y = 0
             #generate math problem (27 answers needed, because there are 3 asteroids)
             problem = generatesMultiplesProblems(27, 2)
-
+            #problem = generatesMultiplesProblems(27, 2)
+            #print "rrrrrrrrrrrrrrrrrrr"
+            #for rans in problem.right_answers:
+                #print rans
+            #print "wwwwwwwwwwwwwwwwwww"
+            #for wans in problem.wrong_answers:
+                #print wans
             # The following block makes right and wrong answers and asteroids
             # randomly displayed on the board.
             # init array to contain indexes of right answers
@@ -842,10 +852,12 @@ class CaptainMath(spyral.Scene):
                     answers[i] = problem.wrong_answers[w]
                     if w < problem.quant_wrong-1:
                         w+=1
-
+            #print "aaaaaaaaaaaaaaaaaaaa"
+            #for ans in answers:
+                #print ans            
             # display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
-            global Question
-            Question = problem.question
+            global QuestionName
+            QuestionName = problem.question
             global Irow
             global Icol
             Irow = 0
@@ -1165,7 +1177,7 @@ class CaptainMath(spyral.Scene):
         elif gamestate == "Levelselect":
             self.background = spyral.Image("images/preMadeImages/PlanetMap.png")
         elif gamestate == "fullLevels":
-            print "is the black hole set?? ", isBlackholeSet
+            #print "is the black hole set?? ", isBlackholeSet
             global didCollideWithBlackHole
             if (isEnemyDead == True and time.time() - EnemyDeadTime > 5):
                 self.enemy1 = Enemy(self)
@@ -1182,6 +1194,8 @@ class CaptainMath(spyral.Scene):
                 	item.kill()
                 #Killing all sprites in Scene
                 if(didCollideWithBlackHole == True):
+                    global CorrectAnswers
+                    CorrectAnswers = 0
                     gamestate = "levelCleared"
                     self.killMathText()
                     self.killAsteroids()
@@ -1282,7 +1296,7 @@ class CaptainMath(spyral.Scene):
     def createMathText(self):
         self.MathTextObjects = []
         for i in range(0, 31):
-            self.MathTextObject = MathText(self, i, answers, Question)
+            self.MathTextObject = MathText(self, i, answers, QuestionName)
             self.MathTextObjects.append(self.MathTextObject)
     def killMathText(self):
         for item in self.MathTextObjects:
