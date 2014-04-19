@@ -491,7 +491,6 @@ class Question(spyral.Sprite):
         self.answer = 5
         self.lock = False
         self.win = 'False'
-        #spyral.event.register ("input.mouse.down.left",self.down_left)
         spyral.event.register ("input.keyboard.down.number_0",self.K0)
         spyral.event.register ('input.keyboard.down.number_1',self.K1)
         spyral.event.register ('input.keyboard.down.number_2',self.K2)
@@ -503,7 +502,6 @@ class Question(spyral.Sprite):
         spyral.event.register ('input.keyboard.down.number_8',self.K8)
         spyral.event.register ('input.keyboard.down.number_9',self.K9)
         spyral.event.register("input.keyboard.down.return", self.check_answer)
-        time.sleep(0.1)
 
     def down_left(self, pos,button):
         if self.win == 'False':
