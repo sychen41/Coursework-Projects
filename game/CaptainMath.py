@@ -132,7 +132,14 @@ class Player(spyral.Sprite):
             self.image = spyral.image.Image(filename =
             "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png",
              size = None)
-
+        if self.moving == 'left':
+            global ProwNum
+        global PcolNum
+            #self.x -= paddle_velocity * delta
+        if (BoardStatus[ProwNum][PcolNum] != -1):
+            if (PcolNum != 0):
+                    PcolNum-=1
+        self.x = BoardXcoord[ProwNum][PcolNum]
     def move_right(self):
         global isface
         isface = "right"
@@ -145,6 +152,13 @@ class Player(spyral.Sprite):
             self.image = spyral.image.Image(filename =
             "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png",
             size = None)
+        if self.moving == 'right':
+            global ProwNum
+        global PcolNum
+        if (BoardStatus[ProwNum][PcolNum] != -1):
+            if (PcolNum != 5):
+                    PcolNum+=1
+        self.x = BoardXcoord[ProwNum][PcolNum]
     def move_up(self):
         if(isface == "right" and forceFieldOn == False):
           self.image = spyral.image.Image(filename =
@@ -163,6 +177,13 @@ class Player(spyral.Sprite):
           "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png",
            size = None)
         self.moving = 'up'
+        if self.moving == 'up':
+            global ProwNum
+        global PcolNum
+        if (BoardStatus[ProwNum][PcolNum] != -1):
+            if (ProwNum != -1):
+                    ProwNum-=1
+        self.y = BoardYcoord[ProwNum][PcolNum]
     def move_down(self):
         if(isface == "right" and forceFieldOn == False):
           self.image = spyral.image.Image(filename =
@@ -181,6 +202,13 @@ class Player(spyral.Sprite):
            "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png",
             size = None)
         self.moving = 'down'
+        if self.moving == 'down':
+            global ProwNum
+        global PcolNum
+        if (BoardStatus[ProwNum][PcolNum] != -1):
+            if (ProwNum != 4):
+                    ProwNum+=1
+        self.y = BoardYcoord[ProwNum][PcolNum]
     def place_piece(self):
         self.moving = 'place_piece'
     def stop_move(self):
@@ -219,37 +247,6 @@ class Player(spyral.Sprite):
         self.x = BoardXcoord[ProwNum][PcolNum]
         self.y = BoardYcoord[ProwNum][PcolNum]
         paddle_velocity = 500
-        #print delta
-        if self.moving == 'left':
-            global ProwNum
-	    global PcolNum
-            #self.x -= paddle_velocity * delta
-	    if (BoardStatus[ProwNum][PcolNum] != -1):
-		if (PcolNum != 0):
-                    PcolNum-=1
-	    self.x = BoardXcoord[ProwNum][PcolNum]
-            #self.y = BoardYcoord[ProwNum][PcolNum]
-        elif self.moving == 'right':
-            global ProwNum
-	    global PcolNum
-	    if (BoardStatus[ProwNum][PcolNum] != -1):
-		if (PcolNum != 5):
-                    PcolNum+=1
-	    self.x = BoardXcoord[ProwNum][PcolNum]
-        elif self.moving == 'up':
-            global ProwNum
-	    global PcolNum
-	    if (BoardStatus[ProwNum][PcolNum] != -1):
-	        if (ProwNum != -1):
-                    ProwNum-=1
-            self.y = BoardYcoord[ProwNum][PcolNum]
-        elif self.moving == 'down':
-            global ProwNum
-	    global PcolNum
-	    if (BoardStatus[ProwNum][PcolNum] != -1):
-	        if (ProwNum != 4):
-                    ProwNum+=1
-            self.y = BoardYcoord[ProwNum][PcolNum]
         if (PcolNum == 6):
             PcolNum = 0
         if (ProwNum == 5):
