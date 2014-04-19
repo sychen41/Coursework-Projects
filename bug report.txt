@@ -26,3 +26,5 @@ to the last cell in the right-hand side of the line you killed the enemy.
 
 #8: [fixed] When transitioning to the new level the old board is still there even though
     the problem says a different multiple
+
+#9: Ghost Enemy can kill player2 and player3
