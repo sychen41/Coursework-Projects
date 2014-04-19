@@ -45,6 +45,7 @@ QuestionName = 0
 CorrectAnswersList = list()
 WrongAnswersList = list()
 isSpaceShipSoundNeeded = False
+currentLevel = 1
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -675,6 +676,7 @@ class CaptainMath(spyral.Scene):
             #print "gamestate = Levelselect"
             gamestate = "tutorial"
             print "gamestate = tutorial"
+            self.background = spyral.Image("images/tutorials/objectAndKeys.png")
 
         elif(gamestate =="tutorial"):
             if( self.TutorialCount == 1 and pos[0] >= 20 and pos[0] <= 267 and pos[1]<=782 and pos[1] >=700):
@@ -701,6 +703,12 @@ class CaptainMath(spyral.Scene):
             elif(self.TutorialCount < 4):
                 self.TutorialCount += 1 
                 print "tutorial"
+                if self.TutorialCount == 2:
+                    self.background = spyral.Image("images/tutorials/tutAnswerSelection.png")
+                if self.TutorialCount == 3:
+                    self.background = spyral.Image("images/tutorials/tutFF.png")
+                if self.TutorialCount == 4:
+                    self.background = spyral.Image("images/tutorials/tutShooting.png")
             elif(self.TutorialCount == 4):
                 gamestate = "story"
                 print "gamestate = story"
@@ -731,6 +739,8 @@ class CaptainMath(spyral.Scene):
         elif(gamestate == "levelCleared"):
             gamestate = "Levelselect"
             self.arrow = Arrow(self)
+            global currentLevel
+            currentLevel+=1
             #isSpaceShipSoundNeeded = True
             #self.spaceship.x = 0
             #self.spaceship.y = HEIGHT/2
@@ -809,9 +819,9 @@ class CaptainMath(spyral.Scene):
             self.spaceShipLife2.y = 0
             #generate math problem (27 answers needed, because there are 3 asteroids)
             problem = generatesMultiplesProblems(27, 2)
-            #problem = generatesMultiplesProblems(27, 2)
+            #problem2 = generatesMultiplesProblems(27, 2)
             #print "rrrrrrrrrrrrrrrrrrr"
-            #for rans in problem.right_answers:
+            #for rans in problem2.right_answers:
                 #print rans
             #print "wwwwwwwwwwwwwwwwwww"
             #for wans in problem.wrong_answers:
@@ -1259,7 +1269,7 @@ class CaptainMath(spyral.Scene):
                 gamestate = "Levelselect"
                 self.arrow = Arrow(self)
                 print "gamestate = Levelselect"
-        elif gamestate =="tutorial":
+        """elif gamestate =="tutorial":
             if self.TutorialCount == 1:
                 self.background = spyral.Image("images/tutorials/objectAndKeys.png")
             if self.TutorialCount == 2:
@@ -1267,7 +1277,7 @@ class CaptainMath(spyral.Scene):
             if self.TutorialCount == 3:
                 self.background = spyral.Image("images/tutorials/tutFF.png")
             if self.TutorialCount == 4:
-                self.background = spyral.Image("images/tutorials/tutShooting.png")
+                self.background = spyral.Image("images/tutorials/tutShooting.png")"""
         if(rowNum == ProwNum and colNum == PcolNum and
          isplayerDead == False and forceFieldOn == False
          and isEnemyDead == False):
