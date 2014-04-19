@@ -47,6 +47,7 @@ WrongAnswersList = list()
 isSpaceShipSoundNeeded = False
 currentLevel = 1
 currentPlanet = 1
+isTransportSoundNeeded = False
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -734,9 +735,11 @@ class CaptainMath(spyral.Scene):
                     n.animate(self.animation_y)
                     delta_iteration -= 50
         elif(gamestate == "story"):
+            global isTransportSoundNeeded
             for i in self.text_objects:
                 i.kill()
             gamestate = "Levelselect"
+            isTransportSoundNeeded = True
             print "gamestate = Levelselect"
             #self.arrow = Arrow(self)
         elif(gamestate == "Levelselect"):# and self.arrow.level <=4):
@@ -767,9 +770,11 @@ class CaptainMath(spyral.Scene):
             #self.arrow = Arrow(self)
             global currentLevel
             global currentPlanet
+            global isTransportSoundNeeded
             currentLevel+=1
             if (currentLevel>2): # 2 level for each planet. (will be changed to 3)
                 gamestate = "Levelselect"
+                isTransportSoundNeeded = True
                 currentLevel = 1
                 currentPlanet+=1
                 if (currentPlanet == 5):
@@ -1200,6 +1205,7 @@ class CaptainMath(spyral.Scene):
         global isBlackholeSet
         global CorrectAnswers
         global CorrectAnswersList
+        global isTransportSoundNeeded
         #print "how many correct answers?? " , CorrectAnswers
 
         if gamestate == "StartScreen":
@@ -1214,12 +1220,27 @@ class CaptainMath(spyral.Scene):
                 self.background = spyral.Image("images/preMadeImages/PlanetMap.png")
             elif (currentPlanet == 2):
                 self.background = spyral.Image("images/preMadeImages/goingToFractoidPlanet.png")
+                if(isTransportSoundNeeded == True):
+                    pygame.mixer.init()
+                    nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.wav")
+                    nextPlanetSound.play()
+                    isTransportSoundNeeded = False
             elif (currentPlanet == 3):
                 self.background = spyral.Image("images/preMadeImages/goingToAlgebraXPlanet.png")
+                if(isTransportSoundNeeded == True):
+                    pygame.mixer.init()
+                    nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.wav")
+                    nextPlanetSound.play()
+                    isTransportSoundNeeded = False
             elif (currentPlanet == 4):
                 self.background = spyral.Image("images/preMadeImages/goingToZardashPlanet.png")
+                if(isTransportSoundNeeded == True):
+                    pygame.mixer.init()
+                    nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.wav")
+                    nextPlanetSound.play()
+                    isTransportSoundNeeded = False
         elif gamestate == "end":
-            self.background = spyral.Image("images/preMadeImages/AwesomeBossFight.png")
+            self.background = spyral.Image("images/entireScenes/youWin.png")
         elif gamestate == "fullLevels":
             #print "is the black hole set?? ", isBlackholeSet
             global didCollideWithBlackHole
