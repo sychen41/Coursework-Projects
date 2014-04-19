@@ -48,6 +48,7 @@ isSpaceShipSoundNeeded = False
 currentLevel = 1
 currentPlanet = 1
 isTransportSoundNeeded = False
+isGameEnd = False
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -811,6 +812,7 @@ class CaptainMath(spyral.Scene):
             global currentLevel
             global currentPlanet
             global isTransportSoundNeeded
+            global isGameEnd
             currentLevel+=1
             if (currentLevel>2): # 2 level for each planet. (will be changed to 3)
                 gamestate = "Levelselect"
@@ -819,13 +821,14 @@ class CaptainMath(spyral.Scene):
                 currentPlanet+=1
                 if (currentPlanet == 5):
                     gamestate = "end"
+                    isGameEnd = True
             #isSpaceShipSoundNeeded = True
             #self.spaceship.x = 0
             #self.spaceship.y = HEIGHT/2
             #self.question.x = 0
             #self.TempText1 = TempText(self)
-        elif (gamestate == "end"):
-            self.tempText2 = TempText(self, "YOU SAVED THE uNIVERSE!!", 400)
+        #elif (gamestate == "end"):
+        #    self.tempText2 = TempText(self, "YOU SAVED THE uNIVERSE!!", 400)
 		    
     #def return_clicked(self):
         
@@ -1246,6 +1249,7 @@ class CaptainMath(spyral.Scene):
         global CorrectAnswers
         global CorrectAnswersList
         global isTransportSoundNeeded
+        global isGameEnd
         #print "how many correct answers?? " , CorrectAnswers
 
         if gamestate == "StartScreen":
@@ -1281,6 +1285,11 @@ class CaptainMath(spyral.Scene):
                     isTransportSoundNeeded = False
         elif gamestate == "end":
             self.background = spyral.Image("images/entireScenes/youWin.png")
+            if(isGameEnd == True):
+                pygame.mixer.init()
+                youWinTheme = pygame.mixer.Sound("sounds/youWin.wav")
+                youWinTheme.play()
+                isGameEnd = False
         elif gamestate == "fullLevels":
             #print "is the black hole set?? ", isBlackholeSet
             global didCollideWithBlackHole
