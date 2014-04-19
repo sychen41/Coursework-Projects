@@ -14,9 +14,9 @@ class BoardExample():
 
 	#it will call generatesMultiplesproblems, which returns a Problem object
 	#we need to say the size of the board and the difficult level (1, 2, or 3)
-	problem_x = generatesFractionsProblems(30, 2)
+	problem_x = generatesMultiplesProblems(27, 2)
 
-	answers = problem_x.right_answers + problem_x.wrong_answers
+	#answers = problem_x.right_answers + problem_x.wrong_answers
 	#print(answers)
 
 	#the Problem object has the following attributes
@@ -36,5 +36,12 @@ class BoardExample():
 	print(problem_x.right_answers)
 
 	#array with wrong answers (size=quant_right)
-	print(problem_x.wrong_answers)
+	#print(problem_x.wrong_answers)
+	problem_x2 = generatesMultiplesProblems(27, 2)
+	print 'two'
+	#array with right answers (size=quant_right)
+	print(problem_x2.right_answers)
+
+	#array with wrong answers (size=quant_right)
+	#print(problem_x2.wrong_answers)
 

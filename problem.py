@@ -20,3 +20,5 @@ class Problem():
 		self.question = question
 		self.quant_right = quant_right
 		self.quant_wrong = quant_wrong
+		self.right_answers = []
+		self.wrong_answers = []
