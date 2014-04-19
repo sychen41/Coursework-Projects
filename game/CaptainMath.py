@@ -807,6 +807,8 @@ class CaptainMath(spyral.Scene):
             global didCollideWithBlackHole
             global laserCount
             global playerLives
+            global enemyCollided
+            enemyCollided = False
             laserCount = 3
             playerLives = 2
             isBlackholeSet = False
