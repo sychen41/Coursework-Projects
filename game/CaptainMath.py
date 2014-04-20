@@ -78,6 +78,10 @@ class Laser(spyral.Sprite):
         if self.collide_sprite(Sprite):
             Sprite.kill()
             isEnemyDead = True
+            global rowNum
+            global colNum
+            rowNum = 4
+            colNum = 5
         pygame.mixer.init()
         asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
         asteroidExplode.play()
@@ -350,7 +354,7 @@ class Enemy(spyral.Sprite):
             global timeStart
             global rowNum
             global colNum
-            if (time.time() - timeStart > 2):
+            if (time.time() - timeStart > 0.5):
 	        ranNum = random.randint(0, 3)
 	        #print ranNum
                 if (ranNum == 0):
@@ -857,7 +861,7 @@ class CaptainMath(spyral.Scene):
             global isGameEnd
             self.spaceship.minigame_timeout = False
             currentLevel+=1
-            if (currentLevel>1): # 2 level for each planet. (will be changed to 3)
+            if (currentLevel>3): # 2 level for each planet. (will be changed to 3)
                 gamestate = "Levelselect"
                 isTransportSoundNeeded = True
                 currentLevel = 1
