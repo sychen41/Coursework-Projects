@@ -402,7 +402,7 @@ class Spaceship(spyral.Sprite):
                 SST.play()
                 isSpaceShipSoundNeeded = False
             if self.x<=WIDTH:
-                self.x +=1
+                self.x +=2
             else:
                 minigame_timeout = True
         else:
