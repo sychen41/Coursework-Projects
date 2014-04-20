@@ -83,7 +83,7 @@ def generatesFractionsProblems(board_size, difficulty):
 
 	if (difficulty==1):
 		#Defines the number of right answers as 40%
-		quantity_right = round(board_size * 0.4,0)
+		quantity_right = round(board_size * 0.3,0)
 		quantity_wrong = board_size - quantity_right
 
 	elif (difficulty==2):
@@ -93,7 +93,7 @@ def generatesFractionsProblems(board_size, difficulty):
 
 	elif (difficulty==3):
 		#Defines the number of right answers as 20%
-		quantity_right = round(board_size * 0.2,0)
+		quantity_right = round(board_size * 0.3,0)
 		quantity_wrong = board_size - quantity_right
 
 	#generates question like "equivalent to a/b"
@@ -183,7 +183,7 @@ def generatesEqualitiesProblems(board_size, difficulty):
 	quantity_wrong = 0
 	if (difficulty==1):
 		#Defines the number of right answers as 40%
-		quantity_right = round(board_size * 0.4,0)
+		quantity_right = round(board_size * 0.3,0)
 		quantity_wrong = board_size - quantity_right
 
 	elif (difficulty==2):
@@ -193,7 +193,7 @@ def generatesEqualitiesProblems(board_size, difficulty):
 
 	elif (difficulty==3):
 		#Defines the number of right answers as 20%
-		quantity_right = round(board_size * 0.2,0)
+		quantity_right = round(board_size * 0.3,0)
 		quantity_wrong = board_size - quantity_right
 
 	#Generates a number X for the question: "Find equalities equal to X"
