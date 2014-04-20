@@ -6,7 +6,8 @@ import pygame
 from spyral import Animation, easing
 from problem import Problem
 from ourmath2 import generatesMultiplesProblems
-
+from ourmath2 import generatesFractionsProblems
+from ourmath2 import generatesEqualitiesProblems
 
 WIDTH = 1200
 HEIGHT = 800
@@ -856,7 +857,7 @@ class CaptainMath(spyral.Scene):
             global isGameEnd
             self.spaceship.minigame_timeout = False
             currentLevel+=1
-            if (currentLevel>2): # 2 level for each planet. (will be changed to 3)
+            if (currentLevel>1): # 2 level for each planet. (will be changed to 3)
                 gamestate = "Levelselect"
                 isTransportSoundNeeded = True
                 currentLevel = 1
@@ -878,6 +879,10 @@ class CaptainMath(spyral.Scene):
         elif(gamestate == "maingame"):# and self.question.correct == '1'):
             global gamestate
             global isSpaceShipSoundNeeded
+            global ProwNum
+            global PcolNum
+            ProwNum = 0
+            PcolNum = 0
             print "currentLevel: " + str(currentLevel)
             print "currentPlanet: " + str(currentPlanet)
             for i in self.tempTexts:
@@ -926,7 +931,14 @@ class CaptainMath(spyral.Scene):
             self.spaceShipLife2.x = 1200 - (self.spaceShipLife1.width*2)
             self.spaceShipLife2.y = 0
             #generate math problem (27 answers needed, because there are 3 asteroids)
-            problem = generatesMultiplesProblems(27, currentLevel)
+            if (currentPlanet == 1):
+                problem = generatesMultiplesProblems(27, currentLevel)
+            elif (currentPlanet == 2):
+                problem = generatesFractionsProblems(27, currentLevel)
+            elif (currentPlanet == 3):
+                problem = generatesEqualitiesProblems(27, currentLevel)
+            elif (currentPlanet == 4): # the 4th planet math is subject to change
+                problem = generatesMultiplesProblems(27, currentLevel)
             #problem2 = generatesMultiplesProblems(27, 2)
             #print "rrrrrrrrrrrrrrrrrrr"
             #for rans in problem2.right_answers:
@@ -1335,7 +1347,7 @@ class CaptainMath(spyral.Scene):
         elif gamestate == "fullLevels":
             #print "is the black hole set?? ", isBlackholeSet
             global didCollideWithBlackHole
-            if (isEnemyDead == True and time.time() - EnemyDeadTime > 5):
+            if (isEnemyDead == True and time.time() - EnemyDeadTime > 5 and isBlackholeSet == False):
                 self.enemy1 = Enemy(self)
             if(isBlackholeSet == True):
                 if(playerLives == 2):
