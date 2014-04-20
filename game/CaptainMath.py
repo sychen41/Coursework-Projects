@@ -517,26 +517,41 @@ class Question(spyral.Sprite):
         spyral.event.register ('input.keyboard.down.number_9',self.K9)
         spyral.event.register ('input.keyboard.down.slash',self.slash)
         spyral.event.register("input.keyboard.down.return", self.check_answer)
+        spyral.event.register("input.keyboard.down.backspace", self.backspace)
+    def backspace(self):
+        self.x=WIDTH/5
+        self.y=HEIGHT*2/3
+        if self.hasSlash:
+            self.in_answer_denominator = int(self.in_answer_denominator/10)
+            text=("Your Answer: " + str(self.in_answer) + "/" +str(self.in_answer_denominator) + "  Press ENTER to check")
+        else:
+            self.in_answer = int(self.in_answer/10)
+            text=("Your Answer: " + str(self.in_answer) + "  Press ENTER to check")
+        font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
+        self.lock = True
+        self.image=font.render(text)
 
  
     def check_answer(self):
         global minigame_timeout
+        global gamestate
         if self.in_answer == self.answer and self.in_answer_denominator == self.answer_denominator and gamestate == "minigame" and self.lock and minigame_timeout == False:
-            global gamestate
+            #global gamestate
             gamestate = "maingame"
             self.x=300
             self.y=200
             self.correct = '1'
             self.image=spyral.image.Image(filename = "images/feedback/Correct.png", size = None)
             self.in_answer=0
-        elif self.in_answer != self.answer or self.in_answer_denominator != self.answer_denominator and gamestate == "minigame" and self.lock and minigame_timeout == False:
-            global gamestate
+            print self.correct
+        elif ((self.in_answer != self.answer or self.in_answer_denominator != self.answer_denominator) and gamestate == "minigame" and self.lock and minigame_timeout == False):
+            #global gamestate
             gamestate = "maingame"
             self.x=300
             self.y=200
-            self.correct = '0'
             self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
             self.in_answer=0
+            print "wrong" + self.correct
     def slash(self):
         self.x=WIDTH/5
         self.y=HEIGHT*2/3
