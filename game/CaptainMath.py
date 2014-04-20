@@ -1093,7 +1093,7 @@ class CaptainMath(spyral.Scene):
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
-				self.Laser.collide_meteor(self.enemy1)
+				self.Laser.collide_enemy(self.enemy1)
 			elif(isface == "left" and forceFieldOn == True and gamestate == "fullLevels"):
 				isface = "left"
 				if(playerLives == 2):
