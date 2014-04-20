@@ -21,7 +21,7 @@ def generatesMultiplesProblems(board_size, difficulty):
 
 	elif (difficulty==3):
 		#Defines the number of right answers as 20%
-		quantity_right = round(board_size * 0.2,0)
+		quantity_right = round(board_size * 0.3,0)
 		quantity_wrong = board_size - quantity_right
 
 	#Generates a number X for the question: "Find multiples of X"
