@@ -384,7 +384,7 @@ class Enemy(spyral.Sprite):
 	    enemyCollided = True
 	    eNow = time.time()
 
-
+#spaceship in mini game, it is a time count. student should answer the question before the spaceship goes to right.
 class Spaceship(spyral.Sprite):
 
     def __init__(self, scene):
@@ -394,10 +394,12 @@ class Spaceship(spyral.Sprite):
         self.image = spyral.image.Image(filename ="images/spaceship/spaceshipRightmoving.png", size = None)
         self.x = 0
         self.y = HEIGHT/2
+        #does not finish this part yet. 
         minigame_timeout = False
         spyral.event.register("director.update", self.update)
     def update(self, delta):
     	global isSpaceShipSoundNeeded
+        global gamestate
         if gamestate == "minigame":
             if(isSpaceShipSoundNeeded == True):
                 pygame.mixer.init()
@@ -410,6 +412,7 @@ class Spaceship(spyral.Sprite):
                 self.x +=2
             else:
                 minigame_timeout = True
+                gamestate = "maingame"
         else:
             self.x = WIDTH + 100
 
