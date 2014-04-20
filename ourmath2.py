@@ -11,7 +11,7 @@ def generatesMultiplesProblems(board_size, difficulty):
 	quantity_wrong = 0
 	if (difficulty==1):
 		#Defines the number of right answers as 40%
-		quantity_right = round(board_size * 0.4,0)
+		quantity_right = round(board_size * 0.3,0)
 		quantity_wrong = board_size - quantity_right
 
 	elif (difficulty==2):
