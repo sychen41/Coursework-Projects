@@ -443,7 +443,7 @@ class StoryText(spyral.Sprite):
         self.anchor = "center"
         self.x = WIDTH/2
         self.y = y
-
+#for level select, but it is useless for the alpha version.
 class Arrow(spyral.Sprite):
 	def __init__(self,scene):
 		spyral.Sprite.__init__(self, scene)
@@ -462,7 +462,7 @@ class Arrow(spyral.Sprite):
 		if self.level <=4:
 			gamestate = "fullLevels"
 			print "fullLevels"
-
+    #use left and right key to select level.
 	def pre_level(self):
 		if self.level >= 2:
 		    self.level -=1
@@ -499,7 +499,7 @@ class AnswerCorrect(spyral.Sprite):
         self.anchor = 'center'
 
 
-
+#display question in the minigame and check if answered correct.
 class Question(spyral.Sprite):
     def __init__(self,scene):
         spyral.Sprite.__init__(self, scene)
@@ -544,6 +544,7 @@ class Question(spyral.Sprite):
         spyral.event.register ('input.keyboard.down.slash',self.slash)
         spyral.event.register("input.keyboard.down.return", self.check_answer)
         spyral.event.register("input.keyboard.down.backspace", self.backspace)
+    #backspace if input incorrect
     def backspace(self):
         self.x=WIDTH/5
         self.y=HEIGHT*2/3
@@ -557,7 +558,7 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
 
-
+    #press enter when finished input answer then check if it correct or not.
     def check_answer(self):
         global minigame_timeout
         global gamestate
@@ -578,6 +579,7 @@ class Question(spyral.Sprite):
             self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
             self.in_answer=0
             print "wrong" + self.correct
+    #shash in answer.
     def slash(self):
         self.x=WIDTH/5
         self.y=HEIGHT*2/3
@@ -587,6 +589,7 @@ class Question(spyral.Sprite):
         font=spyral.font.Font("fonts/Bite_Bullet.ttf",50,GOLDEN)
         self.lock = True
         self.image=font.render(text)
+    #input and display input from number 0 to number 9
     def K0(self):
         self.x=WIDTH/5
         self.y=HEIGHT*2/3
@@ -776,7 +779,7 @@ class CaptainMath(spyral.Scene):
         self.killMathText()
         self.killAsteroids()
         #self.mathText.kill()
-
+    #key event for mouse click 
     def down_left(self,pos,button):
         self.mX = pos[0]
         self.mY = pos[1]
@@ -1319,7 +1322,7 @@ class CaptainMath(spyral.Scene):
         global isTransportSoundNeeded
         global isGameEnd
         #print "how many correct answers?? " , CorrectAnswers
-
+        #change background and music when gamestate changed.
         if gamestate == "StartScreen":
 			self.background = spyral.Image("images/entireScenes/Begin.png")
 			if(gameStarted == False):
