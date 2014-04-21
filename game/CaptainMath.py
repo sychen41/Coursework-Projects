@@ -277,6 +277,7 @@ class Player(spyral.Sprite):
             PcolNum = 5
         if (ProwNum == -1):
             ProwNum == 5
+# to display math problem
 class MathText(spyral.Sprite):
     def __init__(self, scene, index, answers, problem_question):
         spyral.Sprite.__init__(self, scene)
@@ -293,7 +294,14 @@ class MathText(spyral.Sprite):
         if index == 30:
             self.x = WIDTH*7/20
             self.y = HEIGHT/12
-            self.image = font.render("Find Multiples of " + str(problem_question), GOLDEN)
+            if (currentPlanet == 1):
+                self.image = font.render("Find Multiples of " + str(problem_question), GOLDEN)
+            elif (currentPlanet == 2):
+                self.image = font.render("Find fractions equivalent to " + str(problem_question), GOLDEN)
+            elif (currentPlanet == 3):
+                self.image = font.render("Find operations equal to " + str(problem_question), GOLDEN)
+            elif (currentPlanet == 4):
+                self.image = font.render("Find Multiples of " + str(problem_question), GOLDEN)
         elif answers[index] == -1:
             #self.x -= WIDTH/70
             #self.y -= HEIGHT/35
@@ -304,7 +312,7 @@ class MathText(spyral.Sprite):
         global BoardYcoord
         global Irow
         global Icol
-
+        # to fill BoardXcoord and BoardYcoord with right coordinates
         if (index < 30):
             BoardXcoord[Irow][Icol] = self.x
             BoardYcoord[Irow][Icol] = self.y
@@ -345,6 +353,7 @@ class Asteroid(spyral.Sprite):
         self.image = spyral.image.Image(filename =
          "images/misc/asteroid_small.png", size = None)
 
+# Enemy generation and random movement
 class Enemy(spyral.Sprite):
     def __init__(self, scene):
         super(Enemy, self).__init__(scene)
@@ -371,7 +380,7 @@ class Enemy(spyral.Sprite):
             global timeStart
             global rowNum
             global colNum
-            if (time.time() - timeStart > 0.5):
+            if (time.time() - timeStart > 1):
 	        ranNum = random.randint(0, 3)
 	        #print ranNum
                 if (ranNum == 0):
@@ -395,6 +404,7 @@ class Enemy(spyral.Sprite):
                 self.y = BoardYcoord[rowNum][colNum]
                 timeStart = time.time()
 
+    # collision detection
     def collide_something(self, something):
 	global enemyCollided
         if(self.collide_sprite(something) and enemyCollided == False):
@@ -728,6 +738,7 @@ class StoryText(spyral.Sprite):
         self.x = WIDTH/2
         self.y = y
 
+# to display any other necessary texts than story texts
 class TempText(spyral.Sprite):
     def __init__(self,scene, txt, y):
         spyral.Sprite.__init__(self, scene)
@@ -738,6 +749,7 @@ class TempText(spyral.Sprite):
         self.x = WIDTH/3
         self.y = y
 
+# THE GAME!
 class CaptainMath(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
@@ -779,7 +791,7 @@ class CaptainMath(spyral.Scene):
         self.killMathText()
         self.killAsteroids()
         #self.mathText.kill()
-    #key event for mouse click 
+    #key event for mouse click (the whole game flow is directed by mouse left click)
     def down_left(self,pos,button):
         self.mX = pos[0]
         self.mY = pos[1]
@@ -869,7 +881,8 @@ class CaptainMath(spyral.Scene):
             global isGameEnd
             self.spaceship.minigame_timeout = False
             currentLevel+=1
-            if (currentLevel>3): # 2 level for each planet. (will be changed to 3)
+            # each planet has three levels of difficulty
+            if (currentLevel>3):
                 gamestate = "Levelselect"
                 isTransportSoundNeeded = True
                 currentLevel = 1
@@ -877,7 +890,9 @@ class CaptainMath(spyral.Scene):
                 if (currentPlanet == 5):
                     gamestate = "end"
                     isGameEnd = True
-        elif(gamestate == "maingame"):# and self.question.correct == '1'):
+        # the main stage of the game
+        elif(gamestate == "maingame"):
+            # reset every necessary variables for a new level and new planet
             global gamestate
             global isSpaceShipSoundNeeded
             global ProwNum
@@ -934,6 +949,7 @@ class CaptainMath(spyral.Scene):
             self.spaceShipLife2.x = 1200 - (self.spaceShipLife1.width*2)
             self.spaceShipLife2.y = 0
             #generate math problem (27 answers needed, because there are 3 asteroids)
+            # there are four different math problems for four planets
             if (currentPlanet == 1):
                 problem = generatesMultiplesProblems(27, currentLevel)
             elif (currentPlanet == 2):
@@ -942,13 +958,7 @@ class CaptainMath(spyral.Scene):
                 problem = generatesEqualitiesProblems(27, currentLevel)
             elif (currentPlanet == 4): # the 4th planet math is subject to change
                 problem = generatesMultiplesProblems(27, currentLevel)
-            #problem2 = generatesMultiplesProblems(27, 2)
-            #print "rrrrrrrrrrrrrrrrrrr"
-            #for rans in problem2.right_answers:
-                #print rans
-            #print "wwwwwwwwwwwwwwwwwww"
-            #for wans in problem.wrong_answers:
-                #print wans
+            
             # The following block makes right and wrong answers and asteroids
             # randomly displayed on the board.
             # init array to contain indexes of right answers
