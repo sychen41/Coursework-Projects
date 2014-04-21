@@ -85,7 +85,8 @@ class Laser(spyral.Sprite):
         pygame.mixer.init()
         asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
         asteroidExplode.play()
-        
+
+#Main Player Class for the game
 class Player(spyral.Sprite):
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
@@ -101,6 +102,7 @@ class Player(spyral.Sprite):
         global gamestate
         playerColor = "red"
         isplayerDead = False
+        #Checks to see what color player has been selected
         if(playerColor == "red"):
             self.image = spyral.image.Image(filename =
             "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png",
@@ -110,6 +112,7 @@ class Player(spyral.Sprite):
             "images/entireScenes/hand_blue.png", size = None)
         self.anchor = 'center'
         self.moving = False
+        #Aliases for key-events
         left = "left"
         right="right"
         up = "up"
@@ -127,6 +130,7 @@ class Player(spyral.Sprite):
         spyral.event.register("input.keyboard.up."+enter, self.stop_move)
         spyral.event.register("input.mouse.left.click", self.askquest)
         spyral.event.register("director.update", self.update)
+    #Called when a player presses the left arrow key
     def move_left(self):
         global isface
         isface = "left"
@@ -147,6 +151,7 @@ class Player(spyral.Sprite):
             if (PcolNum != 0):
                     PcolNum-=1
         self.x = BoardXcoord[ProwNum][PcolNum]
+    #Called when a player presses the right arrow key
     def move_right(self):
         global isface
         isface = "right"
@@ -166,6 +171,7 @@ class Player(spyral.Sprite):
             if (PcolNum != 5):
                     PcolNum+=1
         self.x = BoardXcoord[ProwNum][PcolNum]
+    #Called when a player presses the up arrow key
     def move_up(self):
         if(isface == "right" and forceFieldOn == False):
           self.image = spyral.image.Image(filename =
@@ -191,6 +197,7 @@ class Player(spyral.Sprite):
             if (ProwNum != -1):
                     ProwNum-=1
         self.y = BoardYcoord[ProwNum][PcolNum]
+    #Called when a player presses the down arrow key
     def move_down(self):
         if(isface == "right" and forceFieldOn == False):
           self.image = spyral.image.Image(filename =
@@ -216,6 +223,7 @@ class Player(spyral.Sprite):
             if (ProwNum != 4):
                     ProwNum+=1
         self.y = BoardYcoord[ProwNum][PcolNum]
+    #The following definitions are deprecated functions
     def place_piece(self):
         self.moving = 'place_piece'
     def stop_move(self):
@@ -224,6 +232,13 @@ class Player(spyral.Sprite):
         self.y = HEIGHT/2
     def askquest(self):
         print "askquest"
+
+    '''
+    Checks to see if a player has collided with a black hole
+    if so throws a global flag signifying that the player has
+    came in contact with a black hole. Also changes the the gamestate
+    to levelCleared
+    '''
     def collide_BlackHolde(self, Sprite):
         global gamestate
         global didCollideWithBlackHole
@@ -231,9 +246,9 @@ class Player(spyral.Sprite):
             print "Collided with Black hole"
             didCollideWithBlackHole = True
             gamestate = "levelCleared"
-        #pygame.mixer.init()
-        #asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
-        #asteroidExplode.play()
+    '''
+    Update function for the player class
+    '''
     def update(self, delta):
         global ProwNum
         global PcolNum
@@ -299,18 +314,20 @@ class MathText(spyral.Sprite):
                 Icol = 0
                 Irow +=1
 
-
+#Class for the batteries that are used for Player ammo
 class Battery(spyral.Sprite):
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
         self.image = spyral.image.Image(filename =
          "images/misc/BatteryLogo.png", size = None)
+#Class for player lives used to keep track of player deaths
 class spaceShipLife(spyral.Sprite):
     def __init__(self, scene):
         spyral.Sprite.__init__(self, scene)
         self.image = spyral.image.Image(filename =
         "images/spaceship/spaceShipLife.png", size = None)
-
+#Class for asteroids that are used for added strategy and for
+#barriers against enemies
 class Asteroid(spyral.Sprite):
     def __init__(self, scene, index):
         spyral.Sprite.__init__(self, scene)
@@ -384,7 +401,8 @@ class Enemy(spyral.Sprite):
 	    enemyCollided = True
 	    eNow = time.time()
 
-#spaceship in mini game, it is a time count. student should answer the question before the spaceship goes to right.
+#spaceship in mini game, it is a time count. student should answer the question
+#before the spaceship goes to right.
 class Spaceship(spyral.Sprite):
 
     def __init__(self, scene):
@@ -394,7 +412,7 @@ class Spaceship(spyral.Sprite):
         self.image = spyral.image.Image(filename ="images/spaceship/spaceshipRightmoving.png", size = None)
         self.x = 0
         self.y = HEIGHT/2
-        #does not finish this part yet. 
+        #does not finish this part yet.
         minigame_timeout = False
         spyral.event.register("director.update", self.update)
     def update(self, delta):
@@ -539,7 +557,7 @@ class Question(spyral.Sprite):
         self.lock = True
         self.image=font.render(text)
 
- 
+
     def check_answer(self):
         global minigame_timeout
         global gamestate
@@ -730,6 +748,7 @@ class CaptainMath(spyral.Scene):
         self.mX = 0 #mouse x coordinate
         self.mY = 0 #mouse y coordinate
         self.TutorialCount = 1
+        #Alias for key-events
         left = "left"
         right="right"
         up = "up"
@@ -765,8 +784,6 @@ class CaptainMath(spyral.Scene):
         global gamestate
         global randomMiniGame
         if(gamestate == "StartScreen" and pos[0] >= 500 and pos[0] <= 700 and pos[1] >=340 and pos[1] <= 450 ):
-			#gamestate = "Levelselect"
-            #print "gamestate = Levelselect"
             gamestate = "tutorial"
             print "gamestate = tutorial"
             self.background = spyral.Image("images/tutorials/objectAndKeys.png")
@@ -794,7 +811,7 @@ class CaptainMath(spyral.Scene):
                     n.animate(self.animation_y)
                     delta_iteration -= 50
             elif(self.TutorialCount < 4):
-                self.TutorialCount += 1 
+                self.TutorialCount += 1
                 print "tutorial"
                 if self.TutorialCount == 2:
                     self.background = spyral.Image("images/tutorials/tutAnswerSelection.png")
@@ -835,26 +852,11 @@ class CaptainMath(spyral.Scene):
             randomMiniGame = random.randint(1,4)
             self.background = spyral.Image("images/preMadeImages/miniGameQuestion"+ str(randomMiniGame) +".png")
             self.tempTexts = []
-            '''''
-            world_problem_array = ["Ronnie has 10 dollar,", "the price of an apple is 2 dollar,", 
-            "how many apples she can buy?"]
-            y = 100
-            
-            for i in world_problem_array:
-                self.tempText1 = TempText(self, i, y)
-                self.tempTexts.append(self.tempText1)
-                y += 50
-            '''''
             self.spaceship = Spaceship(self)
             self.question = Question(self)
             gamestate = "minigame"
             print "gamestate = minigame"
             isSpaceShipSoundNeeded = True
-            #pygame.mixer.init()
-            #SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
-            #SSF.play()
-            #SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
-            #SST.play()
         elif(gamestate == "levelCleared"):
             gamestate = "maingame"
             #self.arrow = Arrow(self)
@@ -872,17 +874,6 @@ class CaptainMath(spyral.Scene):
                 if (currentPlanet == 5):
                     gamestate = "end"
                     isGameEnd = True
-            #isSpaceShipSoundNeeded = True
-            #self.spaceship.x = 0
-            #self.spaceship.y = HEIGHT/2
-            #self.question.x = 0
-            #self.TempText1 = TempText(self)
-        #elif (gamestate == "end"):
-        #    self.tempText2 = TempText(self, "YOU SAVED THE uNIVERSE!!", 400)
-		    
-    #def return_clicked(self):
-        
-        
         elif(gamestate == "maingame"):# and self.question.correct == '1'):
             global gamestate
             global isSpaceShipSoundNeeded
@@ -915,13 +906,15 @@ class CaptainMath(spyral.Scene):
             isBlackholeSet = False
             didCollideWithBlackHole = False
             self.background = spyral.Image("images/fullLevels/planet2_Board.png")
+
+            #Plays the main theme for the game
             pygame.mixer.init()
             MainTheme = pygame.mixer.Sound("sounds/mainTheme.wav")
             MainTheme.play()
+
+            #Components and other Sprites of the game
             self.question.x = WIDTH+1
             self.player = Player(self)
-            #self.player.x = 155
-            #self.player.y = 100
             self.Battery1 = Battery(self)
             self.Battery1.x = 0
             self.Battery1.y = 10
@@ -1004,7 +997,7 @@ class CaptainMath(spyral.Scene):
                         w+=1
             #print "aaaaaaaaaaaaaaaaaaaa"
             #for ans in answers:
-                #print ans            
+                #print ans
             # display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
             global QuestionName
             QuestionName = problem.question
@@ -1037,8 +1030,9 @@ class CaptainMath(spyral.Scene):
             self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
             self.asteroid3 = Asteroid(self, indexOfAsteroid[2])
             self.enemy1 = Enemy(self)
-        
 
+    #This is called whe player presses space, the player will shoot a laser
+    #in the direction the player is facing
     def space_clicked(self):
         global isface
         global laserCount
@@ -1048,6 +1042,7 @@ class CaptainMath(spyral.Scene):
 				noAmmo = pygame.mixer.Sound("sounds/emptyGun.wav")
 				noAmmo.play()
 				return
+      #Creates a new laser and plays the corresponding sound
 			self.Laser = Laser(self)
 			pygame.mixer.init()
 			sounda = pygame.mixer.Sound("sounds/lasershot.wav")
@@ -1093,6 +1088,8 @@ class CaptainMath(spyral.Scene):
            size = None)
 					self.Laser.x = self.player3.x-300
 					self.Laser.y = self.player3.y-30
+        #Checks to see if the laser has collided with an asteroid or
+        #collide with enemy
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
@@ -1117,6 +1114,8 @@ class CaptainMath(spyral.Scene):
            size = None)
 					self.Laser.x = self.player3.x-300
 					self.Laser.y = self.player3.y-30
+        #Checks to see if the laser has collided with an asteroid or
+        #collide with enemy
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
@@ -1141,6 +1140,8 @@ class CaptainMath(spyral.Scene):
            size = None)
 					self.Laser.x = self.player3.x+25
 					self.Laser.y = self.player3.y-30
+        #Checks to see if the laser has collided with an asteroid or
+        #collide with enemy
 				self.Laser.collide_meteor(self.asteroid1)
 				self.Laser.collide_meteor(self.asteroid2)
 				self.Laser.collide_meteor(self.asteroid3)
@@ -1152,7 +1153,9 @@ class CaptainMath(spyral.Scene):
 			if(laserCount == 1 and gamestate == "fullLevels"):
 				self.Battery1.kill()
 			laserCount = laserCount - 1
-
+    #Called when a player presses the T key the player will asorb the answer
+    #if it is incorrect the player will die if it is correct the player will
+    #see positive feedback in teh form of a checkmark
     def asorbAnswer(self):
         global ProwNum
         global PcolNum
@@ -1163,6 +1166,7 @@ class CaptainMath(spyral.Scene):
         global isBlackholeSet
         global CorrectAnswersList
         global WrongAnswersList
+        #Checks to see what life the player is currently is on
         if(playerLives == 2):
             self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
         if(playerLives == 1):
@@ -1199,13 +1203,13 @@ class CaptainMath(spyral.Scene):
                         self.Battery1.x = 0
                         self.Battery1.y = 10
                     laserCount+=1
-            
+
             if(CorrectAnswers == 8):
                 ranRowNum = random.randint(0, 4)
                 ranColNum = random.randint(0, 5)
                 self.BlackHole = BlackHole(self)
-                while(BoardStatus[ranRowNum][ranColNum] == -2 or 
-                    BoardStatus[ranRowNum][ranColNum] == -1 or 
+                while(BoardStatus[ranRowNum][ranColNum] == -2 or
+                    BoardStatus[ranRowNum][ranColNum] == -1 or
                     ranRowNum == ProwNum or ranColNum == PcolNum):
                     ranRowNum = random.randint(0, 4)
                     ranColNum = random.randint(0, 5)
@@ -1243,6 +1247,9 @@ class CaptainMath(spyral.Scene):
                 ProwNum = 0
                 PcolNum = 0
                 playerLives-= 1
+    #This is called when the player presses the 'f' key when done
+    #the user will have a force field that will protect the user
+    #for 5 seconds then dissapear 
     def forceFieldOn(self):
         global forceFieldOn
         global forceFieldTime
@@ -1412,7 +1419,7 @@ class CaptainMath(spyral.Scene):
         elif gamestate == "minigame":
 			global SSTheme
 			SSTheme.stop()
-			
+
         elif gamestate == "levelCleared":
             global SSTheme
             SSTheme.stop()
