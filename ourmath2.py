@@ -110,7 +110,7 @@ def generatesFractionsProblems(board_size, difficulty):
 		question = str(termA) + '/' + str(termB)
 
 	elif (difficulty==3):
-		termA= random.randint(6,10)
+		termA= random.randint(4,10)
 		termB= random.randint(4,10)
 		decimal_value = termA/termB
 		question = str(termA) + '/' + str(termB)
@@ -240,18 +240,18 @@ def generatesEqualitiesProblems(board_size, difficulty):
 			random_number = random.randint(5,15)
 			if(question-random_number>=0):
 				#delta = random_number+random.randint(1,10)
-				b = (question-random_number) + random.randint(5,15)
+				b = (question-random_number) + random.randint(1,2)
 				answer = str(random_number) + '+' + str(b)
 			else:
 				#delta = random_number-random.randint(1,10)
-				b = (question-random_number) - random.randint(5,10)
+				b = (question-random_number) - random.randint(1,2)
 				answer = str(random_number) + str(b)
 
 		elif (difficulty==2):
 			random_number = random.randint(10,50)
 			if(question-random_number>=0):
 				#delta = random_number+random.randint(1,10)
-				b = (question-random_number) + random.randint(1,10)
+				b = (question-random_number) + random.randint(1,5)
 				answer = str(random_number) + '+' + str(b)
 			else:
 				#delta = random_number-random.randint(1,10)
