@@ -938,6 +938,7 @@ class CaptainMath(spyral.Scene):
             global ProwNum
             global PcolNum
             global ishowToThemeNeeded
+            global currentPlanet
             self.howToCount = 1
             ProwNum = 0
             PcolNum = 0
@@ -964,7 +965,14 @@ class CaptainMath(spyral.Scene):
             playerLives = 2
             isBlackholeSet = False
             didCollideWithBlackHole = False
-            self.background = spyral.Image("images/fullLevels/planet2_Board.png")
+            if(currentPlanet == 1):
+              self.background = spyral.Image("images/fullLevels/Planet1_Board.png")
+            elif(currentPlanet == 2):
+              self.background = spyral.Image("images/fullLevels/Planet2_Board.png")
+            elif(currentPlanet == 3):
+              self.background = spyral.Image("images/fullLevels/Planet3_Board.png")
+            elif(currentPlanet == 4):
+              self.background = spyral.Image("images/fullLevels/Planet4_Board.png")
 
             #Plays the main theme for the game
             pygame.mixer.init()
