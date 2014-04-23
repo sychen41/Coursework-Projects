@@ -601,7 +601,7 @@ class Question(spyral.Sprite):
             pygame.mixer.init()
             wrong = pygame.mixer.Sound("sounds/buzzerWrong.wav")
             wrong.play()
-            self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
+            self.image=spyral.image.Image(filename = "images/feedback/wrongAlien.png", size = None)
             self.in_answer=0
             print "wrong" + self.correct
     #shash in answer.
