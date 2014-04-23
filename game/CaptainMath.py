@@ -574,7 +574,10 @@ class Question(spyral.Sprite):
         global gamestate
         if self.in_answer == self.answer and self.in_answer_denominator == self.answer_denominator and gamestate == "minigame" and self.lock and minigame_timeout == False:
             #global gamestate
-            gamestate = "maingame"
+            if currentPlanet==4:
+                gamestate = "maingame"
+            else:
+                gamestate = "howtoscene"
             self.x=300
             self.y=200
             self.correct = '1'
@@ -583,7 +586,10 @@ class Question(spyral.Sprite):
             print self.correct
         elif ((self.in_answer != self.answer or self.in_answer_denominator != self.answer_denominator) and gamestate == "minigame" and self.lock and minigame_timeout == False):
             #global gamestate
-            gamestate = "maingame"
+            if currentPlanet==4:
+                gamestate = "maingame"
+            else:
+                gamestate = "howtoscene"
             self.x=300
             self.y=200
             self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
@@ -763,6 +769,8 @@ class CaptainMath(spyral.Scene):
         self.mX = 0 #mouse x coordinate
         self.mY = 0 #mouse y coordinate
         self.TutorialCount = 1
+        self.howToName = "multiple"
+        self.howToCount = 1
         #Alias for key-events
         left = "left"
         right="right"
@@ -855,6 +863,16 @@ class CaptainMath(spyral.Scene):
                     self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 18.0)
                     n.animate(self.animation_y)
                     delta_iteration -= 50
+        elif(gamestate =="howtoscene"):
+            self.background = spyral.Image("images/howTo/"+self.howToName+str(self.howToCount)+".png")
+            self.spaceship.kill()
+            self.question.kill()
+            if(pos[0]<=900 and pos[0]>=690 and pos[1]<788 and pos[0]>693 and self.howToCount<=2):
+                self.howToCount+=1
+                print "next button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate 
+            elif(pos[0]<=1156 and pos[0]>=910 and pos[1]<=788 and pos[0]>=693 or self.howToCount>=3):
+                gamestate = "maingame"
+                print "skip button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate 
         elif(gamestate == "story"):
             global isTransportSoundNeeded
             for i in self.text_objects:
@@ -887,7 +905,11 @@ class CaptainMath(spyral.Scene):
                 isTransportSoundNeeded = True
                 currentLevel = 1
                 currentPlanet+=1
-                if (currentPlanet == 5):
+                if currentPlanet == 2:
+                    self.howToName = "EquivFrac"
+                elif currentPlanet == 3:
+                    self.howToName ="eq"
+                elif (currentPlanet == 5):
                     gamestate = "end"
                     isGameEnd = True
         # the main stage of the game
@@ -897,14 +919,13 @@ class CaptainMath(spyral.Scene):
             global isSpaceShipSoundNeeded
             global ProwNum
             global PcolNum
+            self.howToCount = 1
             ProwNum = 0
             PcolNum = 0
             print "currentLevel: " + str(currentLevel)
             print "currentPlanet: " + str(currentPlanet)
             for i in self.tempTexts:
                 i.kill()
-            self.spaceship.kill()
-            self.question.kill()
             #self.arrow.kill()
             global SST
             global SSF
