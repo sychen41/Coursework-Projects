@@ -579,14 +579,16 @@ class Question(spyral.Sprite):
                 gamestate = "maingame"
             else:
                 gamestate = "howtoscene"
-            self.x=300
-            self.y=200
+            self.x=100
+            self.y=50
             self.correct = '1'
             pygame.mixer.stop()
             pygame.mixer.init()
             correct = pygame.mixer.Sound("sounds/positiveCorrect.wav")
             correct.play()
-            self.image=spyral.image.Image(filename = "images/feedback/Correct.png", size = None)
+            #self.image=spyral.image.Image(filename = "images/feedback/Correct.png", size = None)
+            self.image=spyral.image.Image(filename = "images/feedback/cuteAlienCheer.png", size = None)
+
             self.in_answer=0
             print self.correct
         elif ((self.in_answer != self.answer or self.in_answer_denominator != self.answer_denominator) and gamestate == "minigame" and self.lock and minigame_timeout == False):
