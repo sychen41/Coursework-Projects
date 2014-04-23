@@ -50,6 +50,7 @@ currentLevel = 1
 currentPlanet = 1
 isTransportSoundNeeded = False
 isGameEnd = False
+ishowToThemeNeeded = True
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -581,6 +582,10 @@ class Question(spyral.Sprite):
             self.x=300
             self.y=200
             self.correct = '1'
+            pygame.mixer.stop()
+            pygame.mixer.init()
+            correct = pygame.mixer.Sound("sounds/positiveCorrect.wav")
+            correct.play()
             self.image=spyral.image.Image(filename = "images/feedback/Correct.png", size = None)
             self.in_answer=0
             print self.correct
@@ -592,6 +597,10 @@ class Question(spyral.Sprite):
                 gamestate = "howtoscene"
             self.x=300
             self.y=200
+            pygame.mixer.stop()
+            pygame.mixer.init()
+            wrong = pygame.mixer.Sound("sounds/buzzerWrong.wav")
+            wrong.play()
             self.image=spyral.image.Image(filename = "images/feedback/wrong.png", size = None)
             self.in_answer=0
             print "wrong" + self.correct
@@ -765,6 +774,7 @@ class CaptainMath(spyral.Scene):
         global timeStart
         global ProwNum
         global PcolNum
+        global ishowToThemeNeeded
         timeStart = time.time()
         self.mX = 0 #mouse x coordinate
         self.mY = 0 #mouse y coordinate
@@ -864,15 +874,22 @@ class CaptainMath(spyral.Scene):
                     n.animate(self.animation_y)
                     delta_iteration -= 50
         elif(gamestate =="howtoscene"):
+            #where howtoscene happens
             self.background = spyral.Image("images/howTo/"+self.howToName+str(self.howToCount)+".png")
             self.spaceship.kill()
             self.question.kill()
+            pygame.mixer.init()
+            howToTheme = pygame.mixer.Sound("sounds/howToTheme.wav")
+            if(ishowToThemeNeeded == True):
+              pygame.mixer.stop()
+              howToTheme.play()
+              ishowToThemeNeeded = False
             if(pos[0]<=900 and pos[0]>=690 and pos[1]<788 and pos[0]>693 and self.howToCount<=2):
                 self.howToCount+=1
-                print "next button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate 
+                print "next button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate
             elif(pos[0]<=1156 and pos[0]>=910 and pos[1]<=788 and pos[0]>=693 or self.howToCount>=3):
                 gamestate = "maingame"
-                print "skip button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate 
+                print "skip button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate
         elif(gamestate == "story"):
             global isTransportSoundNeeded
             for i in self.text_objects:
@@ -883,7 +900,8 @@ class CaptainMath(spyral.Scene):
             #self.arrow = Arrow(self)
         elif(gamestate == "Levelselect"):# and self.arrow.level <=4):
             randomMiniGame = random.randint(1,4)
-            self.background = spyral.Image("images/preMadeImages/miniGameQuestion"+ str(randomMiniGame) +".png")
+            self.background = spyral.Image("images/preMadeImages/miniGameQuestion"+
+            str(randomMiniGame) +".png")
             self.tempTexts = []
             self.spaceship = Spaceship(self)
             self.question = Question(self)
@@ -919,9 +937,11 @@ class CaptainMath(spyral.Scene):
             global isSpaceShipSoundNeeded
             global ProwNum
             global PcolNum
+            global ishowToThemeNeeded
             self.howToCount = 1
             ProwNum = 0
             PcolNum = 0
+            ishowToThemeNeeded = True
             print "currentLevel: " + str(currentLevel)
             print "currentPlanet: " + str(currentPlanet)
             for i in self.tempTexts:
@@ -979,7 +999,7 @@ class CaptainMath(spyral.Scene):
                 problem = generatesEqualitiesProblems(27, currentLevel)
             elif (currentPlanet == 4): # the 4th planet math is subject to change
                 problem = generatesMultiplesProblems(27, currentLevel)
-            
+
             # The following block makes right and wrong answers and asteroids
             # randomly displayed on the board.
             # init array to contain indexes of right answers
@@ -1283,7 +1303,7 @@ class CaptainMath(spyral.Scene):
                 playerLives-= 1
     #This is called when the player presses the 'f' key when done
     #the user will have a force field that will protect the user
-    #for 5 seconds then dissapear 
+    #for 5 seconds then dissapear
     def forceFieldOn(self):
         global forceFieldOn
         global forceFieldTime
