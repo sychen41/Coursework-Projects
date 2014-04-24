@@ -1237,15 +1237,15 @@ class CaptainMath(spyral.Scene):
             self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
         if(playerLives == 0):
             self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
-        pygame.mixer.init()
-        FF = pygame.mixer.Sound("sounds/ohYeah.wav")
-        FF.play()
         time.sleep(0.2)
         if(isface == "right"):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
         else:
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
         if (BoardStatus[ProwNum][PcolNum] == -2):
+            pygame.mixer.init()
+            FF = pygame.mixer.Sound("sounds/ohYeah.wav")
+            FF.play()
             self.AnswerCorrect = AnswerCorrect(self)
             self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
             self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
