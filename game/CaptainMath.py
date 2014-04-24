@@ -1244,7 +1244,7 @@ class CaptainMath(spyral.Scene):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
         if (BoardStatus[ProwNum][PcolNum] == -2):
             pygame.mixer.init()
-            FF = pygame.mixer.Sound("sounds/ohYeah.wav")
+            FF = pygame.mixer.Sound("sounds/absorbEnergyFX.wav")
             FF.play()
             self.AnswerCorrect = AnswerCorrect(self)
             self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
