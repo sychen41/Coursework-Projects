@@ -978,7 +978,7 @@ class CaptainMath(spyral.Scene):
 
             #Plays the main theme for the game
             pygame.mixer.init()
-            MainTheme = pygame.mixer.Sound("sounds/mainTheme.wav")
+            MainTheme = pygame.mixer.Sound("sounds/mainTheme2.wav")
             MainTheme.play()
 
             #Components and other Sprites of the game
