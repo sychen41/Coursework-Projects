@@ -771,7 +771,7 @@ class CaptainMath(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.background = spyral.Image("images/fullLevels/planet2_Board.png")
+        #self.background = spyral.Image("images/fullLevels/planet2_Board.png")
         global isface
         global timeStart
         global ProwNum
