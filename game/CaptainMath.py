@@ -441,7 +441,7 @@ class Spaceship(spyral.Sprite):
                 self.x +=2
             else:
                 minigame_timeout = True
-                gamestate = "maingame"
+                gamestate = "howtoscene"
         else:
             self.x = WIDTH + 100
 
