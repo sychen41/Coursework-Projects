@@ -73,9 +73,9 @@ class Laser(spyral.Sprite):
         if self.collide_sprite(Sprite):
             Sprite.kill()
 	    pygame.mixer.init()
-	    asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
         if(SoundOn):
-	       asteroidExplode.play()
+            asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")     
+            asteroidExplode.play()
     def collide_enemy(self, Sprite):
         global isEnemyDead
         global EnemyDeadTime
@@ -89,8 +89,8 @@ class Laser(spyral.Sprite):
             rowNum = 4
             colNum = 5
         pygame.mixer.init()
-        asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
         if(SoundOn):
+            asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
             asteroidExplode.play()
 
 #Main Player Class for the game
@@ -1238,7 +1238,7 @@ class CaptainMath(spyral.Scene):
             pygame.mixer.init()
             sounda = pygame.mixer.Sound("sounds/lasershot.wav")
             if(SoundOn):
-			    sounda.play()
+                sounda.play()
             if(isface == "right" and forceFieldOn == False and gamestate == "fullLevels"):
                 if(playerLives == 2):
                     self.player.image = spyral.image.Image(filename =
