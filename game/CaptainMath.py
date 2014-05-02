@@ -974,10 +974,10 @@ class CaptainMath(spyral.Scene):
                 if(SoundOn):
                     howToTheme.play()
                 ishowToThemeNeeded = False
-            if(pos[0]<=900 and pos[0]>=690 and pos[1]<788 and pos[0]>693 and self.howToCount<=2):
+            if(pos[0]<=1115 and pos[0]>=843 and pos[1]<740 and pos[0]>652 and self.howToCount<=2):
                 self.howToCount+=1
                 print "next button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate
-            elif(pos[0]<=1156 and pos[0]>=910 and pos[1]<=788 and pos[0]>=693 or self.howToCount>=3):
+            elif((pos[0]<=819 and pos[0]>=586 and pos[1]<=740 and pos[0]>=652 and self.howToCount ==1) or self.howToCount>=3):
                 gamestate = "maingame"
                 print "skip button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate
         ###################### 
