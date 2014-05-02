@@ -52,7 +52,6 @@ isTransportSoundNeeded = False
 isGameEnd = False
 ishowToThemeNeeded = True
 isfreeMode = False
-howToName = "multiple"
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -469,29 +468,16 @@ class Arrow(spyral.Sprite):
         spyral.event.register("input.keyboard.up.left", self.stop)
         spyral.event.register("input.keyboard.down.right", self.next_level)
         spyral.event.register("input.keyboard.up.right", self.stop)
-        #spyral.event.register("input.keyboard.down.s", self.select_level)
-        spyral.event.register("input.keyboard.down.s", self.planet_selected)
+        spyral.event.register("input.keyboard.down.s", self.select_level)
+        spyral.event.register("input.keyboard.down.return", self.planet_selected)
 
     def planet_selected(self):
         print "planet is : " + str(self.level)
-        global currentPlanet
-        global gamestate
-        currentPlanet = self.level
-        global howToName
-        if currentPlanet == 1:
-            howToName = "multiple"
-        elif currentPlanet == 2:
-            howToName = "EquivFrac"
-        elif currentPlanet == 3:
-            howToName ="eq"
-        gamestate = "planetConfirm"
-        print "gamestate: " + gamestate
 
-
-    #def select_level(self):
-     #   if self.level <=4:
-      #      gamestate = "fullLevels"
-	   # print "fullLevels"
+    def select_level(self):
+        if self.level <=4:
+	    gamestate = "fullLevels"
+	    print "fullLevels"
     #use left and right key to select level.
     def pre_level(self):
         if self.level >= 2:
@@ -800,8 +786,7 @@ class CaptainMath(spyral.Scene):
         self.mX = 0 #mouse x coordinate
         self.mY = 0 #mouse y coordinate
         self.TutorialCount = 1
-        global howToName
-        howToName = "multiple"
+        self.howToName = "multiple"
         self.howToCount = 1
         #Alias for key-events
         left = "left"
@@ -838,9 +823,6 @@ class CaptainMath(spyral.Scene):
         print pos, button
         global gamestate
         global randomMiniGame
-        global isfreeMode
-        global currentPlanet
-        global currentLevel
         if(gamestate == "StartScreen" and pos[0] >= 500 and pos[0] <= 700 and pos[1] >=340 and pos[1] <= 450 ):
             gamestate = "tutorial"
             print "gamestate = tutorial"
@@ -900,8 +882,7 @@ class CaptainMath(spyral.Scene):
                     delta_iteration -= 50
         elif(gamestate =="howtoscene"):
             #where howtoscene happens
-            global howToName
-            self.background = spyral.Image("images/howTo/"+howToName+str(self.howToCount)+".png")
+            self.background = spyral.Image("images/howTo/"+self.howToName+str(self.howToCount)+".png")
             self.spaceship.kill()
             self.question.kill()
             pygame.mixer.init()
@@ -927,23 +908,21 @@ class CaptainMath(spyral.Scene):
             isTransportSoundNeeded = True
             if (self.mY < HEIGHT/2):
                 #gamestate = "freeMode"
-                print "choice is: freeMode"
+                print "gamestate = freeMode"
                 global isfreeMode
                 isfreeMode = True
                 gamestate = "Levelselect"
-                print "gamestate = currentLevel"
+                print "gamestate = Levelselect"
                 self.arrow = Arrow(self) 
             else:
                 #gamestate = "storyMode"
-                print "choice is: storyMode"
+                print "gamestate = storyMode"
                 global isfreeMode
                 isfreeMode = False
                 gamestate = "Levelselect"
                 print "gamestate = Levelselect"
-                currentPlanet = 1
-                currentLevel = 1
         ######################    
-        elif((gamestate == "Levelselect" and isfreeMode == False) or gamestate == "planetConfirm"):# and self.arrow.level <=4):
+        elif(gamestate == "Levelselect"):# and self.arrow.level <=4):
             randomMiniGame = random.randint(1,4)
             self.background = spyral.Image("images/preMadeImages/miniGameQuestion"+
             str(randomMiniGame) +".png")
@@ -953,38 +932,32 @@ class CaptainMath(spyral.Scene):
             gamestate = "minigame"
             print "gamestate = minigame"
             isSpaceShipSoundNeeded = True
-
         elif(gamestate == "levelCleared"):
-            self.spaceship.minigame_timeout = False
-            global isTransportSoundNeeded
             if isfreeMode == False:
                 gamestate = "maingame"
                 #self.arrow = Arrow(self)
+                global currentLevel
+                global currentPlanet
+                global isTransportSoundNeeded
                 global isGameEnd
+                self.spaceship.minigame_timeout = False
                 currentLevel+=1
                 # each planet has three levels of difficulty
-                if (currentLevel>3): 
+                if (currentLevel>1): ########################### 1 for test, should be 3
                     gamestate = "Levelselect"
                     isTransportSoundNeeded = True
                     currentLevel = 1
                     currentPlanet+=1
                     if currentPlanet == 2:
-                        howToName = "EquivFrac"
+                        self.howToName = "EquivFrac"
                     elif currentPlanet == 3:
-                        howToName ="eq"
+                        self.howToName ="eq"
                     elif (currentPlanet == 5):
                         gamestate = "end"
                         isGameEnd = True
             else:
-                gamestate = "maingame"
-                currentLevel+=1
-                # each planet has three levels of difficulty
-                if (currentLevel>3): 
-                    gamestate = "Levelselect"
-                    isTransportSoundNeeded = True
-                    currentLevel = 1
-                    gamestate = "FreeOrStory"
-                    self.background = spyral.Image("images/Backgrounds/FreeOrStory.jpg")
+                gamestate = "FreeOrStory"
+                self.background = spyral.Image("images/Backgrounds/FreeOrStory.jpg")
         # the main stage of the game
         elif(gamestate == "maingame"):
             # reset every necessary variables for a new level and new planet
@@ -1442,8 +1415,6 @@ class CaptainMath(spyral.Scene):
         global CorrectAnswersList
         global isTransportSoundNeeded
         global isGameEnd
-        global isfreeMode
-        global currentPlanet
         #print "how many correct answers?? " , CorrectAnswers
         #change background and music when gamestate changed.
         if gamestate == "StartScreen":
@@ -1455,35 +1426,23 @@ class CaptainMath(spyral.Scene):
 				gameStarted = True
         elif gamestate == "Levelselect":
             if (currentPlanet == 1):
-                if (isfreeMode == False):
-                    self.background = spyral.Image("images/preMadeImages/PlanetMap.png")
-                else:
-                    self.background = spyral.Image("images/preMadeImages/PlanetMapForChoosing.png")
+                self.background = spyral.Image("images/preMadeImages/PlanetMap.png")
             elif (currentPlanet == 2):
-                if (isfreeMode == False):
-                    self.background = spyral.Image("images/preMadeImages/goingToFractoidPlanet.png")
-                else:
-                    self.background = spyral.Image("images/preMadeImages/PlanetMapForChoosing.png")
+                self.background = spyral.Image("images/preMadeImages/goingToFractoidPlanet.png")
                 if(isTransportSoundNeeded == True):
                     pygame.mixer.init()
                     nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.wav")
                     nextPlanetSound.play()
                     isTransportSoundNeeded = False
             elif (currentPlanet == 3):
-                if (isfreeMode == False):
-                    self.background = spyral.Image("images/preMadeImages/goingToAlgebraXPlanet.png")
-                else:
-                    self.background = spyral.Image("images/preMadeImages/PlanetMapForChoosing.png")
+                self.background = spyral.Image("images/preMadeImages/goingToAlgebraXPlanet.png")
                 if(isTransportSoundNeeded == True):
                     pygame.mixer.init()
                     nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.wav")
                     nextPlanetSound.play()
                     isTransportSoundNeeded = False
             elif (currentPlanet == 4):
-                if (isfreeMode == False):
-                    self.background = spyral.Image("images/preMadeImages/goingToZardashPlanet.png")
-                else:
-                    self.background = spyral.Image("images/preMadeImages/PlanetMapForChoosing.png")
+                self.background = spyral.Image("images/preMadeImages/goingToZardashPlanet.png")
                 if(isTransportSoundNeeded == True):
                     pygame.mixer.init()
                     nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.wav")
@@ -1552,15 +1511,8 @@ class CaptainMath(spyral.Scene):
                    self.player.image = spyral.image.Image(filename =
                     "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png",
                      size = None)
-        elif gamestate == "planetConfirm":
-            if (currentPlanet == 1):
-                self.background = spyral.Image("images/Backgrounds/planetConfirm1.jpg")
-            elif (currentPlanet == 2):
-                self.background = spyral.Image("images/Backgrounds/planetConfirm2.jpg")
-            elif (currentPlanet == 3):
-                self.background = spyral.Image("images/Backgrounds/planetConfirm3.jpg")
-            elif (currentPlanet == 4):
-                self.background = spyral.Image("images/Backgrounds/planetConfirm4.jpg")
+
+
         elif gamestate == "minigame":
 			global SSTheme
 			SSTheme.stop()
