@@ -469,22 +469,25 @@ class OptionMark(spyral.Sprite):
         spyral.Sprite.__init__(self, scene)
         self.image = spyral.image.Image(filename ="images/misc/marked.png", size = None)
         global SoundOn
-        SoundOn = True
         self.x = 310
         self.y = 200
         self.level = 1
-        #spyral.event.register("director.update", self.update)
+        spyral.event.register("director.update", self.update)
         spyral.event.register("input.mouse.down.left", self.down_left)
     def down_left(self,pos):
         global SoundOn
         if(gamestate == "option" and pos[0]>310 and pos[0]<460 and pos[1]>200 and pos[1]<350 and SoundOn):
             SoundOn = False
-            self.image = spyral.image.Image(filename ="images/misc/unmarked.png", size = None)
             print "Sound : " + str(SoundOn)
         elif(gamestate == "option" and pos[0]>310 and pos[0]<460 and pos[1]>200 and pos[1]<350 and SoundOn == False):
             SoundOn = True
             print "Sound : " + str(SoundOn)
+    def update(self):
+        global SoundOn
+        if(SoundOn):
             self.image = spyral.image.Image(filename ="images/misc/marked.png", size = None)
+        else:
+            self.image = spyral.image.Image(filename ="images/misc/unmarked.png", size = None)
             
 
 
