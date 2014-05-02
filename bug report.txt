@@ -35,4 +35,4 @@ to the last cell in the right-hand side of the line you killed the enemy.
 
 #12: Player can't pass throught asteroid when you destroy it.
 
-#13: Player can't shoot
+#13: [fixed]Player can't shoot
