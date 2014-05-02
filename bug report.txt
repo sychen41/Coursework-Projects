@@ -34,3 +34,5 @@ to the last cell in the right-hand side of the line you killed the enemy.
 #11: [fixed] Player cannot be killed in level2
 
 #12: Player can't pass throught asteroid when you destroy it.
+
+#13: Player can't shoot
