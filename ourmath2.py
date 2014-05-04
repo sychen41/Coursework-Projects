@@ -6,7 +6,7 @@ import random
 	
 #This method generates problems such: "Find multiples of 5"
 #returns a Problem object
-def generatesMultiplesProblems(board_size, difficulty):
+def generatesMultiplesProblems(board_size, difficulty, avoid = 0):
 	quantity_right = 0
 	quantity_wrong = 0
 	if (difficulty==1):
@@ -26,16 +26,20 @@ def generatesMultiplesProblems(board_size, difficulty):
 
 	#Generates a number X for the question: "Find multiples of X"
 	if (difficulty==1):
-		random.seed()
-		question = random.randint(4,9)
+		question = avoid
+		while (question==avoid):
+			random.seed()
+			question = random.randint(4,9)
 
 	elif (difficulty==2):
-		random.seed()
-		question = random.randint(5,11)
+		question = avoid
+		while (question==avoid):
+			random.seed()
+			question = random.randint(5,11)
 
 	elif (difficulty==3):
-		question = 10
-		while (question==10):
+		question = avoid
+		while (question==10 or question==avoid):
 			random.seed()
 			question = random.randint(6,12)
 
@@ -202,7 +206,7 @@ def generatesFractionsProblems(board_size, difficulty):
 	return problem
 
 #This method generates problems such: "Find operations equal to 64"
-def generatesEqualitiesProblems(board_size, difficulty):
+def generatesEqualitiesProblems(board_size, difficulty, avoid = 0):
 	quantity_right = 0
 	quantity_wrong = 0
 	if (difficulty==1):
@@ -222,16 +226,22 @@ def generatesEqualitiesProblems(board_size, difficulty):
 
 	#Generates a number X for the question: "Find equalities equal to X"
 	if (difficulty==1):
-		random.seed()
-		question = random.randint(10,20)
+		question = avoid
+		while (question==avoid):
+			random.seed()
+			question = random.randint(10,20)
 
 	elif (difficulty==2):
-		random.seed()
-		question = random.randint(20,60)
+		question = avoid
+		while (question==avoid):
+			random.seed()
+			question = random.randint(20,60)
 
 	elif (difficulty==3):
-		random.seed()
-		question = random.randint(40,80)
+		question = avoid
+		while (question==avoid):
+			random.seed()
+			question = random.randint(40,80)
 
 	#Instantiates an object "Problem"
 	problem = Problem(board_size, question, quantity_right, quantity_wrong)
