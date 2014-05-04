@@ -107,8 +107,6 @@ class Player(spyral.Sprite):
         global PcolNum
         global isplayerDead
         global gamestate
-        global WrongAnswersList
-        WrongAnswersList = list()
         playerColor = "red"
         isplayerDead = False
         #Checks to see what color player has been selected
@@ -1024,6 +1022,8 @@ class CaptainMath(spyral.Scene):
             isSpaceShipSoundNeeded = True
         #seancheckthisout
         elif(gamestate == "levelCleared"):
+            global WrongAnswersList
+            del WrongAnswersList[:]
             self.spaceship.minigame_timeout = False
             global isTransportSoundNeeded
             if isfreeMode == False:
@@ -1069,12 +1069,14 @@ class CaptainMath(spyral.Scene):
             global colNum
             rowNum = 4
             colNum = 5
+
             global ishowToThemeNeeded
             global currentPlanet
             self.howToCount = 1
             ishowToThemeNeeded = True
             print "currentLevel: " + str(currentLevel)
             print "currentPlanet: " + str(currentPlanet)
+            print "Current wrong answers: " , len(WrongAnswersList)
             for i in self.tempTexts:
                 i.kill()
             if (isfreeMode == True):
@@ -1526,6 +1528,7 @@ class CaptainMath(spyral.Scene):
         global SoundOn
         #print "how many correct answers?? " , CorrectAnswers
         #change background and music when gamestate changed.
+        print "Current wrong answers: " , len(WrongAnswersList)
         if gamestate == "StartScreen":
             self.background = spyral.Image("images/entireScenes/Begin.png")
             if(gameStarted == False):
