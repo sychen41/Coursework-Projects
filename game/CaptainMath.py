@@ -907,22 +907,25 @@ class CaptainMath(spyral.Scene):
         global currentPlanet
         global currentLevel
         global SoundOn
+        global gameStarted
         if(gamestate == "StartScreen"):
-            if(pos[0] >= 500 and pos[0] <= 700 and pos[1] >=340 and pos[1] <= 450 ):
+            if(pos[0] >= 463 and pos[0] <= 746 and pos[1] >=332 and pos[1] <= 471 ):
                 gamestate = "tutorial"
                 print "gamestate = tutorial"
                 self.background = spyral.Image("images/tutorials/objectAndKeys.png")
-            elif(pos[0] >= 500 and pos[0] <= 700 and pos[1] >=450 and pos[1] <= 550 ):
+            elif(pos[0] >= 463 and pos[0] <= 744 and pos[1] >=497 and pos[1] <= 639 ):
                 gamestate = "option"
                 self.optionmark = OptionMark(self)
                 self.background =spyral.Image("images/preMadeImages/OptionScreen.png")
         elif(gamestate == "option"):
             if(pos[0] >= 913 and pos[0] <= 1086 and pos[1] >=677 and pos[1] <= 751 ):
                 gamestate = "StartScreen"
+                pygame.mixer.stop()
+                gameStarted = False
                 self.optionmark.kill()
 
         elif(gamestate =="tutorial"):
-            if( self.TutorialCount == 1 and pos[0] >= 20 and pos[0] <= 267 and pos[1]<=782 and pos[1] >=700):
+            if( self.TutorialCount == 1 and pos[0] >= 1038 and pos[0] <= 1170 and pos[1]<=765 and pos[1] >=711):
                 gamestate = "story"
                 print "gamestate = story"
                 text_array = ["Captain Mathematica,", "comes from a distant",
@@ -1559,10 +1562,7 @@ class CaptainMath(spyral.Scene):
                 SSTheme = pygame.mixer.Sound("sounds/startScreenTheme.wav")
                 if(SoundOn):
                     SSTheme.play()
-                    gameStarted = True
-                else:
-                    SSTheme.stop()
-                    gameStarted = True
+                gameStarted = True
 
         elif gamestate == "FreeOrStory":
             self.background = spyral.Image("images/Backgrounds/FreeOrStory.jpg")
