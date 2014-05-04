@@ -54,6 +54,10 @@ isGameEnd = False
 ishowToThemeNeeded = True
 isfreeMode = False
 howToName = "multiple"
+#global var used to save last number used as question for Multiples problems
+last_multiple_number = 0
+last_equality_number = 0
+
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -1110,6 +1114,9 @@ class CaptainMath(spyral.Scene):
             elif(currentPlanet == 4):
               self.background = spyral.Image("images/fullLevels/Planet4_Board.png")
 
+            global last_multiple_number
+            global last_equality_number
+
             #Plays the main theme for the game
             pygame.mixer.init()
             MainTheme = pygame.mixer.Sound("sounds/mainTheme2.wav")
@@ -1136,12 +1143,19 @@ class CaptainMath(spyral.Scene):
             self.spaceShipLife2.y = 0
             #generate math problem (27 answers needed, because there are 3 asteroids)
             # there are four different math problems for four planets
+
+
+
             if (currentPlanet == 1):
-                problem = generatesMultiplesProblems(27, currentLevel)
+                #problem = generatesMultiplesProblems(27, currentLevel)
+                problem = generatesMultiplesProblems(27, currentLevel, last_multiple_number)
+                last_multiple_number = int(problem.question)
             elif (currentPlanet == 2):
                 problem = generatesFractionsProblems(27, currentLevel)
             elif (currentPlanet == 3):
-                problem = generatesEqualitiesProblems(27, currentLevel)
+                #problem = generatesEqualitiesProblems(27, currentLevel)
+                problem = generatesEqualitiesProblems(27, currentLevel, last_equality_number)
+                last_equality_number = int(problem.question)
             elif (currentPlanet == 4): # the 4th planet math is subject to change
                 problem = generatesMultiplesProblems(27, currentLevel)
 
