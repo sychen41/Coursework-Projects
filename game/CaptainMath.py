@@ -45,6 +45,7 @@ answers = [None]*30
 QuestionName = 0
 CorrectAnswersList = list()
 WrongAnswersList = list()
+wrongAns = 0
 isSpaceShipSoundNeeded = False
 currentLevel = 1
 currentPlanet = 1
@@ -998,7 +999,6 @@ class CaptainMath(spyral.Scene):
                 global isfreeMode
                 isfreeMode = True
                 gamestate = "Levelselect"
-                print "gamestate = currentLevel"
                 self.arrow = Arrow(self)
             else:
                 #gamestate = "storyMode"
@@ -1006,7 +1006,6 @@ class CaptainMath(spyral.Scene):
                 global isfreeMode
                 isfreeMode = False
                 gamestate = "Levelselect"
-                print "gamestate = Levelselect"
                 currentPlanet = 1
                 currentLevel = 1
         ######################
@@ -1023,8 +1022,12 @@ class CaptainMath(spyral.Scene):
         #seancheckthisout
         elif(gamestate == "levelCleared"):
             global WrongAnswersList
+            global wrongAns
+            wrongAns = len(WrongAnswersList)
             del WrongAnswersList[:]
+            gamestate = "starFeedback"
             self.spaceship.minigame_timeout = False
+        elif (gamestate == "starFeedback"):
             global isTransportSoundNeeded
             if isfreeMode == False:
                 gamestate = "maingame"
@@ -1528,7 +1531,7 @@ class CaptainMath(spyral.Scene):
         global SoundOn
         #print "how many correct answers?? " , CorrectAnswers
         #change background and music when gamestate changed.
-        print "Current wrong answers: " , len(WrongAnswersList)
+        #print "Current wrong answers: " , len(WrongAnswersList)
         if gamestate == "StartScreen":
             self.background = spyral.Image("images/entireScenes/Begin.png")
             if(gameStarted == False):
@@ -1665,6 +1668,14 @@ class CaptainMath(spyral.Scene):
             self.background = spyral.Image("images/entireScenes/levelClearedPlanetDestruction.png")
             #self.background = spyral.Image("images/feedback/1starfeedback.png")
         #story screen
+        elif gamestate == "starFeedback":
+            if wrongAns == 2:
+                self.background = spyral.Image("images/feedback/1starfeedback.png")
+            elif wrongAns == 1:
+                self.background = spyral.Image("images/feedback/2starfeedback.png")
+            elif wrongAns == 0:
+                self.background = spyral.Image("images/feedback/3starfeedback.png")
+
         elif gamestate == "story":
             self.background = spyral.Image("images/Backgrounds/story_bg.jpg")
 
