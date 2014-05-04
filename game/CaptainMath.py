@@ -58,6 +58,11 @@ howToName = "multiple"
 last_multiple_number = 0
 last_equality_number = 0
 
+#global start_time and final_time for the stages
+#used to evaluate player performance and give feedback with starts
+start_time = 0
+final_time = 0
+
 class font(spyral.Sprite):
     def __init__(self, scene, font, text):
         spyral.Sprite.__init__(self, scene)
@@ -1062,6 +1067,8 @@ class CaptainMath(spyral.Scene):
                     self.background = spyral.Image("images/Backgrounds/FreeOrStory.jpg")
         # the main stage of the game
         elif(gamestate == "maingame"):
+            # stage Start_time collected
+
             # reset every necessary variables for a new level and new planet
             global gamestate
             global isSpaceShipSoundNeeded
