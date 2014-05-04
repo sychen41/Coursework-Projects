@@ -26,15 +26,18 @@ def generatesMultiplesProblems(board_size, difficulty):
 
 	#Generates a number X for the question: "Find multiples of X"
 	if (difficulty==1):
+		random.seed()
 		question = random.randint(4,9)
 
 	elif (difficulty==2):
-		question = random.randint(5,12)
+		random.seed()
+		question = random.randint(5,11)
 
 	elif (difficulty==3):
 		question = 10
 		while (question==10):
-			question = random.randint(6,13)
+			random.seed()
+			question = random.randint(6,12)
 
 	#Instantiates an object "Problem"
 	problem = Problem(board_size, question, quantity_right, quantity_wrong)
@@ -42,10 +45,13 @@ def generatesMultiplesProblems(board_size, difficulty):
 	#Generates N correct answers to the question
 	for i in range (int(quantity_right)):
 		if (difficulty==1):
+			random.seed()
 			random_number = random.randint(1,3)
 		elif (difficulty==2):
+			random.seed()
 			random_number = random.randint(2,5)
 		elif (difficulty==3):
+			random.seed()
 			random_number = random.randint(3,7)
 
 		answer = question * random_number
@@ -59,11 +65,14 @@ def generatesMultiplesProblems(board_size, difficulty):
 		x = 0
 		while(its_ok == False):
 			if (difficulty==1):
-				x = (question*random.randint(1,3))+random.randint(6,20)
+				random.seed()
+				x = (question*random.randint(1,3))+random.randint(6,15)
 			elif (difficulty==2):
+				random.seed()
 				x = (question*random.randint(1,5))+random.randint(3,10)
 			elif (difficulty==3):
-				x = (question*random.randint(3,5))+random.randint(1,4)
+				random.seed()
+				x = (question*random.randint(3,7))+random.randint(1,4)
 			if (x % question != 0):
 				its_ok = True
 				problem.wrong_answers.append(x)
@@ -98,19 +107,25 @@ def generatesFractionsProblems(board_size, difficulty):
 
 	#generates question like "equivalent to a/b"
 	if (difficulty==1):
-		termA= random.randint(2,6)
-		termB= random.randint(2,7)
+		random.seed()
+		termA= random.randint(2,4)
+		random.seed()
+		termB= random.randint(2,5)
 		decimal_value = termA/termB
 		question = str(termA) + '/' + str(termB)
 
 	elif (difficulty==2):
-		termA= random.randint(4,10)
-		termB= random.randint(4,10)
+		random.seed()
+		termA= random.randint(4,7)
+		random.seed()
+		termB= random.randint(4,7)
 		decimal_value = termA/termB
 		question = str(termA) + '/' + str(termB)
 
 	elif (difficulty==3):
+		random.seed()
 		termA= random.randint(4,10)
+		random.seed()
 		termB= random.randint(4,10)
 		decimal_value = termA/termB
 		question = str(termA) + '/' + str(termB)
@@ -124,17 +139,20 @@ def generatesFractionsProblems(board_size, difficulty):
 		equivalent_b = 0
 
 		if (difficulty==1):
+			random.seed()
 			factor = random.randint(1,5)
 			equivalent_a = termA*factor
 			equivalent_b = termB*factor
 
 		elif (difficulty==2):
-			factor = random.randint(2,6)
+			random.seed()
+			factor = random.randint(2,5)
 			equivalent_a = termA*factor
 			equivalent_b = termB*factor
 
 		elif (difficulty==3):
-			factor = random.randint(4,7)
+			random.seed()
+			factor = random.randint(5,8)
 			equivalent_a = termA*factor
 			equivalent_b = termB*factor
 
@@ -148,25 +166,31 @@ def generatesFractionsProblems(board_size, difficulty):
 		answer = ''
 		while(its_ok == False):
 			if (difficulty==1):
+				random.seed()
 				factor = random.randint(1,3)
 				wrong_a = termA*factor+random.randint(1,10)
+				random.seed()
 				factor = random.randint(1,3)
 				wrong_b = termB*factor
 				x = wrong_a/wrong_b
 				answer = str(wrong_a) + '/' + str(wrong_b)
 
 			elif (difficulty==2):
-				factor = random.randint(1,3)
+				random.seed()
+				factor = random.randint(2,4)
 				wrong_a = termA*factor+random.randint(1,5)
-				factor = random.randint(1,3)
+				random.seed()
+				factor = random.randint(2,4)
 				wrong_b = termB*factor
 				x = wrong_a/wrong_b
 				answer = str(wrong_a) + '/' + str(wrong_b)
 
 			elif (difficulty==3):
-				factor = random.randint(2,5)
+				random.seed()
+				factor = random.randint(1,5)
 				wrong_a = termA*factor+random.randint(1,4)
-				factor = random.randint(2,5)
+				random.seed()
+				factor = random.randint(1,5)
 				wrong_b = termB*factor
 				x = wrong_a/wrong_b
 				answer = str(wrong_a) + '/' + str(wrong_b)
@@ -198,12 +222,15 @@ def generatesEqualitiesProblems(board_size, difficulty):
 
 	#Generates a number X for the question: "Find equalities equal to X"
 	if (difficulty==1):
+		random.seed()
 		question = random.randint(10,20)
 
 	elif (difficulty==2):
+		random.seed()
 		question = random.randint(20,60)
 
 	elif (difficulty==3):
+		random.seed()
 		question = random.randint(40,80)
 
 	#Instantiates an object "Problem"
@@ -213,10 +240,13 @@ def generatesEqualitiesProblems(board_size, difficulty):
 	#Generates N correct answers to the question
 	for i in range (int(quantity_right)):
 		if (difficulty==1):
+			random.seed()
 			random_number = random.randint(5,15)
 		elif (difficulty==2):
+			random.seed()
 			random_number = random.randint(10,50)
 		elif (difficulty==3):
+			random.seed()
 			random_number = random.randint(20,70)
 
 		#decide if + or - opperation:
@@ -237,6 +267,7 @@ def generatesEqualitiesProblems(board_size, difficulty):
 		x = 0
 			
 		if (difficulty==1):
+			random.seed()
 			random_number = random.randint(5,15)
 			if(question-random_number>=0):
 				#delta = random_number+random.randint(1,10)
@@ -248,24 +279,30 @@ def generatesEqualitiesProblems(board_size, difficulty):
 				answer = str(random_number) + str(b)
 
 		elif (difficulty==2):
+			random.seed()
 			random_number = random.randint(10,50)
 			if(question-random_number>=0):
 				#delta = random_number+random.randint(1,10)
+				random.seed()
 				b = (question-random_number) + random.randint(1,5)
 				answer = str(random_number) + '+' + str(b)
 			else:
 				#delta = random_number-random.randint(1,10)
+				random.seed()
 				b = (question-random_number) - random.randint(1,5)
 				answer = str(random_number) + str(b)
 
 		elif (difficulty==3):
+			random.seed()
 			random_number = random.randint(20,70)
 			if(question-random_number>=0):
 				#delta = random_number+random.randint(1,10)
+				random.seed()
 				b = (question-random_number) + random.randint(1,5)
 				answer = str(random_number) + '+' + str(b)
 			else:
 				#delta = random_number-random.randint(1,10)
+				random.seed()
 				b = (question-random_number) - random.randint(1,5)
 				answer = str(random_number) + str(b)
 			
