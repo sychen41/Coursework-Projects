@@ -991,7 +991,6 @@ class CaptainMath(spyral.Scene):
         ######################
         elif(gamestate == "story"):
             gamestate = "FreeOrStory"
-            self.background = spyral.Image("images/Backgrounds/FreeOrStory.jpg")
             for i in self.text_objects:
                 i.kill()
         elif gamestate == "FreeOrStory":
@@ -1557,6 +1556,10 @@ class CaptainMath(spyral.Scene):
                 else:
                     SSTheme.stop()
                     gameStarted = True
+
+        elif gamestate == "FreeOrStory":
+            self.background = spyral.Image("images/Backgrounds/FreeOrStory.jpg")
+
         elif gamestate == "Levelselect":
             if (currentPlanet == 1):
                 if (isfreeMode == False):
@@ -1696,9 +1699,9 @@ class CaptainMath(spyral.Scene):
             if (self.text_objects[0].y <= -550):
                 for i in self.text_objects:
                     i.kill()
-                gamestate = "Levelselect"
+                gamestate = "FreeOrStory"
                 #self.arrow = Arrow(self)
-                print "gamestate = Levelselect"
+                print "gamestate = FreeOrStory"
         """elif gamestate =="tutorial":
             if self.TutorialCount == 1:
                 self.background = spyral.Image("images/tutorials/objectAndKeys.png")
