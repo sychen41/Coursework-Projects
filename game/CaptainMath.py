@@ -107,6 +107,8 @@ class Player(spyral.Sprite):
         global PcolNum
         global isplayerDead
         global gamestate
+        global WrongAnswersList
+        WrongAnswersList = list()
         playerColor = "red"
         isplayerDead = False
         #Checks to see what color player has been selected
@@ -1020,7 +1022,7 @@ class CaptainMath(spyral.Scene):
             gamestate = "minigame"
             print "gamestate = minigame"
             isSpaceShipSoundNeeded = True
-
+        #seancheckthisout
         elif(gamestate == "levelCleared"):
             self.spaceship.minigame_timeout = False
             global isTransportSoundNeeded
@@ -1658,6 +1660,7 @@ class CaptainMath(spyral.Scene):
             global SSTheme
             SSTheme.stop()
             self.background = spyral.Image("images/entireScenes/levelClearedPlanetDestruction.png")
+            #self.background = spyral.Image("images/feedback/1starfeedback.png")
         #story screen
         elif gamestate == "story":
             self.background = spyral.Image("images/Backgrounds/story_bg.jpg")
