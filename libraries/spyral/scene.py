@@ -3,10 +3,16 @@ import spyral
 import pygame
 import time
 import operator
-import greenlet
 import inspect
 import sys
 import types
+try:
+    import greenlet
+    _GREENLETS_AVAILABLE = True
+except ImportError:
+    spyral.exceptions.actors_not_available_warning()
+    _GREENLETS_AVAILABLE = False
+    
 from itertools import chain
 from layertree import _LayerTree
 from collections import defaultdict
@@ -93,8 +99,12 @@ class Scene(object):
                               scene=self)
         spyral.event.register('director.update', self._handle_events,
                               scene=self)
-        spyral.event.register('director.update', self._run_actors, ('delta',),
-                              scene=self)
+        if _GREENLETS_AVAILABLE:
+            spyral.event.register('director.update', self._run_actors, 
+                                  ('delta',), scene=self)
+        spyral.event.register('system.focus_change', self.redraw)
+        spyral.event.register('system.video_resize', self.redraw)
+        spyral.event.register('system.video_expose', self.redraw)
         spyral.event.register('spyral.internal.view.changed',
                               self._invalidate_views, scene=self)
 
@@ -179,7 +189,9 @@ class Scene(object):
         Internal method for returning all the registered namespaces that are in
         the given namespace.
         """
-        return [n for n in self._namespaces if namespace.startswith(n)]
+        return [n for n in self._namespaces if (namespace == n or
+                                        n.rsplit(".",1)[0].startswith(namespace) or
+                                        namespace.rsplit(".",1)[0].startswith(n))]
 
     def _send_event_to_handler(self, event, type, handler, args,
                                kwargs, priority, dynamic):

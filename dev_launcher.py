@@ -123,7 +123,10 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             spyral.quit()
         files.append(output)
-    spyral.quit()
+    try:
+        spyral.quit()
+    except spyral.exceptions.GameEndException:
+        pass
         
     try:
         for file in files:

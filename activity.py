@@ -14,6 +14,7 @@ class Activity(sugar.activity.activity.Activity):
         
         self._pygamecanvas = sugargame2.canvas.PygameCanvas(self)
         self.set_canvas(self._pygamecanvas)
+        self._pygamecanvas.grab_focus()
         
         def run():
             import game
