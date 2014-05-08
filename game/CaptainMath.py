@@ -860,6 +860,7 @@ class CaptainMath(spyral.Scene):
         global PcolNum
         global ishowToThemeNeeded
         global SoundOn
+        global preMini
         SoundOn = True
         timeStart = time.time()
         self.mX = 0 #mouse x coordinate
@@ -875,6 +876,7 @@ class CaptainMath(spyral.Scene):
         down = "down"
         enter = "]"
         space = "space"
+        preMini = random.sample(range(1,8),4)
         spyral.event.register("system.quit", spyral.director.pop)
         spyral.event.register("director.update", self.update)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
@@ -908,6 +910,7 @@ class CaptainMath(spyral.Scene):
         global currentLevel
         global SoundOn
         global gameStarted
+        global preMini
         if(gamestate == "StartScreen"):
             if(pos[0] >= 463 and pos[0] <= 746 and pos[1] >=332 and pos[1] <= 471 ):
                 gamestate = "tutorial"
@@ -990,10 +993,10 @@ class CaptainMath(spyral.Scene):
                 if(SoundOn):
                     howToTheme.play()
                 ishowToThemeNeeded = False
-            if(pos[0]<=1115 and pos[0]>=843 and pos[1]<740 and pos[0]>652 and self.howToCount<=2):
+            if(pos[0]<=1167 and pos[0]>=843 and pos[1]<740 and pos[0]>652 and self.howToCount<=2):
                 self.howToCount+=1
                 print "next button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate
-            elif((pos[0]<=819 and pos[0]>=586 and pos[1]<=740 and pos[0]>=652 and self.howToCount ==1) or self.howToCount>=3):
+            elif((pos[0]<=820 and pos[0]>=588 and pos[1]<=740 and pos[0]>=652 and self.howToCount ==1) or self.howToCount>=3):
                 gamestate = "maingame"
                 print "skip button : howToCount = " + str(self.howToCount) + " gamestate :" + gamestate
         ######################
@@ -1021,7 +1024,7 @@ class CaptainMath(spyral.Scene):
                 currentLevel = 1
         ######################
         elif((gamestate == "Levelselect" and isfreeMode == False) or gamestate == "planetConfirm"):# and self.arrow.level <=4):
-            randomMiniGame = random.randint(1,8)
+            randomMiniGame = preMini[currentPlanet-1]
             self.background = spyral.Image("images/preMadeImages/miniGameQuestion"+
             str(randomMiniGame) +".png")
             self.tempTexts = []
