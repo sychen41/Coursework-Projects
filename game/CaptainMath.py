@@ -84,7 +84,7 @@ class Laser(spyral.Sprite):
             Sprite.kill()
 	    pygame.mixer.init()
         if(SoundOn):
-            asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+            asteroidExplode = pygame.mixer.Sound("sounds/explode.ogg")
             asteroidExplode.play()
     def collide_enemy(self, Sprite):
         global isEnemyDead
@@ -100,7 +100,7 @@ class Laser(spyral.Sprite):
             colNum = 5
         pygame.mixer.init()
         if(SoundOn):
-            asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+            asteroidExplode = pygame.mixer.Sound("sounds/explode.ogg")
             asteroidExplode.play()
 
 #Main Player Class for the game
@@ -449,9 +449,9 @@ class Spaceship(spyral.Sprite):
         if gamestate == "minigame":
             if(isSpaceShipSoundNeeded == True and SoundOn):
                 pygame.mixer.init()
-                SSF = pygame.mixer.Sound("sounds/spaceShipFlying.wav")
+                SSF = pygame.mixer.Sound("sounds/spaceShipFlying.ogg")
                 SSF.play()
-                SST = pygame.mixer.Sound("sounds/spaceShipTraveling.wav")
+                SST = pygame.mixer.Sound("sounds/spaceShipTraveling.ogg")
                 SST.play()
                 isSpaceShipSoundNeeded = False
             if self.x<=WIDTH:
@@ -664,7 +664,7 @@ class Question(spyral.Sprite):
             self.correct = '1'
             pygame.mixer.stop()
             pygame.mixer.init()
-            correct = pygame.mixer.Sound("sounds/positiveCorrect.wav")
+            correct = pygame.mixer.Sound("sounds/positiveCorrect.ogg")
             if(SoundOn):
                 correct.play()
             #self.image=spyral.image.Image(filename = "images/feedback/Correct.png", size = None)
@@ -682,7 +682,7 @@ class Question(spyral.Sprite):
             self.y=200
             pygame.mixer.stop()
             pygame.mixer.init()
-            wrong = pygame.mixer.Sound("sounds/buzzerWrong.wav")
+            wrong = pygame.mixer.Sound("sounds/buzzerWrong.ogg")
             if(SoundOn):
                 wrong.play()
             self.image=spyral.image.Image(filename = "images/feedback/wrongAlien.png", size = None)
@@ -987,7 +987,7 @@ class CaptainMath(spyral.Scene):
             self.spaceship.kill()
             self.question.kill()
             pygame.mixer.init()
-            howToTheme = pygame.mixer.Sound("sounds/howToTheme.wav")
+            howToTheme = pygame.mixer.Sound("sounds/howToTheme.ogg")
             if(ishowToThemeNeeded == True):
                 pygame.mixer.stop()
                 if(SoundOn):
@@ -1131,7 +1131,7 @@ class CaptainMath(spyral.Scene):
 
             #Plays the main theme for the game
             pygame.mixer.init()
-            MainTheme = pygame.mixer.Sound("sounds/mainTheme2.wav")
+            MainTheme = pygame.mixer.Sound("sounds/mainTheme2.ogg")
             if(SoundOn):
                 MainTheme.play()
 
@@ -1265,14 +1265,14 @@ class CaptainMath(spyral.Scene):
         if gamestate == "fullLevels":
             if(laserCount == 0):
                 pygame.mixer.init()
-                noAmmo = pygame.mixer.Sound("sounds/emptyGun.wav")
+                noAmmo = pygame.mixer.Sound("sounds/emptyGun.ogg")
                 if(SoundOn):
 				    noAmmo.play()
                 return
       #Creates a new laser and plays the corresponding sound
             self.Laser = Laser(self)
             pygame.mixer.init()
-            sounda = pygame.mixer.Sound("sounds/lasershot.wav")
+            sounda = pygame.mixer.Sound("sounds/lasershot.ogg")
             if(SoundOn):
                 sounda.play()
             if(isface == "right" and forceFieldOn == False and gamestate == "fullLevels"):
@@ -1410,7 +1410,7 @@ class CaptainMath(spyral.Scene):
             self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
         if (BoardStatus[ProwNum][PcolNum] == -2):
             pygame.mixer.init()
-            FF = pygame.mixer.Sound("sounds/absorbEnergyFX.wav")
+            FF = pygame.mixer.Sound("sounds/absorbEnergyFX.ogg")
             if(SoundOn):
                 FF.play()
             self.AnswerCorrect = AnswerCorrect(self)
@@ -1464,9 +1464,9 @@ class CaptainMath(spyral.Scene):
                 self.player3.kill()
             pygame.mixer.init()
             if(SoundOn):
-                deathScream = pygame.mixer.Sound("sounds/deathScream.wav")
+                deathScream = pygame.mixer.Sound("sounds/deathScream.ogg")
                 deathScream.play()
-                asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+                asteroidExplode = pygame.mixer.Sound("sounds/explode.ogg")
                 asteroidExplode.play()
             isplayerDead = True
             if(playerLives == 2):
@@ -1489,7 +1489,7 @@ class CaptainMath(spyral.Scene):
         forceFieldOn = True
         pygame.mixer.init()
         forceFieldTime = time.time()
-        FF = pygame.mixer.Sound("sounds/forceFieldOn.wav")
+        FF = pygame.mixer.Sound("sounds/forceFieldOn.ogg")
         if(SoundOn):
             FF.play()
         if(isface == "right"):
@@ -1562,7 +1562,7 @@ class CaptainMath(spyral.Scene):
             self.background = spyral.Image("images/entireScenes/Begin.png")
             if(gameStarted == False):
                 pygame.mixer.init()
-                SSTheme = pygame.mixer.Sound("sounds/startScreenTheme.wav")
+                SSTheme = pygame.mixer.Sound("sounds/startScreenTheme.ogg")
                 if(SoundOn):
                     SSTheme.play()
                 gameStarted = True
@@ -1583,7 +1583,7 @@ class CaptainMath(spyral.Scene):
                     self.background = spyral.Image("images/preMadeImages/PlanetMapForChoosing.png")
                 if(isTransportSoundNeeded == True):
                     pygame.mixer.init()
-                    nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.wav")
+                    nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.ogg")
                     if(SoundOn):
                         nextPlanetSound.play()
                     isTransportSoundNeeded = False
@@ -1594,7 +1594,7 @@ class CaptainMath(spyral.Scene):
                     self.background = spyral.Image("images/preMadeImages/PlanetMapForChoosing.png")
                 if(isTransportSoundNeeded == True):
                     pygame.mixer.init()
-                    nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.wav")
+                    nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.ogg")
                     if(SoundOn):
                         nextPlanetSound.play()
                     isTransportSoundNeeded = False
@@ -1605,7 +1605,7 @@ class CaptainMath(spyral.Scene):
                     self.background = spyral.Image("images/preMadeImages/PlanetMapForChoosing.png")
                 if(isTransportSoundNeeded == True):
                     pygame.mixer.init()
-                    nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.wav")
+                    nextPlanetSound = pygame.mixer.Sound("sounds/flyToNextMission.ogg")
                     if(SoundOn):
                         nextPlanetSound.play()
                     isTransportSoundNeeded = False
@@ -1613,7 +1613,7 @@ class CaptainMath(spyral.Scene):
             self.background = spyral.Image("images/entireScenes/youWin.png")
             if(isGameEnd == True):
                 pygame.mixer.init()
-                youWinTheme = pygame.mixer.Sound("sounds/youWin.wav")
+                youWinTheme = pygame.mixer.Sound("sounds/youWin.ogg")
                 if(SoundOn):
                     youWinTheme.play()
                 isGameEnd = False
@@ -1655,17 +1655,17 @@ class CaptainMath(spyral.Scene):
                     self.enemy1.kill()
                     pygame.mixer.stop()
                     pygame.mixer.init()
-                    levelClearedTheme = pygame.mixer.Sound("sounds/levelCleared.wav")
+                    levelClearedTheme = pygame.mixer.Sound("sounds/levelCleared.ogg")
                     if(SoundOn):
                         levelClearedTheme.play()
             #self.background = spyral.Image("images/fullLevels/planet2_Board.png")
             if(forceFieldTime - time.time() < (5-10) and forceFieldOn == True):
                 forceFieldOn = False
                 pygame.mixer.init()
-                FFFailure = pygame.mixer.Sound("sounds/forceFieldFail.wav")
+                FFFailure = pygame.mixer.Sound("sounds/forceFieldFail.ogg")
                 if(SoundOn):
                     FFFailure.play()
-                FFOff = pygame.mixer.Sound("sounds/forceFieldOff.wav")
+                FFOff = pygame.mixer.Sound("sounds/forceFieldOff.ogg")
                 if(SoundOn):
                     FFOff.play()
                 if(isface == "right"):
@@ -1731,10 +1731,10 @@ class CaptainMath(spyral.Scene):
             elif(playerLives == 0):
                 self.player3.kill()
             pygame.mixer.init()
-            deathScream = pygame.mixer.Sound("sounds/deathScream.wav")
+            deathScream = pygame.mixer.Sound("sounds/deathScream.ogg")
             if(SoundOn):
                 deathScream.play()
-                asteroidExplode = pygame.mixer.Sound("sounds/explode.wav")
+                asteroidExplode = pygame.mixer.Sound("sounds/explode.ogg")
                 asteroidExplode.play()
             isplayerDead = True
             if(playerLives == 2):
