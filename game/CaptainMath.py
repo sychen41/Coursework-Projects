@@ -54,6 +54,7 @@ isGameEnd = False
 ishowToThemeNeeded = True
 isfreeMode = False
 howToName = "multiple"
+loadingScreen = True
 #global var used to save last number used as question for Multiples problems
 last_multiple_number = 0
 last_equality_number = 0
@@ -1035,6 +1036,8 @@ class CaptainMath(spyral.Scene):
             isSpaceShipSoundNeeded = True
         #seancheckthisout
         elif(gamestate == "levelCleared"):
+            global loadingScreen
+            loadingScreen = True
             global WrongAnswersList
             global wrongAns
             wrongAns = len(WrongAnswersList)
@@ -1117,14 +1120,7 @@ class CaptainMath(spyral.Scene):
             playerLives = 2
             isBlackholeSet = False
             didCollideWithBlackHole = False
-            if(currentPlanet == 1):
-              self.background = spyral.Image("images/fullLevels/Planet1_Board.png")
-            elif(currentPlanet == 2):
-              self.background = spyral.Image("images/fullLevels/Planet2_Board.png")
-            elif(currentPlanet == 3):
-              self.background = spyral.Image("images/fullLevels/Planet3_Board.png")
-            elif(currentPlanet == 4):
-              self.background = spyral.Image("images/fullLevels/Planet4_Board.png")
+            
 
             global last_multiple_number
             global last_equality_number
@@ -1255,6 +1251,16 @@ class CaptainMath(spyral.Scene):
             self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
             self.asteroid3 = Asteroid(self, indexOfAsteroid[2])
             self.enemy1 = Enemy(self)
+            global loadingScreen
+            loadingScreen = False
+            if(currentPlanet == 1):
+              self.background = spyral.Image("images/fullLevels/Planet1_Board.png")
+            elif(currentPlanet == 2):
+              self.background = spyral.Image("images/fullLevels/Planet2_Board.png")
+            elif(currentPlanet == 3):
+              self.background = spyral.Image("images/fullLevels/Planet3_Board.png")
+            elif(currentPlanet == 4):
+              self.background = spyral.Image("images/fullLevels/Planet4_Board.png")
 
     #This is called whe player presses space, the player will shoot a laser
     #in the direction the player is facing
@@ -1555,6 +1561,7 @@ class CaptainMath(spyral.Scene):
         global isfreeMode
         global currentPlanet
         global SoundOn
+        global loadingScreen
         #print "how many correct answers?? " , CorrectAnswers
         #change background and music when gamestate changed.
         #print "Current wrong answers: " , len(WrongAnswersList)
@@ -1617,6 +1624,8 @@ class CaptainMath(spyral.Scene):
                 if(SoundOn):
                     youWinTheme.play()
                 isGameEnd = False
+        elif gamestate == "maingame" and loadingScreen == True:
+            self.background = spyral.Image("images/Backgrounds/loading.jpg")
         elif gamestate == "fullLevels":
             #print "is the black hole set?? ", isBlackholeSet
             global didCollideWithBlackHole
