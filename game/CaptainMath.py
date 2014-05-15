@@ -41,6 +41,7 @@ mathTextGroup = pygame.sprite.Group()
 Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
 Icol = 0
 playerLives = 2
+noLiveleft = False
 answers = [None]*30
 QuestionName = 0
 CorrectAnswersList = list()
@@ -1024,6 +1025,9 @@ class CaptainMath(spyral.Scene):
                 currentPlanet = 1
                 currentLevel = 1
         ######################
+        elif gamestate == "failed":
+            gamestate = "FreeOrStory"
+            self.restart()
         elif((gamestate == "Levelselect" and isfreeMode == False) or gamestate == "planetConfirm"):# and self.arrow.level <=4):
             randomMiniGame = preMini[currentPlanet-1]
             self.background = spyral.Image("images/preMadeImages/miniGameQuestion"+
@@ -1402,89 +1406,92 @@ class CaptainMath(spyral.Scene):
         global CorrectAnswersList
         global WrongAnswersList
         global SoundOn
-        #Checks to see what life the player is currently is on
-        if(playerLives == 2):
-            self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
-        if(playerLives == 1):
-            self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
-        if(playerLives == 0):
-            self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
-        time.sleep(0.2)
-        if(isface == "right"):
-            self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
-        else:
-            self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
-        if (BoardStatus[ProwNum][PcolNum] == -2):
-            pygame.mixer.init()
-            FF = pygame.mixer.Sound("sounds/absorbEnergyFX.ogg")
-            if(SoundOn):
-                FF.play()
-            self.AnswerCorrect = AnswerCorrect(self)
-            self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
-            self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
-            CorrectAnswersList.append(self.AnswerCorrect) #sean
-            CorrectAnswers+=1
-            if(CorrectAnswers == 3 or CorrectAnswers == 6):
-                global laserCount
-                if (laserCount < 3):
-                    if (laserCount == 2):
-                        self.Battery3 = Battery(self)
-                        self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
-                        self.Battery3.y = 10
-                    elif (laserCount == 1):
-                        self.Battery2 = Battery(self)
-                        self.Battery2.x = self.Battery1.width + 10
-                        self.Battery2.y = 10
-                    else:
-                        self.Battery1 = Battery(self)
-                        self.Battery1.x = 0
-                        self.Battery1.y = 10
-                    laserCount+=1
+        global noLiveleft
+        if (noLiveleft == False):
+            #Checks to see what life the player is currently is on
+            if(playerLives == 2):
+                self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+            if(playerLives == 1):
+                self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+            if(playerLives == 0):
+                self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+            time.sleep(0.2)
+            if(isface == "right"):
+                self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+            else:
+                self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+            if (BoardStatus[ProwNum][PcolNum] == -2):
+                pygame.mixer.init()
+                FF = pygame.mixer.Sound("sounds/absorbEnergyFX.ogg")
+                if(SoundOn):
+                    FF.play()
+                self.AnswerCorrect = AnswerCorrect(self)
+                self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
+                self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
+                CorrectAnswersList.append(self.AnswerCorrect) #sean
+                CorrectAnswers+=1
+                if(CorrectAnswers == 3 or CorrectAnswers == 6):
+                    global laserCount
+                    if (laserCount < 3):
+                        if (laserCount == 2):
+                            self.Battery3 = Battery(self)
+                            self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
+                            self.Battery3.y = 10
+                        elif (laserCount == 1):
+                            self.Battery2 = Battery(self)
+                            self.Battery2.x = self.Battery1.width + 10
+                            self.Battery2.y = 10
+                        else:
+                            self.Battery1 = Battery(self)
+                            self.Battery1.x = 0
+                            self.Battery1.y = 10
+                        laserCount+=1
 
-            if(CorrectAnswers == 8):
-                ranRowNum = random.randint(0, 4)
-                ranColNum = random.randint(0, 5)
-                self.BlackHole = BlackHole(self)
-                while(BoardStatus[ranRowNum][ranColNum] == -2 or
-                    BoardStatus[ranRowNum][ranColNum] == -1 or
-                    ranRowNum == ProwNum or ranColNum == PcolNum):
+                if(CorrectAnswers == 8):
                     ranRowNum = random.randint(0, 4)
                     ranColNum = random.randint(0, 5)
-                self.BlackHole.x = BoardXcoord[ranRowNum][ranColNum]
-                self.BlackHole.y = BoardYcoord[ranRowNum][ranColNum]
-                isBlackholeSet = True
-                #print "Black Hole is set"
-        else:
-            self.AnswerCorrect = AnswerCorrect(self)
-            WrongAnswersList.append(self.AnswerCorrect)
-            self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
-            self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
-            self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
-            if(playerLives == 2):
-                self.player.kill()
-                self.spaceShipLife1.kill()
-            elif(playerLives == 1):
-                self.player2.kill()
-                self.spaceShipLife2.kill()
-            elif(playerLives == 0):
-                self.player3.kill()
-            pygame.mixer.init()
-            if(SoundOn):
-                deathScream = pygame.mixer.Sound("sounds/deathScream.ogg")
-                deathScream.play()
-                asteroidExplode = pygame.mixer.Sound("sounds/explode.ogg")
-                asteroidExplode.play()
-            isplayerDead = True
-            if(playerLives == 2):
-                self.player2 = Player(self)
-                ProwNum = 0
-                PcolNum = 0
-                playerLives-= 1
-            elif(playerLives == 1):
-                self.player3 = Player(self)
-                ProwNum = 0
-                PcolNum = 0
-                playerLives-= 1
+                    self.BlackHole = BlackHole(self)
+                    while(BoardStatus[ranRowNum][ranColNum] == -2 or
+                        BoardStatus[ranRowNum][ranColNum] == -1 or
+                        ranRowNum == ProwNum or ranColNum == PcolNum):
+                        ranRowNum = random.randint(0, 4)
+                        ranColNum = random.randint(0, 5)
+                    self.BlackHole.x = BoardXcoord[ranRowNum][ranColNum]
+                    self.BlackHole.y = BoardYcoord[ranRowNum][ranColNum]
+                    isBlackholeSet = True
+                    #print "Black Hole is set"
+            else:
+                self.AnswerCorrect = AnswerCorrect(self)
+                WrongAnswersList.append(self.AnswerCorrect)
+                self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
+                self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
+                self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
+                if(playerLives == 2):
+                    self.player.kill()
+                    self.spaceShipLife1.kill()
+                elif(playerLives == 1):
+                    self.player2.kill()
+                    self.spaceShipLife2.kill()
+                elif(playerLives == 0):
+                    self.player3.kill()
+                    noLiveleft = True
+                pygame.mixer.init()
+                if(SoundOn):
+                    deathScream = pygame.mixer.Sound("sounds/deathScream.ogg")
+                    deathScream.play()
+                    asteroidExplode = pygame.mixer.Sound("sounds/explode.ogg")
+                    asteroidExplode.play()
+                isplayerDead = True
+                if(playerLives == 2):
+                    self.player2 = Player(self)
+                    ProwNum = 0
+                    PcolNum = 0
+                    playerLives-= 1
+                elif(playerLives == 1):
+                    self.player3 = Player(self)
+                    ProwNum = 0
+                    PcolNum = 0
+                    playerLives-= 1
     #This is called when the player presses the 'f' key when done
     #the user will have a force field that will protect the user
     #for 5 seconds then dissapear
@@ -1624,6 +1631,8 @@ class CaptainMath(spyral.Scene):
                 if(SoundOn):
                     youWinTheme.play()
                 isGameEnd = False
+        elif gamestate == "failed":
+            self.background = spyral.Image("images/entireScenes/youFailed.jpg")
         elif gamestate == "maingame" and loadingScreen == True:
             self.background = spyral.Image("images/Backgrounds/loading.jpg")
         elif gamestate == "fullLevels":
@@ -1631,6 +1640,26 @@ class CaptainMath(spyral.Scene):
             global didCollideWithBlackHole
             if (isEnemyDead == True and time.time() - EnemyDeadTime > 5 and isBlackholeSet == False):
                 self.enemy1 = Enemy(self)
+            #print "playerLives: ", playerLives
+            #print "noLiveleft:", noLiveleft
+            if (noLiveleft):
+                gamestate = "failed"
+                for item in CorrectAnswersList:
+                    item.kill()
+                for item in WrongAnswersList:
+                    item.kill()
+                self.killMathText()
+                self.killAsteroids()
+                self.Battery1.kill()
+                self.Battery2.kill()
+                self.Battery3.kill()
+                self.spaceShipLife1.kill()
+                self.spaceShipLife2.kill()
+                self.enemy1.kill()
+                pygame.mixer.stop()
+                pygame.mixer.init()
+                if(isBlackholeSet == True):
+                    self.BlackHole.kill()
             if(isBlackholeSet == True):
                 if(playerLives == 2):
                     self.player.collide_BlackHolde(self.BlackHole)
@@ -1739,6 +1768,8 @@ class CaptainMath(spyral.Scene):
                 self.player2.kill()
             elif(playerLives == 0):
                 self.player3.kill()
+                global noLiveleft
+                noLiveleft = True
             pygame.mixer.init()
             deathScream = pygame.mixer.Sound("sounds/deathScream.ogg")
             if(SoundOn):
@@ -1771,3 +1802,86 @@ class CaptainMath(spyral.Scene):
     def killMathText(self):
         for item in self.MathTextObjects:
             item.kill()
+    
+    def restart(self):
+        print "game restarted"
+        global isface
+        isface = "right"
+        global forceFieldOn
+        forceFieldOn = False
+        global forceFieldTime
+        forceFieldTime = 0
+        global laserCount
+        laserCount = 3
+        global gameStarted
+        gameStarted = False
+        global enemyCollided
+        enemyCollided = False
+        global eNow
+        eNow = 0
+        global timeStart
+        timeStart = 0
+        global rowNum
+        rowNum = 4
+        global colNum
+        colNum = 5
+        global ProwNum
+        ProwNum = 0
+        global PcolNum
+        PcolNum = 0
+        global isplayerDead
+        isplayerDead = False
+        global isEnemyDead
+        isEnemyDead = False
+        global EnemyDeadTime
+        EnemyDeadTime = 0
+        global isBlackholeSet
+        isBlackholeSet = False
+        global CorrectAnswers
+        CorrectAnswers = 0
+        global didCollideWithBlackHole
+        didCollideWithBlackHole = False
+        global mathTextGroup
+        mathTextGroup = pygame.sprite.Group()
+        global Irow
+        Irow = 0 # iterator for recording BoardXcoord and BoardYcoord
+        global Icol
+        Icol = 0
+        global playerLives
+        playerLives = 2
+        global noLiveleft
+        noLiveleft = False
+        global QuestionName
+        QuestionName = 0
+        global wrongAns
+        wrongAns = 0
+        global isSpaceShipSoundNeeded
+        isSpaceShipSoundNeeded = False
+        global currentLevel
+        currentLevel = 1
+        global currentPlanet
+        currentPlanet = 1
+        global isTransportSoundNeeded
+        isTransportSoundNeeded = False
+        global isGameEnd
+        isGameEnd = False
+        global ishowToThemeNeeded
+        ishowToThemeNeeded = True
+        global isfreeMode
+        isfreeMode = False
+        global howToName
+        howToName = "multiple"
+        global loadingScreen
+        loadingScreen = True
+        #global var used to save last number used as question for Multiples problems
+        global last_multiple_number
+        last_multiple_number = 0
+        global last_equality_number
+        last_equality_number = 0
+
+        #global start_time and final_time for the stages
+        #used to evaluate player performance and give feedback with starts
+        global start_time
+        start_time = 0
+        global final_time
+        final_time = 0
