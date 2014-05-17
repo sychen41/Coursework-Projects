@@ -173,11 +173,9 @@ class Player(spyral.Sprite):
         if self.moving == 'left':
             global ProwNum
         global PcolNum
-            #self.x -= paddle_velocity * delta
-        if (BoardStatus[ProwNum][PcolNum] != -1):
-            if (PcolNum != 0):
+        if (PcolNum != 0):
+            if (BoardStatus[ProwNum][PcolNum-1] != -1):
                     PcolNum-=1
-        self.x = BoardXcoord[ProwNum][PcolNum]
     #Called when a player presses the right arrow key
     def move_right(self):
         global isface
@@ -194,10 +192,9 @@ class Player(spyral.Sprite):
         if self.moving == 'right':
             global ProwNum
         global PcolNum
-        if (BoardStatus[ProwNum][PcolNum] != -1):
-            if (PcolNum != 5):
+        if (PcolNum != 5):
+            if (BoardStatus[ProwNum][PcolNum+1] != -1):
                     PcolNum+=1
-        self.x = BoardXcoord[ProwNum][PcolNum]
     #Called when a player presses the up arrow key
     def move_up(self):
         if(isface == "right" and forceFieldOn == False):
@@ -220,10 +217,9 @@ class Player(spyral.Sprite):
         if self.moving == 'up':
             global ProwNum
         global PcolNum
-        if (BoardStatus[ProwNum][PcolNum] != -1):
-            if (ProwNum != -1):
+        if (ProwNum != 0):
+            if (BoardStatus[ProwNum-1][PcolNum] != -1):
                     ProwNum-=1
-        self.y = BoardYcoord[ProwNum][PcolNum]
     #Called when a player presses the down arrow key
     def move_down(self):
         if(isface == "right" and forceFieldOn == False):
@@ -246,10 +242,9 @@ class Player(spyral.Sprite):
         if self.moving == 'down':
             global ProwNum
         global PcolNum
-        if (BoardStatus[ProwNum][PcolNum] != -1):
-            if (ProwNum != 4):
+        if (ProwNum != 4):
+            if (BoardStatus[ProwNum+1][PcolNum] != -1):
                     ProwNum+=1
-        self.y = BoardYcoord[ProwNum][PcolNum]
     #The following definitions are deprecated functions
     def place_piece(self):
         self.moving = 'place_piece'
@@ -281,29 +276,11 @@ class Player(spyral.Sprite):
         global PcolNum
         global gamestate
         global isBlackholeSet
-        if (BoardStatus[ProwNum][PcolNum] == -1 and isface == "right"):
-            if (PcolNum != 5):
-                    PcolNum-=1
-            else:
-                    ProwNum+=1
-                    PcolNum=0
-        if (BoardStatus[ProwNum][PcolNum] == -1 and isface == "left"):
-            if (PcolNum != 5):
-                    PcolNum+=1
-            else:
-                    ProwNum+=1
-                    PcolNum=0
+        if (BoardStatus[ProwNum][PcolNum] == -1):
+            PcolNum+=1
         self.x = BoardXcoord[ProwNum][PcolNum]
         self.y = BoardYcoord[ProwNum][PcolNum]
         paddle_velocity = 500
-        if (PcolNum == 6):
-            PcolNum = 0
-        if (ProwNum == 5):
-            ProwNum = 0
-        if (PcolNum == -1):
-            PcolNum = 5
-        if (ProwNum == -1):
-            ProwNum == 5
 # to display math problem
 class MathText(spyral.Sprite):
     def __init__(self, scene, index, answers, problem_question):
