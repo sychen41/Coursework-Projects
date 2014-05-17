@@ -1232,12 +1232,12 @@ class CaptainMath(spyral.Scene):
                         y+=1
                 else:
                     BoardStatus[a][b] = answers[x]
-                print BoardStatus[a][b], " " 
+                #print BoardStatus[a][b], " " 
                 b+=1
                 if (b==6):
                     b=0
                     a+=1
-                    print "\n"
+                    #print "\n"
             # render asteroids
             self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
             self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
@@ -1409,6 +1409,9 @@ class CaptainMath(spyral.Scene):
             else:
                 self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
             if (BoardStatus[ProwNum][PcolNum] == -2):
+                # can not count this answer as correct again
+                # use -20 to mark it as selected
+                #BoardStatus[ProwNum][PcolNum] = -20 
                 pygame.mixer.init()
                 FF = pygame.mixer.Sound("sounds/absorbEnergyFX.ogg")
                 if(SoundOn):
@@ -1448,6 +1451,7 @@ class CaptainMath(spyral.Scene):
                     self.BlackHole.y = BoardYcoord[ranRowNum][ranColNum]
                     isBlackholeSet = True
                     #print "Black Hole is set"
+            #elif (BoardStatus[ProwNum][PcolNum] != -2 and BoardStatus[ProwNum][PcolNum] != -20):
             else:
                 self.AnswerCorrect = AnswerCorrect(self)
                 WrongAnswersList.append(self.AnswerCorrect)
