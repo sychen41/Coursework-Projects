@@ -43,6 +43,7 @@ Icol = 0
 playerLives = 2
 noLiveleft = False
 answers = [None]*30
+indexOfAsteroid = [None]*3
 QuestionName = 0
 CorrectAnswersList = list()
 WrongAnswersList = list()
@@ -81,9 +82,16 @@ class Laser(spyral.Sprite):
         self.image = spyral.image.Image(filename =
         "images/misc/laserIM.png", size = None)
         self.moving = False
-    def collide_meteor(self, Sprite):
+    def collide_meteor(self, Sprite, index):
         if self.collide_sprite(Sprite):
             Sprite.kill()
+            #print "which asteroid destroyed: ", index
+            global BoardStatus
+            rowOfA = indexOfAsteroid[index] / 6
+            colOfA = indexOfAsteroid[index] % 6 
+            #print "indexOfAsteroid destroyed: ", indexOfAsteroid[index]
+            #print rowOfA, " ", colOfA
+            BoardStatus[rowOfA][colOfA] = -10 # no longer -1 because it's destroyed
 	    pygame.mixer.init()
         if(SoundOn):
             asteroidExplode = pygame.mixer.Sound("sounds/explode.ogg")
@@ -1083,6 +1091,7 @@ class CaptainMath(spyral.Scene):
             # stage Start_time collected
 
             # reset every necessary variables for a new level and new planet
+            global indexOfAsteroid
             global gamestate
             global isSpaceShipSoundNeeded
             # respawn player
@@ -1220,7 +1229,7 @@ class CaptainMath(spyral.Scene):
                     answers[i] = problem.wrong_answers[w]
                     if w < problem.quant_wrong-1:
                         w+=1
-            #print "aaaaaaaaaaaaaaaaaaaa"
+            
             #for ans in answers:
                 #print ans
             # display 31 things, 0 to 29 are indexes of answers, 30 is for the math problem title
@@ -1246,10 +1255,12 @@ class CaptainMath(spyral.Scene):
                         y+=1
                 else:
                     BoardStatus[a][b] = answers[x]
+                print BoardStatus[a][b], " " 
                 b+=1
                 if (b==6):
                     b=0
                     a+=1
+                    print "\n"
             # render asteroids
             self.asteroid1 = Asteroid(self, indexOfAsteroid[0])
             self.asteroid2 = Asteroid(self, indexOfAsteroid[1])
@@ -1303,9 +1314,9 @@ class CaptainMath(spyral.Scene):
                     self.Laser.x = self.player3.x+25
                     self.Laser.y = self.player3.y-30
                 isface = "right"
-                self.Laser.collide_meteor(self.asteroid1)
-                self.Laser.collide_meteor(self.asteroid2)
-                self.Laser.collide_meteor(self.asteroid3)
+                self.Laser.collide_meteor(self.asteroid1,0)
+                self.Laser.collide_meteor(self.asteroid2,1)
+                self.Laser.collide_meteor(self.asteroid3,2)
                 self.Laser.collide_enemy(self.enemy1)
             elif(isface == "left" and forceFieldOn == False and gamestate == "fullLevels"):
                 isface = "left"
@@ -1329,9 +1340,9 @@ class CaptainMath(spyral.Scene):
                     self.Laser.y = self.player3.y-30
         #Checks to see if the laser has collided with an asteroid or
         #collide with enemy
-                self.Laser.collide_meteor(self.asteroid1)
-                self.Laser.collide_meteor(self.asteroid2)
-                self.Laser.collide_meteor(self.asteroid3)
+                self.Laser.collide_meteor(self.asteroid1,0)
+                self.Laser.collide_meteor(self.asteroid2,1)
+                self.Laser.collide_meteor(self.asteroid3,2)
                 self.Laser.collide_enemy(self.enemy1)
             elif(isface == "left" and forceFieldOn == True and gamestate == "fullLevels"):
                 isface = "left"
