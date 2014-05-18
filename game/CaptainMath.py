@@ -305,7 +305,13 @@ class MathText(spyral.Sprite):
             elif (currentPlanet == 3):
                 self.image = font.render("Find operations equal to " + str(problem_question), GOLDEN)
             elif (currentPlanet == 4):
-                self.image = font.render("Find Multiples of " + str(problem_question), GOLDEN)
+                if(currentLevel==1):
+                    self.image = font.render("Find Multiples of " + str(problem_question), GOLDEN)
+                elif(currentLevel==2):
+                    self.image = font.render("Find fractions equivalent to " + str(problem_question), GOLDEN)
+                elif(currentLevel==3):
+                    self.image = font.render("Find operations equal to " + str(problem_question), GOLDEN)
+                    
         elif answers[index] == -1:
             #self.x -= WIDTH/70
             #self.y -= HEIGHT/35
