@@ -311,7 +311,7 @@ class MathText(spyral.Sprite):
                     self.image = font.render("Find fractions equivalent to " + str(problem_question), GOLDEN)
                 elif(currentLevel==3):
                     self.image = font.render("Find operations equal to " + str(problem_question), GOLDEN)
-
+                    
         elif answers[index] == -1:
             #self.x -= WIDTH/70
             #self.y -= HEIGHT/35
@@ -652,7 +652,6 @@ class Question(spyral.Sprite):
                 gamestate = "maingame"
             else:
                 gamestate = "howtoscene"
-            print ("gamestate = " + gamestate)
             self.x=100
             self.y=50
             self.correct = '1'
@@ -672,7 +671,6 @@ class Question(spyral.Sprite):
                 gamestate = "maingame"
             else:
                 gamestate = "howtoscene"
-            print ("gamestate = " + gamestate)
             self.x=100
             self.y=220
             pygame.mixer.stop()
@@ -941,7 +939,7 @@ class CaptainMath(spyral.Scene):
                 #self.text_animations = []
                 delta_iteration = 50
                 for n in self.text_objects:
-                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 9.0)
+                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 21.0)
                     n.animate(self.animation_y)
                     delta_iteration -= 50
             elif(self.TutorialCount < 4):
@@ -971,7 +969,7 @@ class CaptainMath(spyral.Scene):
                 #self.text_animations = []
                 delta_iteration = 50
                 for n in self.text_objects:
-                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 9.0)
+                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 21.0)
                     n.animate(self.animation_y)
                     delta_iteration -= 50
         elif(gamestate =="howtoscene"):
@@ -1399,7 +1397,7 @@ class CaptainMath(spyral.Scene):
     #if it is incorrect the player will die if it is correct the player will
     #see positive feedback in teh form of a checkmark
     def asorbAnswer(self):
-        if (gamestate == "maingame"):
+        if (gamestate == "fullLevels"):
             global ProwNum
             global PcolNum
             global BoardXcoord
@@ -1504,7 +1502,7 @@ class CaptainMath(spyral.Scene):
     #the user will have a force field that will protect the user
     #for 5 seconds then dissapear
     def forceFieldOn(self):
-        if (gamestate == "maingame"):
+        if (gamestate == "fullLevels"):
             global forceFieldOn
             global forceFieldTime
             global SoundOn
@@ -1644,6 +1642,9 @@ class CaptainMath(spyral.Scene):
             self.background = spyral.Image("images/entireScenes/youFailed.jpg")
         elif gamestate == "maingame" and loadingScreen == True:
             self.background = spyral.Image("images/Backgrounds/loading.jpg")
+            if (currentPlanet == 4 and currentLevel == 1):
+                self.spaceship.kill()
+                self.question.kill()
         elif gamestate == "fullLevels":
             #print "is the black hole set?? ", isBlackholeSet
             global didCollideWithBlackHole
