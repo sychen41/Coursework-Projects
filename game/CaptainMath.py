@@ -904,11 +904,14 @@ class CaptainMath(spyral.Scene):
         global SoundOn
         global gameStarted
         global preMini
+        global MainTheme
         if(gamestate == "StartScreen"):
             if(pos[0] >= 463 and pos[0] <= 746 and pos[1] >=332 and pos[1] <= 471 ):
                 gamestate = "tutorial"
                 print "gamestate = tutorial"
                 self.background = spyral.Image("images/tutorials/objectAndKeys.png")
+                pygame.mixer.init()
+                MainTheme = pygame.mixer.Sound("sounds/mainTheme.ogg")
             elif(pos[0] >= 463 and pos[0] <= 744 and pos[1] >=497 and pos[1] <= 639 ):
                 gamestate = "option"
                 self.optionmark = OptionMark(self)
@@ -939,7 +942,7 @@ class CaptainMath(spyral.Scene):
                 #self.text_animations = []
                 delta_iteration = 50
                 for n in self.text_objects:
-                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 9.0)
+                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 21.0)
                     n.animate(self.animation_y)
                     delta_iteration -= 50
             elif(self.TutorialCount < 4):
@@ -969,13 +972,12 @@ class CaptainMath(spyral.Scene):
                 #self.text_animations = []
                 delta_iteration = 50
                 for n in self.text_objects:
-                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 9.0)
+                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 21.0)
                     n.animate(self.animation_y)
                     delta_iteration -= 50
         elif(gamestate =="howtoscene"):
             #where howtoscene happens
             global howToName
-
             self.background = spyral.Image("images/howTo/"+howToName+str(self.howToCount)+".png")
             self.spaceship.kill()
             self.question.kill()
@@ -1122,10 +1124,9 @@ class CaptainMath(spyral.Scene):
             global last_equality_number
 
             #Plays the main theme for the game
-            pygame.mixer.init()
-            MainTheme = pygame.mixer.Sound("sounds/mainTheme.ogg")
+           
             if(SoundOn):
-                MainTheme.play()
+               MainTheme.play()
 
             #Components and other Sprites of the game
             self.question.x = WIDTH+1
@@ -1183,7 +1184,8 @@ class CaptainMath(spyral.Scene):
             current = primeNums[randomNum] # some start value
             # fill the randomIndexes array with non-repeat numbers, range is 0-28
             modulo = 29 # prime
-            incrementor = 17180131327 # relative prime
+            #incrementor = 17180131327 # relative prime
+            incrementor = 2
             for i in range(0, len1):
                 current = (current + incrementor) % modulo
                 randomIndexes[i] = current
