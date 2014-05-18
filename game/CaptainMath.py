@@ -939,7 +939,7 @@ class CaptainMath(spyral.Scene):
                 #self.text_animations = []
                 delta_iteration = 50
                 for n in self.text_objects:
-                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 21.0)
+                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 9.0)
                     n.animate(self.animation_y)
                     delta_iteration -= 50
             elif(self.TutorialCount < 4):
@@ -969,7 +969,7 @@ class CaptainMath(spyral.Scene):
                 #self.text_animations = []
                 delta_iteration = 50
                 for n in self.text_objects:
-                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 21.0)
+                    self.animation_y = Animation('y', easing.Linear(n.y, -600-delta_iteration), 9.0)
                     n.animate(self.animation_y)
                     delta_iteration -= 50
         elif(gamestate =="howtoscene"):
