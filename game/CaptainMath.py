@@ -1399,145 +1399,147 @@ class CaptainMath(spyral.Scene):
     #if it is incorrect the player will die if it is correct the player will
     #see positive feedback in teh form of a checkmark
     def asorbAnswer(self):
-        global ProwNum
-        global PcolNum
-        global BoardXcoord
-        global BoardYcoord
-        global playerLives
-        global CorrectAnswers
-        global isBlackholeSet
-        global CorrectAnswersList
-        global WrongAnswersList
-        global SoundOn
-        global noLiveleft
-        if (noLiveleft == False):
-            #Checks to see what life the player is currently is on
-            if(playerLives == 2):
-                self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
-            if(playerLives == 1):
-                self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
-            if(playerLives == 0):
-                self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
-            time.sleep(0.2)
-            if(isface == "right"):
-                self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
-            else:
-                self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
-            if (BoardStatus[ProwNum][PcolNum] == -2):
-                # can not count this answer as correct again
-                # use -20 to mark it as selected
-                #BoardStatus[ProwNum][PcolNum] = -20 
-                pygame.mixer.init()
-                FF = pygame.mixer.Sound("sounds/absorbEnergyFX.ogg")
-                if(SoundOn):
-                    FF.play()
-                self.AnswerCorrect = AnswerCorrect(self)
-                self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
-                self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
-                CorrectAnswersList.append(self.AnswerCorrect) #sean
-                CorrectAnswers+=1
-                if(CorrectAnswers == 3 or CorrectAnswers == 6):
-                    global laserCount
-                    if (laserCount < 3):
-                        if (laserCount == 2):
-                            self.Battery3 = Battery(self)
-                            self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
-                            self.Battery3.y = 10
-                        elif (laserCount == 1):
-                            self.Battery2 = Battery(self)
-                            self.Battery2.x = self.Battery1.width + 10
-                            self.Battery2.y = 10
-                        else:
-                            self.Battery1 = Battery(self)
-                            self.Battery1.x = 0
-                            self.Battery1.y = 10
-                        laserCount+=1
+        if (gamestate == "maingame"):
+            global ProwNum
+            global PcolNum
+            global BoardXcoord
+            global BoardYcoord
+            global playerLives
+            global CorrectAnswers
+            global isBlackholeSet
+            global CorrectAnswersList
+            global WrongAnswersList
+            global SoundOn
+            global noLiveleft
+            if (noLiveleft == False):
+                #Checks to see what life the player is currently is on
+                if(playerLives == 2):
+                    self.player.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+                if(playerLives == 1):
+                    self.player2.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+                if(playerLives == 0):
+                    self.player3.image = spyral.image.Image(filename = "images/mainPlayerRedImages/playerEnergyRight.png", size = None)
+                time.sleep(0.2)
+                if(isface == "right"):
+                    self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserRight.png", size = None)
+                else:
+                    self.image = spyral.image.Image(filename = "images/mainPlayerRedImages/RedPlayerShootingLaserLeft.png", size = None)
+                if (BoardStatus[ProwNum][PcolNum] == -2):
+                    # can not count this answer as correct again
+                    # use -20 to mark it as selected
+                    #BoardStatus[ProwNum][PcolNum] = -20 
+                    pygame.mixer.init()
+                    FF = pygame.mixer.Sound("sounds/absorbEnergyFX.ogg")
+                    if(SoundOn):
+                        FF.play()
+                    self.AnswerCorrect = AnswerCorrect(self)
+                    self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
+                    self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
+                    CorrectAnswersList.append(self.AnswerCorrect) #sean
+                    CorrectAnswers+=1
+                    if(CorrectAnswers == 3 or CorrectAnswers == 6):
+                        global laserCount
+                        if (laserCount < 3):
+                            if (laserCount == 2):
+                                self.Battery3 = Battery(self)
+                                self.Battery3.x = self.Battery2.x + self.Battery2.width + 10
+                                self.Battery3.y = 10
+                            elif (laserCount == 1):
+                                self.Battery2 = Battery(self)
+                                self.Battery2.x = self.Battery1.width + 10
+                                self.Battery2.y = 10
+                            else:
+                                self.Battery1 = Battery(self)
+                                self.Battery1.x = 0
+                                self.Battery1.y = 10
+                            laserCount+=1
 
-                if(CorrectAnswers == 8):
-                    ranRowNum = random.randint(0, 4)
-                    ranColNum = random.randint(0, 5)
-                    self.BlackHole = BlackHole(self)
-                    while(BoardStatus[ranRowNum][ranColNum] == -2 or
-                        BoardStatus[ranRowNum][ranColNum] == -1 or
-                        ranRowNum == ProwNum or ranColNum == PcolNum):
+                    if(CorrectAnswers == 8):
                         ranRowNum = random.randint(0, 4)
                         ranColNum = random.randint(0, 5)
-                    self.BlackHole.x = BoardXcoord[ranRowNum][ranColNum]
-                    self.BlackHole.y = BoardYcoord[ranRowNum][ranColNum]
-                    isBlackholeSet = True
-                    #print "Black Hole is set"
-            #elif (BoardStatus[ProwNum][PcolNum] != -2 and BoardStatus[ProwNum][PcolNum] != -20):
-            else:
-                self.AnswerCorrect = AnswerCorrect(self)
-                WrongAnswersList.append(self.AnswerCorrect)
-                self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
-                self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
-                self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
-                if(playerLives == 2):
-                    self.player.kill()
-                    self.spaceShipLife1.kill()
-                elif(playerLives == 1):
-                    self.player2.kill()
-                    self.spaceShipLife2.kill()
-                elif(playerLives == 0):
-                    self.player3.kill()
-                    noLiveleft = True
-                pygame.mixer.init()
-                if(SoundOn):
-                    deathScream = pygame.mixer.Sound("sounds/deathScream.ogg")
-                    deathScream.play()
-                    asteroidExplode = pygame.mixer.Sound("sounds/explode.ogg")
-                    asteroidExplode.play()
-                isplayerDead = True
-                if(playerLives == 2):
-                    self.player2 = Player(self)
-                    ProwNum = 0
-                    PcolNum = 0
-                    playerLives-= 1
-                elif(playerLives == 1):
-                    self.player3 = Player(self)
-                    ProwNum = 0
-                    PcolNum = 0
-                    playerLives-= 1
+                        self.BlackHole = BlackHole(self)
+                        while(BoardStatus[ranRowNum][ranColNum] == -2 or
+                            BoardStatus[ranRowNum][ranColNum] == -1 or
+                            ranRowNum == ProwNum or ranColNum == PcolNum):
+                            ranRowNum = random.randint(0, 4)
+                            ranColNum = random.randint(0, 5)
+                        self.BlackHole.x = BoardXcoord[ranRowNum][ranColNum]
+                        self.BlackHole.y = BoardYcoord[ranRowNum][ranColNum]
+                        isBlackholeSet = True
+                        #print "Black Hole is set"
+                #elif (BoardStatus[ProwNum][PcolNum] != -2 and BoardStatus[ProwNum][PcolNum] != -20):
+                else:
+                    self.AnswerCorrect = AnswerCorrect(self)
+                    WrongAnswersList.append(self.AnswerCorrect)
+                    self.AnswerCorrect.image = spyral.image.Image(filename = "images/feedback/tombstone.png", size = None)
+                    self.AnswerCorrect.x = BoardXcoord[ProwNum][PcolNum]
+                    self.AnswerCorrect.y = BoardYcoord[ProwNum][PcolNum]
+                    if(playerLives == 2):
+                        self.player.kill()
+                        self.spaceShipLife1.kill()
+                    elif(playerLives == 1):
+                        self.player2.kill()
+                        self.spaceShipLife2.kill()
+                    elif(playerLives == 0):
+                        self.player3.kill()
+                        noLiveleft = True
+                    pygame.mixer.init()
+                    if(SoundOn):
+                        deathScream = pygame.mixer.Sound("sounds/deathScream.ogg")
+                        deathScream.play()
+                        asteroidExplode = pygame.mixer.Sound("sounds/explode.ogg")
+                        asteroidExplode.play()
+                    isplayerDead = True
+                    if(playerLives == 2):
+                        self.player2 = Player(self)
+                        ProwNum = 0
+                        PcolNum = 0
+                        playerLives-= 1
+                    elif(playerLives == 1):
+                        self.player3 = Player(self)
+                        ProwNum = 0
+                        PcolNum = 0
+                        playerLives-= 1
     #This is called when the player presses the 'f' key when done
     #the user will have a force field that will protect the user
     #for 5 seconds then dissapear
     def forceFieldOn(self):
-        global forceFieldOn
-        global forceFieldTime
-        global SoundOn
-        forceFieldOn = True
-        pygame.mixer.init()
-        forceFieldTime = time.time()
-        FF = pygame.mixer.Sound("sounds/forceFieldOn.ogg")
-        if(SoundOn):
-            FF.play()
-        if(isface == "right"):
-          if(playerLives == 2):
-          	  self.player.image = spyral.image.Image(filename =
-               "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png",
-                size = None)
-          elif(playerLives == 1):
-          	  self.player2.image = spyral.image.Image(filename =
-              "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png",
-               size = None)
-          elif(playerLives == 0):
-          	  self.player3.image = spyral.image.Image(filename =
-              "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png",
-              size = None)
-        else:
-          if(playerLives == 2):
-              self.player.image = spyral.image.Image(filename =
-              "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png",
-               size = None)
-          if(playerLives == 1):
-              self.player2.image = spyral.image.Image(filename =
-               "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png",
-                size = None)
-          if(playerLives == 0):
-              self.player3.image = spyral.image.Image(filename =
-               "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png",
-                size = None)
+        if (gamestate == "maingame"):
+            global forceFieldOn
+            global forceFieldTime
+            global SoundOn
+            forceFieldOn = True
+            pygame.mixer.init()
+            forceFieldTime = time.time()
+            FF = pygame.mixer.Sound("sounds/forceFieldOn.ogg")
+            if(SoundOn):
+                FF.play()
+            if(isface == "right"):
+              if(playerLives == 2):
+              	  self.player.image = spyral.image.Image(filename =
+                   "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png",
+                    size = None)
+              elif(playerLives == 1):
+              	  self.player2.image = spyral.image.Image(filename =
+                  "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png",
+                   size = None)
+              elif(playerLives == 0):
+              	  self.player3.image = spyral.image.Image(filename =
+                  "images/mainPlayerRedImages/RedPlayerShootingLaserRightForceField.png",
+                  size = None)
+            else:
+              if(playerLives == 2):
+                  self.player.image = spyral.image.Image(filename =
+                  "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png",
+                   size = None)
+              if(playerLives == 1):
+                  self.player2.image = spyral.image.Image(filename =
+                   "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png",
+                    size = None)
+              if(playerLives == 0):
+                  self.player3.image = spyral.image.Image(filename =
+                   "images/mainPlayerRedImages/RedPlayerShootingLaserLeftForceField.png",
+                    size = None)
 
     def space_unclicked(self):
         global isface
