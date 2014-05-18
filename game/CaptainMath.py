@@ -1155,7 +1155,14 @@ class CaptainMath(spyral.Scene):
                 problem = generatesEqualitiesProblems(27, currentLevel, last_equality_number)
                 last_equality_number = int(problem.question)
             elif (currentPlanet == 4): # the 4th planet math is subject to change
-                problem = generatesMultiplesProblems(27, currentLevel)
+                if (currentLevel==1):
+                    problem = generatesMultiplesProblems(27, 2, last_multiple_number)
+                    last_multiple_number = int(problem.question)
+                elif(currentLevel==2):
+                    problem = generatesFractionsProblems(27, 2)
+                elif(currentLevel==3):
+                    problem = generatesEqualitiesProblems(27, 2, last_equality_number)
+                    last_equality_number = int(problem.question)
 
             # The following block makes right and wrong answers and asteroids
             # randomly displayed on the board.
