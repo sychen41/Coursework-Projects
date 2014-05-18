@@ -652,6 +652,7 @@ class Question(spyral.Sprite):
                 gamestate = "maingame"
             else:
                 gamestate = "howtoscene"
+            print ("gamestate = " + gamestate)
             self.x=100
             self.y=50
             self.correct = '1'
@@ -671,6 +672,7 @@ class Question(spyral.Sprite):
                 gamestate = "maingame"
             else:
                 gamestate = "howtoscene"
+            print ("gamestate = " + gamestate)
             self.x=100
             self.y=220
             pygame.mixer.stop()
