@@ -451,7 +451,10 @@ class Spaceship(spyral.Sprite):
                 self.x +=2
             else:
                 minigame_timeout = True
-                gamestate = "howtoscene"
+                if currentPlanet == 4:
+                    gamestate = "maingame"
+                else:
+                    gamestate = "howtoscene"
         else:
             self.x = WIDTH + 100
 
@@ -511,19 +514,20 @@ class Arrow(spyral.Sprite):
         spyral.event.register("input.keyboard.down.s", self.planet_selected)
 
     def planet_selected(self):
-        print "planet is : " + str(self.level)
-        global currentPlanet
-        global gamestate
-        currentPlanet = self.level
-        global howToName
-        if currentPlanet == 1:
-            howToName = "multiple"
-        elif currentPlanet == 2:
-            howToName = "EquivFrac"
-        elif currentPlanet == 3:
-            howToName ="eq"
-        gamestate = "planetConfirm"
-        print "gamestate: " + gamestate
+        if gamestate == "Levelselect":
+            print "planet is : " + str(self.level)
+            global currentPlanet
+            global gamestate
+            currentPlanet = self.level
+            global howToName
+            if currentPlanet == 1:
+                howToName = "multiple"
+            elif currentPlanet == 2:
+                howToName = "EquivFrac"
+            elif currentPlanet == 3:
+                howToName ="eq"
+            gamestate = "planetConfirm"
+            print "gamestate: " + gamestate
 
 
     #def select_level(self):
@@ -1073,6 +1077,9 @@ class CaptainMath(spyral.Scene):
                     self.background = spyral.Image("images/Backgrounds/FreeOrStory.jpg")
         # the main stage of the game
         elif(gamestate == "maingame"):
+            if (currentPlanet==4 and currentLevel==1):
+                self.spaceship.kill()
+                self.question.kill()
             # stage Start_time collected
 
             # reset every necessary variables for a new level and new planet
@@ -1642,11 +1649,8 @@ class CaptainMath(spyral.Scene):
                 isGameEnd = False
         elif gamestate == "failed":
             self.background = spyral.Image("images/entireScenes/youFailed.jpg")
-        elif gamestate == "maingame" and loadingScreen == True:
-            self.background = spyral.Image("images/Backgrounds/loading.jpg")
-            if (currentPlanet == 4 and currentLevel == 1):
-                self.spaceship.kill()
-                self.question.kill()
+        #elif gamestate == "maingame" and loadingScreen == True:
+            #self.background = spyral.Image("images/Backgrounds/loading.jpg")   
         elif gamestate == "fullLevels":
             #print "is the black hole set?? ", isBlackholeSet
             global didCollideWithBlackHole
