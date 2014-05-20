@@ -1191,8 +1191,8 @@ class CaptainMath(spyral.Scene):
             current = primeNums[randomNum] # some start value
             # fill the randomIndexes array with non-repeat numbers, range is 0-28
             modulo = 29 # prime
-            #incrementor = 17180131327 # relative prime
-            incrementor = 2
+            incrementor = 17180131327 # relative prime
+            #incrementor = 2
             for i in range(0, len1):
                 current = (current + incrementor) % modulo
                 randomIndexes[i] = current
