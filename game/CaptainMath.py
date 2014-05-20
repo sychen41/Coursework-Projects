@@ -1365,9 +1365,9 @@ class CaptainMath(spyral.Scene):
                     self.Laser.y = self.player3.y-30
         #Checks to see if the laser has collided with an asteroid or
         #collide with enemy
-                self.Laser.collide_meteor(self.asteroid1)
-                self.Laser.collide_meteor(self.asteroid2)
-                self.Laser.collide_meteor(self.asteroid3)
+                self.Laser.collide_meteor(self.asteroid1,0)
+                self.Laser.collide_meteor(self.asteroid2,1)
+                self.Laser.collide_meteor(self.asteroid3,2)
                 self.Laser.collide_meteor(self.enemy1)
             elif(isface == "right" and forceFieldOn == True and gamestate == "fullLevels"):
                 isface = "right"
@@ -1391,9 +1391,9 @@ class CaptainMath(spyral.Scene):
                     self.Laser.y = self.player3.y-30
         #Checks to see if the laser has collided with an asteroid or
         #collide with enemy
-                self.Laser.collide_meteor(self.asteroid1)
-                self.Laser.collide_meteor(self.asteroid2)
-                self.Laser.collide_meteor(self.asteroid3)
+                self.Laser.collide_meteor(self.asteroid1,0)
+                self.Laser.collide_meteor(self.asteroid2,1)
+                self.Laser.collide_meteor(self.asteroid3,2)
                 self.Laser.collide_enemy(self.enemy1)
             if(laserCount == 3 and gamestate == "fullLevels"):
                 self.Battery3.kill()
