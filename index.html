@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>hello phaser!</title>
-        <script src="phaser.min.js"></script>
+        <script src="phaser.js"></script>
     </head>
     <body>
 
@@ -12,18 +12,33 @@
     window.onload = function() {
 
         var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create });
-
+        var counter = 0;
+        var text;
         function preload () {
 
-            game.load.image('logo', 'phaser.png');
+            game.load.image('einstein', 'assets/pics/ra_einstein.png');
 
         }
 
         function create () {
 
-            var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-            logo.anchor.setTo(0.5, 0.5);
+            var einstein = game.add.sprite(game.world.centerX, game.world.centerY, 'einstein');
+            einstein.anchor.setTo(0.5, 0.5);
+            einstein.inputEnabled = true;
 
+            text = game.add.text(250, 16, '', { fill: '#ffffff'});
+            einstein.events.onInputDown.add(listenerDown, this);
+            //einstein.events.onInputUp.add(listenerUp, this);
+
+        }
+
+        function listenerDown () {
+            counter++;
+            text.text = "you clicked " + counter + " times";
+        }
+
+        function listenerUp () {
+            counter = 100;
         }
 
     };
