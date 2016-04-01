@@ -14,7 +14,7 @@ food_category_map['nuts'] = nuts
 food_category_map['fish'] = fish
 food_category_map['meat'] = set(["meat","fried meat"])
 
-common_allergens = "nuts, milk, egg, wheat, soy, fish"
+#common_allergens = "nuts, milk, egg, wheat, soy, fish"
 
 potatos = "baked potatos"
 meat = "fried meat"
@@ -42,17 +42,23 @@ whole_map["ob_bad"] = ob_bad
 whole_map["hch_good"] = hch_good
 whole_map["hch_bad"] = hch_bad
 
-allergies_map = {}
-allergies_map['nuts'] = nuts
-allergies_map['milk'] = set(['fat free yogurt'])
-allergies_map['egg'] = set(['eggs'])
-allergies_map['wheat'] = set(['brown bread'])
-allergies_map['soy'] = beans
-allergies_map['fish'] = set(['salmon', 'tuna', 'mackerel'])
+#allergies_map = {}
+#allergies_map['nuts'] = nuts
+#allergies_map['milk'] = set(['fat free yogurt'])
+#allergies_map['egg'] = set(['eggs'])
+#allergies_map['wheat'] = set(['brown bread'])
+#allergies_map['soy'] = beans
+#allergies_map['fish'] = set(['salmon', 'tuna', 'mackerel'])
 
 user_good_food = []
 user_bad_food = []
-allergies = []
+#allergies = []
+
+disease_map = {}
+disease_map["Diabetes"] = ["diabetes_good","diabetes_bad"]
+disease_map["High Blood Pressure"] = ["hbp_good","hbp_bad"]
+disease_map["Obesity"] = ["ob_good","ob_bad"]
+disease_map["High Cholesterol"] = ["hch_good","hch_bad"]
 
 query_type = 0
 while query_type != '3':
@@ -62,7 +68,7 @@ while query_type != '3':
     print("3. Quit")
     query_type = input('Please give us your choice: ')
     if query_type == '3':
-        print("Thanks for using our system!")
+        print("Thanks for using our system.")
         break
     elif query_type == '1':
         print("You chose query type 1\n")
@@ -73,53 +79,42 @@ while query_type != '3':
         continue
 
     print("Do you have any of these conditions?")
-    diabetes = input('Diabetes? (y/n): ')
-    if diabetes == 'y' or diabetes == 'Y':
-        user_good_food.append("diabetes_good")
-        user_bad_food.append("diabetes_bad")
+    for key, value in disease_map.items():
+        user_input = input(key + " (y/n): ")
+        while user_input != 'y' and user_input != 'n' and user_input != 'Y' and user_input != 'N':
+            print(user_input + " is not a valid input. Please try again.")
+            user_input = input(key + " (y/n): ")
+        if user_input == 'y' or user_input == 'Y':
+            user_good_food.append(value[0])
+            user_bad_food.append(value[1])
 
-    hbp = input('High Blood Pressure? (y/n): ')
-    if hbp == 'y' or hbp == 'Y':
-        user_good_food.append("hbp_good")
-        user_bad_food.append("hbp_bad")
-
-    ob = input('Obesity? (y/n): ')
-    if ob == 'y' or ob == 'Y':
-        user_good_food.append("ob_good")
-        user_bad_food.append("ob_bad")
-
-    hch = input('High Cholesterol? (y/n): ')
-    if hch == 'y' or hch == 'Y':
-        user_good_food.append("hch_good")
-        user_bad_food.append("hch_bad")
-
-    allergies_y_n = input('Are you allergic to ANY of the following food? ' + common_allergens + " (y/n): ")
-    user_allergies = set()
-    if allergies_y_n == "y" or allergies_y_n == "Y":
-        print("which one/ones are you allergic to?")
-        allergies_nuts = input("nuts? (y/n): ")
-        allergies_milk = input("milk? (y/n): ")
-        allergies_egg = input("egg? (y/n): ")
-        allergies_wheat = input("wheat? (y/n): ")
-        allergies_soy = input("soy? (y/n): ")
-        allergies_fish = input("fish? (y/n): ")
-        if allergies_nuts == 'y' or allergies_nuts == 'Y':
-            allergies.append('nuts')
-        if allergies_milk == 'y' or allergies_milk == 'Y':
-            allergies.append('milk')
-        if allergies_egg== 'y' or allergies_egg == 'Y':
-            allergies.append('egg')
-        if allergies_wheat == 'y' or allergies_wheat == 'Y':
-            allergies.append('wheat')
-        if allergies_soy == 'y' or allergies_soy == 'Y':
-            allergies.append('soy')
-        if allergies_fish == 'y' or allergies_fish == 'Y':
-            allergies.append('fish')
-        print(allergies)
-        if (len(allergies)!= 0):
-            user_allergies = allergies_map[allergies[0]]
-            for allergy in allergies:
-                user_allergies = user_allergies.union(allergies_map[allergy])
+#    allergies_y_n = input('Are you allergic to ANY of the following food? ' + common_allergens + " (y/n): ")
+#    user_allergies = set()
+#    if allergies_y_n == "y" or allergies_y_n == "Y":
+#        print("which one/ones are you allergic to?")
+#        allergies_nuts = input("nuts? (y/n): ")
+#        allergies_milk = input("milk? (y/n): ")
+#        allergies_egg = input("egg? (y/n): ")
+#        allergies_wheat = input("wheat? (y/n): ")
+#        allergies_soy = input("soy? (y/n): ")
+#        allergies_fish = input("fish? (y/n): ")
+#        if allergies_nuts == 'y' or allergies_nuts == 'Y':
+#            allergies.append('nuts')
+#        if allergies_milk == 'y' or allergies_milk == 'Y':
+#            allergies.append('milk')
+#        if allergies_egg== 'y' or allergies_egg == 'Y':
+#            allergies.append('egg')
+#        if allergies_wheat == 'y' or allergies_wheat == 'Y':
+#            allergies.append('wheat')
+#        if allergies_soy == 'y' or allergies_soy == 'Y':
+#            allergies.append('soy')
+#        if allergies_fish == 'y' or allergies_fish == 'Y':
+#            allergies.append('fish')
+#        print(allergies)
+#        if (len(allergies)!= 0):
+#            user_allergies = allergies_map[allergies[0]]
+#            for allergy in allergies:
+#                user_allergies = user_allergies.union(allergies_map[allergy])
 
 
     if len(user_good_food) != 0:
@@ -129,8 +124,8 @@ while query_type != '3':
             bad_food = bad_food.union(whole_map[choice])
         for choice in user_good_food:
             good_food = good_food.intersection(whole_map[choice]) #- bad_food
-            if len(user_allergies)!= 0:
-                good_food = good_food - user_allergies
+            #if len(user_allergies)!= 0:
+            #    good_food = good_food - user_allergies
 
         isempty_good = len(good_food)
         if query_type == '1':
@@ -140,7 +135,7 @@ while query_type != '3':
 
             print("Food you should avoid:")
             print(bad_food)
-            print(good_food.intersection(bad_food))
+            #print(good_food.intersection(bad_food))
         if query_type == '2':
             interest_food = []
             interest_and_ok_food = {}
