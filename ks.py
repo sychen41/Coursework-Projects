@@ -145,6 +145,9 @@ while query_type != '3':
             interest_food_categories = ["fish","fruit","vegetables","meat","nuts","beans"]
             for interest_food_category in interest_food_categories:
                 interested = input(interest_food_category + "? (y/n): ")
+                while interested != 'y' and interested != 'n' and interested != 'Y' and interested != 'N':
+                    print(interested + " is not a valid input. Please try again.")
+                    interested = input(interest_food_category + "? (y/n): ")
                 if interested == 'y' or interested == 'Y':
                     interest_food.append(interest_food_category)
 
