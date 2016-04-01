@@ -1,11 +1,20 @@
 berries = set(["blueberries","cranberries","raspberries"])
-veg = set(["baked potato","spinach","peas","celery","broccoli","mushrooms","pickles"])
+vegetables = set(["baked potato","spinach","peas","celery","broccoli","mushrooms","pickles"])
 fried = set(["fried fish","fried meat","French fries"])
 beans = set(["black bean","white bean","navy bean","lima bean","pinto bean","soy bean"])
 nuts = set(["walnuts","peanuts","almond","pistachios"])
-#common_allergens = set(["nuts","milk","egg","wheat","soy","fish"])
-common_allergens = "nuts, milk, egg, wheat, soy, fish"
+fruit = set(["apple","avocado","blueberries","cranberries","raspberries","orange","kiwi","pears","banana","melons","peaches"])
+fish = set(["salmon","tuna","mackerel","fried fish"])
 
+food_category_map = {}
+food_category_map['fruit'] = fruit
+food_category_map['vegetables'] = vegetables
+food_category_map['beans'] = beans
+food_category_map['nuts'] = nuts
+food_category_map['fish'] = fish
+food_category_map['meat'] = set(["meat","fried meat"])
+
+common_allergens = "nuts, milk, egg, wheat, soy, fish"
 
 potatos = "baked potatos"
 meat = "fried meat"
@@ -16,7 +25,7 @@ diabetes_bad = set(["banana","melons","white bread","white rice","pickles","frie
 hbp_good = set(["avocade","blueberries","banana","kiwi","orange","peaches","black bean","white bean","navy bean","lima bean","pinto bean","green bean","baked potato","spinach","peas","celery","broccoli","almonds","pistachios","salmon","tuna","brown rice","brown bread","fat free yogurt","dark chocolate"])
 hbp_bad = set(["alcohol","soda","fried meat","frozen pizza","pickles"])
 
-ob_good = berries.union(veg)
+ob_good = berries.union(vegetables)
 ob_bad = set([potatos,"desserts"]).union(fried)
 
 hch_good = (nuts.union(beans)).union(set(["salmon","spinach","avocado"]))
@@ -112,9 +121,6 @@ while query_type != '3':
             for allergy in allergies:
                 user_allergies = user_allergies.union(allergies_map[allergy])
 
-    if query_type == 2:
-        print("what food catogory are you interested in?")
-        print("")
 
     if len(user_good_food) != 0:
         good_food = whole_map[user_good_food[0]]
@@ -127,14 +133,47 @@ while query_type != '3':
                 good_food = good_food - user_allergies
 
         isempty_good = len(good_food)
-        if isempty_good!=0:
-            print("Food that good for you:")
-            print(good_food)
+        if query_type == '1':
+            if isempty_good!=0:
+                print("Food that good for you:")
+                print(good_food)
 
-        print("Food you should avoid:")
-        print(bad_food)
-        print(good_food.intersection(bad_food))
+            print("Food you should avoid:")
+            print(bad_food)
+            print(good_food.intersection(bad_food))
+        if query_type == '2':
+            interest_food = []
+            interest_and_ok_food = {}
+            interest_but_notok_food = {}
+            print("what food catogories are you interested in?")
+
+            interest_food_categories = ["fish","fruit","vegetables","meat","nuts","beans"]
+            for interest_food_category in interest_food_categories:
+                interested = input(interest_food_category + "? (y/n): ")
+                if interested == 'y' or interested == 'Y':
+                    interest_food.append(interest_food_category)
+
+            for food_category in interest_food:
+                interest_category_ok_food = []
+                interest_category_notok_food = []
+                for food in food_category_map[food_category]:
+                    if food in good_food:
+                        interest_category_ok_food.append(food)
+                    if food in bad_food:
+                        interest_category_notok_food.append(food)
+                interest_and_ok_food[food_category] = interest_category_ok_food
+                interest_but_notok_food[food_category] = interest_category_notok_food
+            for key, value in interest_and_ok_food.items():
+                if len(value)!= 0:
+                    print(key + " are good for you, especially " + str(value))
+                    if len(interest_but_notok_food[key]) != 0:
+                        print("But try to avoid " + str(interest_but_notok_food[key]))
+                    print("")
+                else:
+                    print(key + " are NOT good for you" + '\n')
+
     else:
         print("You are very health! EAT WHATEVER YOU WANT!") # this is subject to change
+    print('')
 
 
