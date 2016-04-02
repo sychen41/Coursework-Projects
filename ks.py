@@ -1,10 +1,10 @@
-berries = set(["blueberries","cranberries","raspberries"])
-vegetables = set(["baked potato","spinach","peas","celery","broccoli","mushrooms","pickles"])
+berries = set(["blueberries","cranberries","raspberries","strawberries"])
+vegetables = set(["baked potato","spinach","peas","celery","broccoli","mushrooms","pickles","cucumber","kale","lettuce","zucchini","eggplant"])
 fried = set(["fried fish","fried meat","French fries"])
-beans = set(["black bean","white bean","navy bean","lima bean","pinto bean","soy bean"])
-nuts = set(["walnuts","peanuts","almond","pistachios"])
-fruit = set(["apple","avocado","blueberries","cranberries","raspberries","orange","kiwi","pears","banana","melons","peaches"])
-fish = set(["salmon","tuna","mackerel","fried fish"])
+beans = set(["black bean","white bean","navy bean","lima bean","pinto bean","soy bean","kidney bean","chickpea bean","green bean"])
+nuts = set(["walnuts","peanuts","almond","pistachios","cashews"])
+fruit = set(["apple","avocado","blueberries","cranberries","raspberries","orange","kiwi","pears","banana","melons","peaches","mango","grapefruit","watermelon"])
+fish = set(["salmon","tuna","mackerel","fried fish","sardines","halibut","scollops"])
 
 food_category_map = {}
 food_category_map['fruit'] = fruit
@@ -19,18 +19,21 @@ food_category_map['meat'] = set(["meat","fried meat"])
 potatos = "baked potatos"
 meat = "fried meat"
 
-diabetes_good = set(["apple","avocado","blueberries","cranberries","raspberries","orange","kiwi","pears","black bean","white bean","navy bean","lima bean","pinto bean","soy bean","salmon","tuna","mackerel","brown rice","brown bread","chicke breast","turkey","eggs","fat free yogurt","unsweetened tea","broccoli","mushrooms","baked potato","walnuts","peanuts","almond"])
+diabetes_good = set(["apple","avocado","blueberries","cranberries","raspberries","orange","kiwi","pears","black bean","white bean","navy bean","lima bean","pinto bean","soy bean","salmon","tuna","mackerel","brown rice","brown bread","chicke breast","turkey","eggs","fat free yogurt","unsweetened tea","broccoli","mushrooms","baked potato","walnuts","peanuts","almond","peaches","cucumber","kale","lettuce","spinach","zucchini","cashews","strawberries"])
 diabetes_bad = set(["banana","melons","white bread","white rice","pickles","fried fish","fried meat","sweets","French fries"])
 
-hbp_good = set(["avocade","blueberries","banana","kiwi","orange","peaches","black bean","white bean","navy bean","lima bean","pinto bean","green bean","baked potato","spinach","peas","celery","broccoli","almonds","pistachios","salmon","tuna","brown rice","brown bread","fat free yogurt","dark chocolate"])
+hbp_good = set(["avocade","blueberries","banana","kiwi","orange","peaches","black bean","white bean","navy bean","lima bean","pinto bean","green bean","baked potato","spinach","peas","celery","broccoli","almonds","pistachios","salmon","tuna","brown rice","brown bread","fat free yogurt","dark chocolate","apple","mango","kale","lettuce","zucchini","mushrooms","walnuts","cashews","strawberries","raspberries"])
 hbp_bad = set(["alcohol","soda","fried meat","frozen pizza","pickles"])
 
-ob_good = berries.union(vegetables)
+ob_good = (berries.union(vegetables)).union(set(["apple","avocado","grapefruit","kiwi","orange","pears","spinach","peas","kale","broccoli","zucchini","mushrooms","black bean", "kidney bean","navy bean","chickpea bean","pinto bean","walnuts","cashews","almonds","salmon","tuna","sardines","halibut"]))
 ob_bad = set([potatos,"desserts"]).union(fried)
 
-hch_good = (nuts.union(beans)).union(set(["salmon","spinach","avocado"]))
+hch_good = (nuts.union(beans)).union(set(["salmon","spinach","avocado","banana","avocado","grapefruit","kiwi","orange","peaches","mango","spinach","kale","broccoli","zucchini","mushrooms","tuna","scollops","halibut","blueberries","strawberries","raspberries"]))
 hch_bad = fried
 hch_bad.add(meat)
+
+ibs_good = set(["banana","avocado","grapefruit","kiwi","orange","lettuce","zucchini","eggplant","cucumber","green bean","walnuts","peanuts","almonds","salmon","blueberries","strawberries","raspberries","eggs"])
+ibs_bad = set(["apple","pears","watermelon","mango","orange","broccoli","black bean","white bean","cashews","mushrooms","spinach"])
 
 whole_map = {}
 whole_map["diabetes_good"] = diabetes_good
@@ -41,6 +44,8 @@ whole_map["ob_good"] = ob_good
 whole_map["ob_bad"] = ob_bad
 whole_map["hch_good"] = hch_good
 whole_map["hch_bad"] = hch_bad
+whole_map["ibs_good"] = ibs_good
+whole_map["ibs_bad"] = ibs_bad
 
 #allergies_map = {}
 #allergies_map['nuts'] = nuts
@@ -59,6 +64,7 @@ disease_map["Diabetes"] = ["diabetes_good","diabetes_bad"]
 disease_map["High Blood Pressure"] = ["hbp_good","hbp_bad"]
 disease_map["Obesity"] = ["ob_good","ob_bad"]
 disease_map["High Cholesterol"] = ["hch_good","hch_bad"]
+disease_map["Irritable Bowel Syndrome"] = ["ibs_good","ibs_bad"]
 
 query_type = 0
 while query_type != '3':
