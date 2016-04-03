@@ -179,7 +179,7 @@ while query_type != '3':
 
     else:
         """If user does not have any of the five diseases, we provide some general information about diet"""
-        print("You are health! Keep on following normal diet. We recommend fat-free food, fresh fruits and vegetables.")
+        print("You are healthy! Keep on following normal diet. We recommend fat-free food, fresh fruits and vegetables.")
     print('')
 
 
