@@ -131,13 +131,9 @@ def load_attribute_names_and_values(filename):
     
     
 def attribute_values(instances, attribute_index):
-    '''Returns the distinct values of an attribute across a list of instances.
-    
-    instances is expected to be a list of instances (attribute values).
-    attribute_index is expected bo be a the position of attribute in instances.
-    
-    See http://www.peterbe.com/plog/uniqifiers-benchmark for variants on this algorirthm'''
     return list(set([x[attribute_index] for x in instances]))
+def attribute_values_list(instances, attribute_index):
+    return list(([x[attribute_index] for x in instances]))
 
 
 def attribute_value(instance, attribute, attribute_names):
@@ -431,7 +427,6 @@ def walk_a_tree(tree,level,att,value):
 
 def get_attribute_names(att_name_file_path):
     att_names = []
-    ###########################################################################################
     fileR = open(att_name_file_path, "r")
     for line in fileR.read().splitlines():
         att_names.append(line)
@@ -535,19 +530,165 @@ def format_a_tree_to_a_tgf_file(tree, att_name_file_path,final_tree_tgf_file_pat
     print("Tree graph: please open the tgf file that just generated.")
 
 
+def fix_frequency_discretization(instances,continuous_att_index_list,discretized_data_path,nominal_att_index=-1):
+    # number of bins = squre root of total number of instances
+    num_bins = int(math.sqrt(len(instances)))
+    new_data_map = {}
+    for att_index in continuous_att_index_list:
+        att_index_value_map = {}
+        index = 0
+        att_values = attribute_values_list(instances, att_index)
+        for value in att_values:
+            att_index_value_map[index] = value
+            index+=1
+        #print(att_index_value_map)
+        sorted_map = sorted(att_index_value_map.items(), key=operator.itemgetter(1))
+        #print(sorted_map)
+        new_map = {}
+        count = 0
+        bin_value = 1
+        split_point = num_bins
+        for pair in sorted_map:
+            if count < split_point:
+                new_map[pair[0]] = bin_value
+            else:
+                split_point+=num_bins
+                bin_value+=1
+                new_map[pair[0]] = bin_value
+            count+=1
+        sorted_new_map = sorted(new_map.items(), key=operator.itemgetter(0))
+        #print(sorted_new_map)
+        discretized_value = []
+        for pair in sorted_new_map:
+            discretized_value.append(pair[1])
+        #print(discretized_value)
+        new_data_map[att_index] = discretized_value
+    data_after_discretization = []
+    print(new_data_map)
+    # change nominal attribute value to numbers. for instance, Europe => 1, America => 2, etc
+    all_nominal_values = []
+    if nominal_att_index != -1:
+        all_nominal_values = attribute_values(instances, nominal_att_index)
+        print("changing nominal values to numeric values:")
+        for nominal_value in all_nominal_values:
+            print(nominal_value + " => " + str(all_nominal_values.index(nominal_value)+1))
+    fileW = open(discretized_data_path,"w")
+    for y in range(len(instances)):
+        instance = instances[y]
+        temp_string = ""
+        for x in range(len(instance)):
+            if x not in new_data_map:
+                if nominal_att_index != -1 and x == nominal_att_index:
+                    temp_string += str(all_nominal_values.index(instance[x])+1)
+                else:
+                    temp_string += str(instance[x])
+            else:
+                temp_string += str(new_data_map[x][y])
+            if x != len(instance)-1:
+                temp_string += ","
+        data_after_discretization.append(temp_string)
+        fileW.write(temp_string + "\n")
+    fileW.close()
+
+def fix_interval_discretization(instances,continuous_att_index_list,discretized_data_path,nominal_att_index=-1):
+    # number of bins = squre root of total number of instances
+    num_bins = int(math.sqrt(len(instances)))
+    num_intervals = num_bins + 1
+    new_data_map = {}
+    for att_index in continuous_att_index_list:
+        att_index_value_map = {}
+        index = 0
+        att_values = []
+        for v in attribute_values_list(instances, att_index):
+            att_values.append(float(v))
+        #print(att_values)
+        min_value = min(att_values)
+        max_value = max(att_values)
+        interval_step = int((max_value-min_value+1)/num_intervals)
+        interval_point= min_value
+        interval_points = []
+        for k in range(num_bins):
+            interval_point += interval_step
+            interval_points.append(interval_point)
+        #print(interval_points)
+        range_pairs = []
+        for k in range(num_bins):
+            if k == 0:
+                range_pairs.append((0,interval_points[0]))
+                range_pairs.append((interval_points[k],interval_points[k+1]))
+            elif k == num_bins-1:
+                range_pairs.append((interval_points[k],999999999))
+            else:
+                range_pairs.append((interval_points[k],interval_points[k+1]))
+        # uncomment next line if you want to see what intervals are
+        #print(range_pairs)
+        for value in att_values:
+            att_index_value_map[index] = value
+            index+=1
+        #print(att_index_value_map)
+        new_map = {}
+        for key, value in att_index_value_map.items():
+            for l in range(len(range_pairs)):
+                if range_pairs[l][0] <= value < range_pairs[l][1]:
+                    new_map[key] = l+1
+                    continue
+        #print(new_map)
+        sorted_new_map = sorted(new_map.items(), key=operator.itemgetter(0))
+        #print(sorted_new_map)
+        discretized_value = []
+        for pair in sorted_new_map:
+            discretized_value.append(pair[1])
+        #print(discretized_value)
+        new_data_map[att_index] = discretized_value
+    data_after_discretization = []
+    #print(new_data_map)
+   # change nominal attribute value to numbers. for instance, Europe => 1, America => 2, etc
+    all_nominal_values = []
+    if nominal_att_index != -1:
+        all_nominal_values = attribute_values(instances, nominal_att_index)
+        print("changing nominal values to numeric values:")
+        for nominal_value in all_nominal_values:
+            print(nominal_value + " => " + str(all_nominal_values.index(nominal_value)+1))
+    fileW = open(discretized_data_path,"w")
+    for y in range(len(instances)):
+        instance = instances[y]
+        temp_string = ""
+        for x in range(len(instance)):
+            if x not in new_data_map:
+                if nominal_att_index != -1 and x == nominal_att_index:
+                    temp_string += str(all_nominal_values.index(instance[x])+1)
+                else:
+                    temp_string += str(instance[x])
+            else:
+                temp_string += str(new_data_map[x][y])
+            if x != len(instance)-1:
+                temp_string += ","
+        data_after_discretization.append(temp_string)
+        fileW.write(temp_string + "\n")
+    fileW.close()
+
 ###########################################################################################
 #data_filename = "agaricus-lepiota.data"
-training_data_filename = "wdbc-train.data"
+
+# for files that need discretization
+undiscretized_data_filename = "mpg_cars_o.txt"
+instances = load_instances(undiscretized_data_filename)
+discretized_data_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\discretized_data.txt"
+#fix_frequency_discretization(instances,[2,3,4,5],discretized_data_path,7)
+fix_interval_discretization(instances,[2,3,4,5],discretized_data_path,7)
+# now we load discretized data
+training_data_filename = "discretized_data.txt"
+
+#training_data_filename = "wdbc-train.data"
 testing_data_filename = "wdbc-test.data"
-#data_filename = "mpg_cars.txt"
 
 training_instances = load_instances(training_data_filename,True)
 testing_instances = load_instances(testing_data_filename,True)
 print('Read ', len(training_instances), 'training instances from', training_data_filename)
-print('Read', len(testing_instances), 'testing instances from', testing_data_filename)
+#print('Read', len(testing_instances), 'testing instances from', testing_data_filename)
 # we don't want to print all the instances, so we'll just print the first one to verify
 print('First training instance:', training_instances[0])
-print('First testing instance:', testing_instances[0])
+#print('First testing instance:', testing_instances[0])
 
 #att_filename = "att_names.txt"
 #att_names = load_attribute_names(att_filename)
@@ -558,11 +699,22 @@ print('First testing instance:', testing_instances[0])
 #training_instances = all_instances[:8000]
 #test_instances = all_instances[5001:]
 ###########################################################################################
-tree = create_decision_tree(training_instances,trace=1,class_index=-1)
-print(classification_accuracy(tree,testing_instances,-1))
-#print(tree)
+
+#print(classification_accuracy(tree,testing_instances,-1))
+# for part3
+#tree = create_decision_tree(training_instances,trace=0,class_index=-1)
+#attribute_name_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\wdbc-att-names.txt"
+#final_tree_tgf_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\dtree_part3_2.tgf"
+#pprint(tree)
+
+# for part2
+tree = create_decision_tree(training_instances,trace=0,class_index=0)
+attribute_name_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\car_att_names.txt"
+final_tree_tgf_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\dtree_part2.tgf"
 pprint(tree)
-attribute_name_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\wdbc-att-names.txt"
-final_tree_tgf_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\dtree_part3_2.tgf"
+
 format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
+
+
+
 
