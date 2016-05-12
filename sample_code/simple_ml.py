@@ -14,6 +14,7 @@ __status__ = 'Development'
 import math
 import operator
 import re
+import random
 
 from collections import defaultdict, Counter
 from pprint import pprint
@@ -703,13 +704,27 @@ discretized_data_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproj
 #fix_frequency_discretization(instances,[2,3,4,5],discretized_data_path,7)
 fix_interval_discretization(instances,[2,3,4,5],discretized_data_path,7)
 # now we load discretized data
-training_data_filename = "discretized_data.txt"
-training_instances = load_instances(training_data_filename,True)
-print("Training data " +  training_data_filename + " contains " + str(len(training_instances)) + ' instances')
+data_filename = "discretized_data.txt"
+all_instances = load_instances(data_filename,True)
+num_instances = len(all_instances)
+ten_percent = int(num_instances*0.1)
+random_list = random.sample(range(0,len(all_instances)),ten_percent)
+training_instances = []
+testing_instances = []
+for m in range(num_instances):
+    if m in random_list:
+        testing_instances.append(all_instances[m])
+    else:
+        training_instances.append(all_instances[m])
+
+print("Training data " +  " contains " + str(len(training_instances)) + ' instances')
 tree = create_decision_tree(training_instances,trace=0,class_index=0)
 attribute_name_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\car_att_names.txt"
 final_tree_tgf_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\dtree_part2.tgf"
 format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
+print("testing data:")
+print(testing_instances)
+print("accuracy: " + str(classification_accuracy(tree,testing_instances)))
 #pprint(tree)
 # end for part2
 #"""
