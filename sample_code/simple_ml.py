@@ -702,7 +702,7 @@ def fix_interval_discretization(instances,continuous_att_index_list,discretized_
 folder_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\"
 ###########################################################################################
 
-#"""
+"""
 # for part3
 print("PART 3:")
 training_data_filename = "wdbc-train.data"
@@ -717,13 +717,15 @@ attribute_name_file_path = folder_path + "wdbc-att-names.txt"
 final_tree_tgf_file_path = folder_path + "tree_part3_2.tgf"
 #pprint(tree)
 format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
-print("accuracy: " + str(classification_accuracy(tree_copy,testing_instances,-1)))
-print("recall: " + str(classification_recall(tree_copy,testing_instances,-1)))
+print("accuracy on training data:: " + str(classification_accuracy(tree_copy,training_instances,-1)))
+print("accuracy on testing data:: " + str(classification_accuracy(tree_copy,testing_instances,-1)))
+print("recall on training data: " + str(classification_recall(tree_copy,training_instances,-1)))
+print("recall on testing data: " + str(classification_recall(tree_copy,testing_instances,-1)))
 # end for part3
-#"""
-
-
 """
+
+
+#"""
 # for part2
 # for files that need discretization
 print("PART 2:")
@@ -755,8 +757,10 @@ final_tree_tgf_file_path = folder_path + "dtree_part2.tgf"
 format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
 print("testing data:")
 print(testing_instances)
-print("accuracy: " + str(classification_accuracy(tree_copy,testing_instances)))
-print("recall: " + str(classification_recall(tree_copy,testing_instances)))
+print("accuracy on training data:: " + str(classification_accuracy(tree_copy,training_instances,0)))
+print("accuracy on testing data:: " + str(classification_accuracy(tree_copy,testing_instances,0)))
+print("recall on training data: " + str(classification_recall(tree_copy,training_instances,0)))
+print("recall on testing data: " + str(classification_recall(tree_copy,testing_instances,0)))
 # end for part2
-"""
+#"""
 
