@@ -299,8 +299,6 @@ def format_a_tree_to_a_tgf_file(tree, att_name_file_path,final_tree_tgf_file_pat
             #att_in_tree[int(item.split("att")[-1])] = {}
             if item not in att_in_tree:
                 att_in_tree.append(item)
-    #print("atts used in tree")
-    #print(att_in_tree)
 
     att_names = get_attribute_names(att_name_file_path)
 
@@ -313,21 +311,11 @@ def format_a_tree_to_a_tgf_file(tree, att_name_file_path,final_tree_tgf_file_pat
         att_in_tree_real_name.append(unique_att_name)
         unique_suffix+=1
 
-    #print("--------------")
-    #for item in treeInfo:
-    #    print(item)
-    #print("--------------")
-    #for x in range(len(treeInfo)):
-    #    if pattern.match(tree[x+2]):
     new_tree_info = []
     for item in treeInfo:
         if pattern.match(item):
             new_tree_info.append(item)
         new_tree_info.append(item)
-
-    #print("new tree info--------------")
-    #for item in new_tree_info:
-    #    print(item)
 
     new_tree_info_with_real_name = []
     for item in new_tree_info:
@@ -335,10 +323,6 @@ def format_a_tree_to_a_tgf_file(tree, att_name_file_path,final_tree_tgf_file_pat
             new_tree_info_with_real_name.append(att_index_to_name_map[item])
         else:
             new_tree_info_with_real_name.append(item)
-
-    #print("new tree info with real name--------------")
-    #for item in new_tree_info_with_real_name:
-    #    print(item)
 
     final_tree_info = []
     start = ""
@@ -359,11 +343,7 @@ def format_a_tree_to_a_tgf_file(tree, att_name_file_path,final_tree_tgf_file_pat
             edge = str(att_in_tree_real_name.index(start))+ " " + str(att_in_tree_real_name.index(end))+ " " + value
         else:
             edge = str(att_in_tree_real_name.index(start))+ " " + end + " " + value
-
-        #edge = start + " " + end + " " + value
         final_tree_info.append(edge)
-    #print("final edge info")
-    #print(final_tree_info)
 
     output_format = []
     for x in range(len(att_in_tree_real_name)):
@@ -371,8 +351,6 @@ def format_a_tree_to_a_tgf_file(tree, att_name_file_path,final_tree_tgf_file_pat
     output_format.append("#")
     for edge in final_tree_info:
         output_format.append(edge)
-    #print(output_format)
-    ###########################################################################################
     fileW = open(final_tree_tgf_file_path, "w")
     for line in output_format:
         fileW.write(line)
@@ -522,12 +500,9 @@ def fix_interval_discretization(instances,continuous_att_index_list,discretized_
     fileW.close()
 
 ###########################################################################################
-#data_filename = "agaricus-lepiota.data"
-
-###########################################################################################
+# start the MAIN
 #Define your folder path
 folder_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\"
-###########################################################################################
 #part3 = True #if False, then run part2
 part3 = False
 if part3:
