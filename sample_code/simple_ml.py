@@ -15,6 +15,7 @@ import math
 import operator
 import re
 import random
+import copy
 
 from collections import defaultdict, Counter
 from pprint import pprint
@@ -361,7 +362,32 @@ def classification_accuracy(tree, testing_instances, class_index=0):
         if prediction == actual_value:
             num_correct += 1
     return num_correct / len(testing_instances)
-    
+
+def classification_recall(tree, testing_instances, class_index=0):
+    num_correct = 0
+    recall_for_each_class = {}
+    for i in range(len(testing_instances)):
+        actual_value = testing_instances[i][class_index]
+        if actual_value not in recall_for_each_class:
+            recall_for_each_class[actual_value] = [1,0]
+        else:
+            recall_for_each_class[actual_value][0] += 1
+
+    for i in range(len(testing_instances)):
+        prediction = classify(tree, testing_instances[i])
+        actual_value = testing_instances[i][class_index]
+        if prediction == actual_value:
+            recall_for_each_class[actual_value][1] += 1
+    num_of_classes = len(recall_for_each_class)
+    recall = 0
+    for key, value in recall_for_each_class.items():
+        recall += value[1]/value[0]
+    recall = recall/num_of_classes
+    return recall
+
+
+
+
 
 def compute_learning_curve(instances, num_partitions=10):
     '''Returns a list of training sizes and scores for incrementally increasing partitions.
@@ -672,11 +698,11 @@ def fix_interval_discretization(instances,continuous_att_index_list,discretized_
 #data_filename = "agaricus-lepiota.data"
 
 ###########################################################################################
-#training_instances = all_instances[:8000]
-#test_instances = all_instances[5001:]
+#Define your folder path
+folder_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\"
 ###########################################################################################
 
-"""
+#"""
 # for part3
 print("PART 3:")
 training_data_filename = "wdbc-train.data"
@@ -686,25 +712,28 @@ training_instances = load_instances(training_data_filename,True)
 testing_instances = load_instances(testing_data_filename,True)
 print("Training data " +  training_data_filename + " contains " + str(len(training_instances)) + ' instances')
 tree = create_decision_tree(training_instances,trace=0,class_index=-1)
-attribute_name_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\wdbc-att-names.txt"
-final_tree_tgf_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\dtree_part3_2.tgf"
+tree_copy = copy.deepcopy(tree)
+attribute_name_file_path = folder_path + "wdbc-att-names.txt"
+final_tree_tgf_file_path = folder_path + "tree_part3_2.tgf"
 #pprint(tree)
 format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
-print("accuracy: " + str(classification_accuracy(tree,testing_instances,-1)))
+print("accuracy: " + str(classification_accuracy(tree_copy,testing_instances,-1)))
+print("recall: " + str(classification_recall(tree_copy,testing_instances,-1)))
 # end for part3
-"""
-
 #"""
+
+
+"""
 # for part2
 # for files that need discretization
 print("PART 2:")
-undiscretized_data_filename = "mpg_cars_o.txt"
+undiscretized_data_filename = folder_path + "mpg_cars_o.txt"
 instances = load_instances(undiscretized_data_filename)
-discretized_data_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\discretized_data.txt"
+discretized_data_path = folder_path + "discretized_data.txt"
 #fix_frequency_discretization(instances,[2,3,4,5],discretized_data_path,7)
 fix_interval_discretization(instances,[2,3,4,5],discretized_data_path,7)
 # now we load discretized data
-data_filename = "discretized_data.txt"
+data_filename = folder_path + "discretized_data.txt"
 all_instances = load_instances(data_filename,True)
 num_instances = len(all_instances)
 ten_percent = int(num_instances*0.1)
@@ -719,17 +748,15 @@ for m in range(num_instances):
 
 print("Training data " +  " contains " + str(len(training_instances)) + ' instances')
 tree = create_decision_tree(training_instances,trace=0,class_index=0)
-attribute_name_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\car_att_names.txt"
-final_tree_tgf_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\dtree_part2.tgf"
+tree_copy = copy.deepcopy(tree)
+#pprint(tree)
+attribute_name_file_path = folder_path + "car_att_names.txt"
+final_tree_tgf_file_path = folder_path + "dtree_part2.tgf"
 format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
 print("testing data:")
 print(testing_instances)
-print("accuracy: " + str(classification_accuracy(tree,testing_instances)))
-#pprint(tree)
+print("accuracy: " + str(classification_accuracy(tree_copy,testing_instances)))
+print("recall: " + str(classification_recall(tree_copy,testing_instances)))
 # end for part2
-#"""
-
-
-
-
+"""
 
