@@ -1,183 +1,23 @@
-from __future__ import print_function, division
-
-''' Utility functions to implement some simple Machine Learning tasks
-'''
-
-__author__ = 'Joe McCarthy'
-__version__ = '1.0.3'
-__date__ = '2014-04-04'
-__maintainer__ = 'Joe McCarthy'
-__email__ = 'joe@interrelativity.com'
-__status__ = 'Development'
-
-
-import math
-import operator
-import re
-import random
-import copy
-
+import math,operator,re,random,copy
 from collections import defaultdict, Counter
-from pprint import pprint
+#from pprint import pprint
 
-
-def load_instances(filename, filter_missing_values=False, missing_value='?'):
-    '''Returns a list of instances stored in a file.
-    
-    filename is expected to have a series of comma-separated attribute values per line, e.g.,
-        p,k,f,n,f,n,f,c,n,w,e,?,k,y,w,n,p,w,o,e,w,v,d'''
+def load_instances(filename):
     instances = []
-    with open(filename, 'r') as f:
-        for line in f:
-            new_instance = line.strip().split(',')
-            if not filter_missing_values or missing_value not in new_instance:
-                instances.append(new_instance)
+    fileR = open(filename, "r")
+    #with open(filename, 'r') as f:
+    for line in fileR:
+        new_instance = line.strip().split(',')
+        instances.append(new_instance)
+    fileR.close()
     return instances
 
-
-def save_instances(filename, instances):
-    '''Saves a list of instances to a file.
-    
-    instances are saved to filename one per line, 
-    where each instance is a list of attribute value strings.'''
-    with open(filename, 'w') as f:
-        for instance in instances:
-            f.write(','.join(instance) + '\n')
-
-
-def load_attribute_names(filename, separator=':'):
-    '''Returns a list of attribute names in a file.
-    
-    filename is expected to be a file with attribute names. one attribute per line.
-    
-    filename might also have a list of possible attribute values, in which case it is assumed
-    that the attribute name is separated from the possible values by separator.'''
-    with open(filename, 'r') as f:
-        attribute_names = [line.strip().split(separator)[0] for line in f]
-    return attribute_names
-
-
-def load_attribute_values(attribute_filename):
-    '''Returns a list of attribute values in filename.
-    
-    The attribute values are represented as dictionaries, 
-    wherein the keys are abbreviations and the values are descriptions.
-    
-    filename is expected to have one attribute name and set of values per line, 
-    with the following format:
-        name: value_description=value_abbreviation[,value_description=value_abbreviation]*
-    for example
-        cap-shape: bell=b, conical=c, convex=x, flat=f, knobbed=k, sunken=s
-    The attribute value description dictionary created from this line would be the following:
-        {'c': 'conical', 'b': 'bell', 'f': 'flat', 'k': 'knobbed', 's': 'sunken', 'x': 'convex'}'''
-    attribute_values = []
-    with open(attribute_filename) as f:
-        for line in f:
-            attribute_name_and_value_string_list = line.strip().split(':')
-            attribute_name = attribute_name_and_value_string_list[0]
-            if len(attribute_name_and_value_string_list) < 2:
-                attribute_values.append({}) # no values for this attribute
-            else:
-                value_abbreviation_description_dict = {}
-                description_and_abbreviation_string_list = attribute_name_and_value_string_list[1].strip().split(',')
-                for description_and_abbreviation_string in description_and_abbreviation_string_list:
-                    description_and_abbreviation = description_and_abbreviation_string.strip().split('=')
-                    description = description_and_abbreviation[0]
-                    if len(description_and_abbreviation) < 2: # assumption: no more than 1 value is missing an abbreviation
-                        value_abbreviation_description_dict[None] = description
-                    else:
-                        abbreviation = description_and_abbreviation[1]
-                        value_abbreviation_description_dict[abbreviation] = description
-                attribute_values.append(value_abbreviation_description_dict)
-    return attribute_values
-
-
-def load_attribute_names_and_values(filename):
-    '''Returns a list of attribute names and values in filename.
-    
-    This list contains dictionaries wherein the keys are names 
-    and the values are value description dictionaries.
-    
-    Each value description sub-dictionary will use the attribute value abbreviations as its keys 
-    and the attribute descriptions as the values.
-    
-    filename is expected to have one attribute name and set of values per line, with the following format:
-        name: value_description=value_abbreviation[,value_description=value_abbreviation]*
-    for example
-        cap-shape: bell=b, conical=c, convex=x, flat=f, knobbed=k, sunken=s
-    The attribute name and values dictionary created from this line would be the following:
-        {'name': 'cap-shape', 'values': {'c': 'conical', 'b': 'bell', 'f': 'flat', 'k': 'knobbed', 's': 'sunken', 'x': 'convex'}}'''
-    attribute_names_and_values = [] # this will be a list of dicts
-    with open(filename) as f:
-        for line in f:
-            attribute_name_and_value_dict = {}
-            attribute_name_and_value_string_list = line.strip().split(':')
-            attribute_name = attribute_name_and_value_string_list[0]
-            attribute_name_and_value_dict['name'] = attribute_name
-            if len(attribute_name_and_value_string_list) < 2:
-                attribute_name_and_value_dict['values'] = None # no values for this attribute
-            else:
-                value_abbreviation_description_dict = {}
-                description_and_abbreviation_string_list = attribute_name_and_value_string_list[1].strip().split(',')
-                for description_and_abbreviation_string in description_and_abbreviation_string_list:
-                    description_and_abbreviation = description_and_abbreviation_string.strip().split('=')
-                    description = description_and_abbreviation[0]
-                    if len(description_and_abbreviation) < 2: # assumption: no more than 1 value is missing an abbreviation
-                        value_abbreviation_description_dict[None] = description
-                    else:
-                        abbreviation = description_and_abbreviation[1]
-                        value_abbreviation_description_dict[abbreviation] = description
-                attribute_name_and_value_dict['values'] = value_abbreviation_description_dict
-            attribute_names_and_values.append(attribute_name_and_value_dict)
-    return attribute_names_and_values
-    
-    
 def attribute_values(instances, attribute_index):
     return list(set([x[attribute_index] for x in instances]))
+
 def attribute_values_list(instances, attribute_index):
     return list(([x[attribute_index] for x in instances]))
 
-
-def attribute_value(instance, attribute, attribute_names):
-    '''Returns the value of an attribute in an instance.
-    
-    Based on the position of attribute in the list of attribute_names'''
-    if attribute not in attribute_names:
-        return None
-    else:
-        i = attribute_names.index(attribute)
-        return instance[i] # using the parameter name here
-        
-
-def print_attribute_names_and_values(instance, attribute_names):
-    '''Prints the attribute names and values for instance'''
-    print('Values for the', len(attribute_names), 'attributes:', end='\n\n')
-    for i in range(len(attribute_names)):
-        print(attribute_names[i], '=', 
-        	  attribute_value(instance, attribute_names[i], attribute_names))
-
-
-def attribute_value_counts(instances, attribute, attribute_names):
-    '''Returns a Counter containing the counts of occurrences
-     of each value of attribute in the list of instances.
-    attribute_names is a list of names of attributes.'''
-    i = attribute_names.index(attribute)
-    return Counter([instance[i] for instance in instances])
-
-
-def print_all_attribute_value_counts(instances, attribute_names):
-    '''Returns a list of Counters containing the counts of occurrences 
-    of each value of each attribute in the list of instances.
-    attribute_names is a list of names of attributes.'''
-    num_instances = len(instances)
-    for attribute in attribute_names:
-        value_counts = attribute_value_counts(instances, attribute, attribute_names)
-        print('{}:'.format(attribute), end=' ')
-        for value, count in sorted(value_counts.items(), key=operator.itemgetter(1), reverse=True):
-            print('{} = {} ({:5.3f}),'.format(value, count, count / num_instances), end=' ')
-        print()
-        
-    
 def entropy(instances, class_index=-1, attribute_name=None, value_name=None):
     '''Calculate the entropy of attribute in position attribute_index for the list of instances.'''
     num_instances = len(instances)
@@ -204,7 +44,6 @@ def entropy(instances, class_index=-1, attribute_name=None, value_name=None):
         print('  = {:5.3f}'.format(attribute_entropy))
     return attribute_entropy
 
-
 def information_gain(instances, parent_index, class_index=0, attribute_name=False):
     '''Return the information gain of splitting the instances based on the attribute parent_index'''
     parent_entropy = entropy(instances, class_index, attribute_name)
@@ -219,12 +58,10 @@ def information_gain(instances, parent_index, class_index=0, attribute_name=Fals
         	child_instances[child_value], class_index, attribute_name, child_value)
     return parent_entropy - children_entropy
     
-
 def majority_value(instances, class_index=0):
     '''Return the most frequent value of class_index in instances'''
     class_counts = Counter([instance[class_index] for instance in instances])
     return class_counts.most_common(1)[0][0]
-
 
 def choose_best_attribute_index(instances, candidate_attribute_indexes, class_index=0):
     '''Return the index of the attribute that will provide the greatest information gain 
@@ -232,7 +69,6 @@ def choose_best_attribute_index(instances, candidate_attribute_indexes, class_in
     gains_and_indexes = sorted([(information_gain(instances, i), i) for i in candidate_attribute_indexes], 
                                reverse=True)
     return gains_and_indexes[0][1]
-
 
 def cmp_partitions(p1, p2):
     if entropy(p1) < entropy(p2):
@@ -245,7 +81,6 @@ def cmp_partitions(p1, p2):
         return 1
     return 0
 
-
 def split_instances(instances, attribute_index):
     '''Returns a list of dictionaries, splitting a list of instances according to their values of a specified attribute''
     
@@ -256,11 +91,9 @@ def split_instances(instances, attribute_index):
         partitions[instance[attribute_index]].append(instance)
     return partitions
 
-
 def partition_instances(instances, num_partitions):
     '''Returns a list of relatively equally sized disjoint sublists (partitions) of the list of instances'''
     return [[instances[j] for j in range(i, len(instances), num_partitions)] for i in range(num_partitions)]
-
 
 def create_decision_tree(instances, candidate_attribute_indexes=None, class_index=0, default_class=None, trace=0):
     '''Returns a new decision tree trained on a list of instances.
@@ -337,7 +170,6 @@ def create_decision_tree(instances, candidate_attribute_indexes=None, class_inde
 
     return tree
 
-
 def classify(tree, instance, default_class=None):
     '''Returns a classification label for instance, given a decision tree'''
     if not tree:
@@ -350,7 +182,6 @@ def classify(tree, instance, default_class=None):
     if instance_attribute_value not in attribute_values:
         return default_class
     return classify(attribute_values[instance_attribute_value], instance, default_class)
-
 
 def classification_accuracy(tree, testing_instances, class_index=0):
     '''Returns the accuracy of classifying testing_instances with tree, 
@@ -384,10 +215,6 @@ def classification_recall(tree, testing_instances, class_index=0):
         recall += value[1]/value[0]
     recall = recall/num_of_classes
     return recall
-
-
-
-
 
 def compute_learning_curve(instances, num_partitions=10):
     '''Returns a list of training sizes and scores for incrementally increasing partitions.
@@ -701,66 +528,65 @@ def fix_interval_discretization(instances,continuous_att_index_list,discretized_
 #Define your folder path
 folder_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\"
 ###########################################################################################
+#part3 = True #if False, then run part2
+part3 = False
+if part3:
+    # for part3
+    print("PART 3:")
+    training_data_filename = "wdbc-train.data"
+    testing_data_filename = "wdbc-test.data"
 
-"""
-# for part3
-print("PART 3:")
-training_data_filename = "wdbc-train.data"
-testing_data_filename = "wdbc-test.data"
+    training_instances = load_instances(training_data_filename)
+    testing_instances = load_instances(testing_data_filename)
+    print("Training data " +  training_data_filename + " contains " + str(len(training_instances)) + ' instances')
+    tree = create_decision_tree(training_instances,trace=0,class_index=-1)
+    tree_copy = copy.deepcopy(tree)
+    attribute_name_file_path = folder_path + "wdbc-att-names.txt"
+    final_tree_tgf_file_path = folder_path + "tree_part3_2.tgf"
+    #pprint(tree)
+    format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
+    print("accuracy on training data:: " + str(classification_accuracy(tree_copy,training_instances,-1)))
+    print("accuracy on testing data:: " + str(classification_accuracy(tree_copy,testing_instances,-1)))
+    print("recall on training data: " + str(classification_recall(tree_copy,training_instances,-1)))
+    print("recall on testing data: " + str(classification_recall(tree_copy,testing_instances,-1)))
+    # end for part3
+else:
+    # for part2
+    # for files that need discretization
+    print("PART 2:")
+    undiscretized_data_filename = folder_path + "mpg_cars_o.txt"
+    instances = load_instances(undiscretized_data_filename)
+    discretized_data_path = folder_path + "discretized_data.txt"
+    #fix_frequency_discretization(instances,[2,3,4,5],discretized_data_path,7)
+    fix_interval_discretization(instances,[2,3,4,5],discretized_data_path,7)
+    # now we load discretized data
+    data_filename = folder_path + "discretized_data.txt"
+    all_instances = load_instances(data_filename)
+    num_instances = len(all_instances)
+    ten_percent = int(num_instances*0.1)
+    random_list = random.sample(range(0,len(all_instances)),ten_percent)
+    training_instances = []
+    testing_instances = []
+    for m in range(num_instances):
+        if m in random_list:
+            testing_instances.append(all_instances[m])
+        else:
+            training_instances.append(all_instances[m])
 
-training_instances = load_instances(training_data_filename,True)
-testing_instances = load_instances(testing_data_filename,True)
-print("Training data " +  training_data_filename + " contains " + str(len(training_instances)) + ' instances')
-tree = create_decision_tree(training_instances,trace=0,class_index=-1)
-tree_copy = copy.deepcopy(tree)
-attribute_name_file_path = folder_path + "wdbc-att-names.txt"
-final_tree_tgf_file_path = folder_path + "tree_part3_2.tgf"
-#pprint(tree)
-format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
-print("accuracy on training data:: " + str(classification_accuracy(tree_copy,training_instances,-1)))
-print("accuracy on testing data:: " + str(classification_accuracy(tree_copy,testing_instances,-1)))
-print("recall on training data: " + str(classification_recall(tree_copy,training_instances,-1)))
-print("recall on testing data: " + str(classification_recall(tree_copy,testing_instances,-1)))
-# end for part3
-"""
+    print("Training data " +  " contains " + str(len(training_instances)) + ' instances')
+    tree = create_decision_tree(training_instances,trace=0,class_index=0)
+    tree_copy = copy.deepcopy(tree)
+    #pprint(tree)
+    attribute_name_file_path = folder_path + "car_att_names.txt"
+    final_tree_tgf_file_path = folder_path + "dtree_part2.tgf"
+    format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
+    print("testing data:")
+    print(testing_instances)
+    print("accuracy on training data:: " + str(classification_accuracy(tree_copy,training_instances,0)))
+    print("accuracy on testing data:: " + str(classification_accuracy(tree_copy,testing_instances,0)))
+    print("recall on training data: " + str(classification_recall(tree_copy,training_instances,0)))
+    print("recall on testing data: " + str(classification_recall(tree_copy,testing_instances,0)))
+    #print(compute_learning_curve(all_instances))
+    # end for part2
 
-
-#"""
-# for part2
-# for files that need discretization
-print("PART 2:")
-undiscretized_data_filename = folder_path + "mpg_cars_o.txt"
-instances = load_instances(undiscretized_data_filename)
-discretized_data_path = folder_path + "discretized_data.txt"
-#fix_frequency_discretization(instances,[2,3,4,5],discretized_data_path,7)
-fix_interval_discretization(instances,[2,3,4,5],discretized_data_path,7)
-# now we load discretized data
-data_filename = folder_path + "discretized_data.txt"
-all_instances = load_instances(data_filename,True)
-num_instances = len(all_instances)
-ten_percent = int(num_instances*0.1)
-random_list = random.sample(range(0,len(all_instances)),ten_percent)
-training_instances = []
-testing_instances = []
-for m in range(num_instances):
-    if m in random_list:
-        testing_instances.append(all_instances[m])
-    else:
-        training_instances.append(all_instances[m])
-
-print("Training data " +  " contains " + str(len(training_instances)) + ' instances')
-tree = create_decision_tree(training_instances,trace=0,class_index=0)
-tree_copy = copy.deepcopy(tree)
-#pprint(tree)
-attribute_name_file_path = folder_path + "car_att_names.txt"
-final_tree_tgf_file_path = folder_path + "dtree_part2.tgf"
-format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
-print("testing data:")
-print(testing_instances)
-print("accuracy on training data:: " + str(classification_accuracy(tree_copy,training_instances,0)))
-print("accuracy on testing data:: " + str(classification_accuracy(tree_copy,testing_instances,0)))
-print("recall on training data: " + str(classification_recall(tree_copy,training_instances,0)))
-print("recall on testing data: " + str(classification_recall(tree_copy,testing_instances,0)))
-# end for part2
-#"""
 
