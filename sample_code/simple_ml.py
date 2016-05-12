@@ -431,7 +431,7 @@ def get_attribute_names(att_name_file_path):
     for line in fileR.read().splitlines():
         att_names.append(line)
     fileR.close()
-    print(att_names)
+    #print(att_names)
     return att_names
 
 def format_a_tree_to_a_tgf_file(tree, att_name_file_path,final_tree_tgf_file_path):
@@ -670,7 +670,33 @@ def fix_interval_discretization(instances,continuous_att_index_list,discretized_
 ###########################################################################################
 #data_filename = "agaricus-lepiota.data"
 
+###########################################################################################
+#training_instances = all_instances[:8000]
+#test_instances = all_instances[5001:]
+###########################################################################################
+
+"""
+# for part3
+print("PART 3:")
+training_data_filename = "wdbc-train.data"
+testing_data_filename = "wdbc-test.data"
+
+training_instances = load_instances(training_data_filename,True)
+testing_instances = load_instances(testing_data_filename,True)
+print("Training data " +  training_data_filename + " contains " + str(len(training_instances)) + ' instances')
+tree = create_decision_tree(training_instances,trace=0,class_index=-1)
+attribute_name_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\wdbc-att-names.txt"
+final_tree_tgf_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\dtree_part3_2.tgf"
+#pprint(tree)
+format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
+print("accuracy: " + str(classification_accuracy(tree,testing_instances,-1)))
+# end for part3
+"""
+
+#"""
+# for part2
 # for files that need discretization
+print("PART 2:")
 undiscretized_data_filename = "mpg_cars_o.txt"
 instances = load_instances(undiscretized_data_filename)
 discretized_data_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\discretized_data.txt"
@@ -678,42 +704,16 @@ discretized_data_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproj
 fix_interval_discretization(instances,[2,3,4,5],discretized_data_path,7)
 # now we load discretized data
 training_data_filename = "discretized_data.txt"
-
-#training_data_filename = "wdbc-train.data"
-testing_data_filename = "wdbc-test.data"
-
 training_instances = load_instances(training_data_filename,True)
-testing_instances = load_instances(testing_data_filename,True)
-print('Read ', len(training_instances), 'training instances from', training_data_filename)
-#print('Read', len(testing_instances), 'testing instances from', testing_data_filename)
-# we don't want to print all the instances, so we'll just print the first one to verify
-print('First training instance:', training_instances[0])
-#print('First testing instance:', testing_instances[0])
-
-#att_filename = "att_names.txt"
-#att_names = load_attribute_names(att_filename)
-#print(att_names)
-
-
-###########################################################################################
-#training_instances = all_instances[:8000]
-#test_instances = all_instances[5001:]
-###########################################################################################
-
-#print(classification_accuracy(tree,testing_instances,-1))
-# for part3
-#tree = create_decision_tree(training_instances,trace=0,class_index=-1)
-#attribute_name_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\wdbc-att-names.txt"
-#final_tree_tgf_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\dtree_part3_2.tgf"
-#pprint(tree)
-
-# for part2
+print("Training data " +  training_data_filename + " contains " + str(len(training_instances)) + ' instances')
 tree = create_decision_tree(training_instances,trace=0,class_index=0)
 attribute_name_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\car_att_names.txt"
 final_tree_tgf_file_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\dtree_part2.tgf"
-pprint(tree)
-
 format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
+#pprint(tree)
+# end for part2
+#"""
+
 
 
 
