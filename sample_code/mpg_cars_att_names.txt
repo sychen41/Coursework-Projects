@@ -1,9 +1,0 @@
-mpg
-cylinders
-displacement
-horsepower
-weight
-acceleration
-modelyear
-maker
-

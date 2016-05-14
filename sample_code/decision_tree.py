@@ -1,6 +1,6 @@
 import math,operator,re,random,copy
 from collections import defaultdict, Counter
-#from pprint import pprint
+from pprint import pprint
 
 def load_instances(filename):
     instances = []
@@ -84,7 +84,7 @@ def partition_instances(instances, num_partitions):
     '''Returns a list of relatively equally sized disjoint sublists (partitions) of the list of instances'''
     return [[instances[j] for j in range(i, len(instances), num_partitions)] for i in range(num_partitions)]
 
-def create_decision_tree(instances, candidate_attribute_indexes=None, class_index=0, default_class=None, trace=0):
+def create_decision_tree(instances, candidate_attribute_indexes=None, class_index=0, default_class=None, prune=0,trace=0):
     '''Returns a new decision tree trained on a list of instances.
     
     The tree is constructed by recursively selecting and splitting instances based on 
@@ -107,17 +107,24 @@ def create_decision_tree(instances, candidate_attribute_indexes=None, class_inde
         
     class_labels_and_counts = Counter([instance[class_index] for instance in instances])
 
+    # if we do pre-prune
+    if prune > 0 and len(instances) < prune:
+        if trace:
+            print('{}Using default class because of pruning{}'.format('< ' * trace, default_class))
+        return default_class
+
     # If the dataset is empty or the candidate attributes list is empty, return the default value
-    if not instances or not candidate_attribute_indexes:
+    if not instances or not candidate_attribute_indexes:# or len(instances) < prune:
         if trace:
             print('{}Using default class {}'.format('< ' * trace, default_class))
         return default_class
-    
+
+
     # If all the instances have the same class label, return that class label
     elif len(class_labels_and_counts) == 1:
         class_label = class_labels_and_counts.most_common(1)[0][0]
         if trace:
-            print('{}All {} instances have label {}'.format('< ' * trace, 
+            print('{}All {} instances have label {}'.format('< ' * trace,
             	len(instances), class_label))
         return class_label
     else:
@@ -140,18 +147,19 @@ def create_decision_tree(instances, candidate_attribute_indexes=None, class_inde
             if trace:
                 print('{}Creating subtree for value {} ({}, {}, {}, {})'.format(
                     '> ' * trace,
-                    attribute_value, 
-                    len(partitions[attribute_value]), 
-                    len(remaining_candidate_attribute_indexes), 
-                    class_index, 
+                    attribute_value,
+                    len(partitions[attribute_value]),
+                    len(remaining_candidate_attribute_indexes),
+                    class_index,
                     default_class))
-                
+
             # Create a subtree for each value of the the best attribute
             subtree = create_decision_tree(
                 partitions[attribute_value],
                 remaining_candidate_attribute_indexes,
                 class_index,
                 default_class,
+                prune,
                 trace + 1 if trace else 0)
 
             # Add the new subtree to the empty dictionary object in the new tree/node we just created
@@ -483,10 +491,13 @@ if part3:
     training_instances = load_instances(training_data_filename)
     testing_instances = load_instances(testing_data_filename)
     print("Training data " +  training_data_filename + " contains " + str(len(training_instances)) + ' instances')
-    tree = create_decision_tree(training_instances,trace=0,class_index=-1)
+    # if prune > 0, than pre-pruning if the number of instances is less than prune
+    # if prune = 0, than no pre-pruning
+    tree = create_decision_tree(training_instances,trace=0,prune=200,class_index=-1)
+    #pprint(tree)
     tree_copy = copy.deepcopy(tree)
     attribute_name_file_path = folder_path + "wdbc-att-names.txt"
-    final_tree_tgf_file_path = folder_path + "tree_part3_2.tgf"
+    final_tree_tgf_file_path = folder_path + "tree_part3.tgf"
     #pprint(tree)
     format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
     print("accuracy on training data:: " + str(classification_accuracy(tree_copy,training_instances,-1)))
@@ -498,7 +509,7 @@ else:
     # for part2
     # for files that need discretization
     print("PART 2:")
-    undiscretized_data_filename = folder_path + "mpg_cars_o.txt"
+    undiscretized_data_filename = folder_path + "mpg_cars.txt"
     instances = load_instances(undiscretized_data_filename)
     discretized_data_path = folder_path + "discretized_data.txt"
     #fix_frequency_discretization(instances,[2,3,4,5],discretized_data_path,7)
@@ -518,11 +529,13 @@ else:
             training_instances.append(all_instances[m])
 
     print("Training data " +  " contains " + str(len(training_instances)) + ' instances')
-    tree = create_decision_tree(training_instances,trace=0,class_index=0)
+    # if prune > 0, than pre-pruning if the number of instances is less than prune
+    # if prune = 0, than no pre-pruning
+    tree = create_decision_tree(training_instances,trace=0,prune=0,class_index=0)
     tree_copy = copy.deepcopy(tree)
     #pprint(tree)
     attribute_name_file_path = folder_path + "car_att_names.txt"
-    final_tree_tgf_file_path = folder_path + "dtree_part2.tgf"
+    final_tree_tgf_file_path = folder_path + "tree_part2.tgf"
     format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
     print("testing data:")
     print(testing_instances)
