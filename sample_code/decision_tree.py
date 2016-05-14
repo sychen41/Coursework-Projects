@@ -205,26 +205,6 @@ def classification_recall(tree, testing_instances, class_index=0):
     recall = recall/num_of_classes
     return recall
 
-def compute_learning_curve(instances, num_partitions=10):
-    '''Returns a list of training sizes and scores for incrementally increasing partitions.
-    
-    The list contains 2-element tuples, each representing a training size and score.
-    The i-th training size is the number of instances in partitions 0 through num_partitions - 2.
-    The i-th score is the accuracy of a tree trained with instances 
-    from partitions 0 through num_partitions - 2
-    and tested on instances from num_partitions - 1 (the last partition).'''
-    partitions = partition_instances(instances, num_partitions)
-    testing_instances = partitions[-1][:]
-    training_instances = partitions[0][:]
-    accuracy_list = []
-    for i in range(1, num_partitions):
-        # for each iteration, the training set is composed of partitions 0 through i - 1
-        tree = create_decision_tree(training_instances)
-        partition_accuracy = classification_accuracy(tree, testing_instances)
-        accuracy_list.append((len(training_instances), partition_accuracy))
-        training_instances.extend(partitions[i][:])
-    return accuracy_list
-
 treeInfo = []
 unique_index = 0
 level_of_tree = []
@@ -550,7 +530,6 @@ else:
     print("accuracy on testing data:: " + str(classification_accuracy(tree_copy,testing_instances,0)))
     print("recall on training data: " + str(classification_recall(tree_copy,training_instances,0)))
     print("recall on testing data: " + str(classification_recall(tree_copy,testing_instances,0)))
-    #print(compute_learning_curve(all_instances))
     # end for part2
 
 
