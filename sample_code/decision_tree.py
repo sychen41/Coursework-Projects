@@ -70,17 +70,6 @@ def choose_best_attribute_index(instances, candidate_attribute_indexes, class_in
                                reverse=True)
     return gains_and_indexes[0][1]
 
-def cmp_partitions(p1, p2):
-    if entropy(p1) < entropy(p2):
-        return -1
-    elif entropy(p1) > entropy(p2):
-        return 1
-    elif len(p1) < len(p2):
-        return -1
-    elif len(p1) > len(p2):
-        return 1
-    return 0
-
 def split_instances(instances, attribute_index):
     '''Returns a list of dictionaries, splitting a list of instances according to their values of a specified attribute''
     
