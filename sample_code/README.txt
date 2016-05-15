@@ -29,3 +29,9 @@ This is a python program that creates a decision tree and outputs a .tgf file th
   i.	Accuracy on training/testing data
   j.	Recall on training/testing data
   k.	The original output of the decision tree before converting to a .tgf file. (Only for part 2, the car data)
+
+4.	For applying the program on your own data, make the following changes:
+	a.	at line 473, set part3 = True
+	b.	at line 477, 478, use your data's names
+	c.	at line 490, set the class_index accordingly. For instance, if in you data, if the class is the first attribute, then set it to 0. if it's the last attribute, set it to -1. 
+	d.	Node that this program only accepts data that are comma sepereted.
