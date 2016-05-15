@@ -2,9 +2,10 @@
 This is a python program that creates a decision tree and outputs a .tgf file that can show the whole structure of the tree.
 
 1.	The code is written in python 3.5. Here is the easiest way to run it:
-  a.	 Please download the corresponding version via https://www.python.org/downloads/ 
-  b.	Open the code in IDLE and click run from the menu.
-  c.	In the code at line 471, change the “folder_path” to your own path.
+  a.	Download the corresponding version via https://www.python.org/downloads/ 
+  b.	Open the code in IDLE, at line 471, change the “folder_path” to your own path.
+  c.  Click run from the menu.
+  
 
 2.	The program addresses two different data: mpg_cars.csv and wbdc-train.data
   a.	For mpg_cars.csv, since it’s not the conventional data format, we need to do the following steps: 
