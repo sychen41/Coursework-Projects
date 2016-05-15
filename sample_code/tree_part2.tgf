@@ -1,65 +1,38 @@
 0 weight_0
-1 modelyear_1
-2 modelyear_2
-3 maker_3
-4 acceleration_4
-5 horsepower_5
-6 displacement_6
-7 cylinders_7
-8 maker_8
-9 acceleration_9
-10 horsepower_10
-11 displacement_11
-12 cylinders_12
-13 modelyear_13
-14 acceleration_14
-15 maker_15
-16 modelyear_16
-17 horsepower_17
-18 displacement_18
-19 cylinders_19
+1 acceleration_1
+2 maker_2
+3 modelyear_3
+4 horsepower_4
+5 modelyear_5
+6 maker_6
 #
-0 1 4
-1 OK_u2 76
-1 Bad_u3 75
-1 Bad_u4 78
-0 2 1
-2 Good_u6 81
-2 3 71
-3 4 2
-4 5 7
-5 6 1
-6 7 1
-7 OK_u12 4
-2 OK_u13 75
-2 Good_u14 74
-2 Good_u15 79
-2 8 82
-8 9 1
-9 10 3
-10 11 1
-11 12 1
-12 Good_u21 4
-2 OK_u22 73
-2 OK_u23 77
-0 Bad_u24 6
-0 Bad_u25 7
-0 13 3
-13 OK_u27 81
-13 OK_u28 80
-13 OK_u29 75
-13 Bad_u30 79
-13 OK_u31 78
-13 Bad_u32 73
-0 Bad_u33 5
-0 14 2
-14 OK_u35 6
-14 OK_u36 5
-14 15 2
-15 16 1
-16 17 82
-17 18 2
-18 19 2
-19 Good_u42 4
-14 OK_u43 3
-14 Good_u44 7
+0 1 5
+1 Bad_u2 2
+1 Bad_u3 6
+1 Bad_u4 7
+1 OK_u5 5
+1 OK_u6 3
+0 2 4
+2 OK_u8 2
+2 Bad_u9 1
+2 OK_u10 3
+0 Bad_u11 6
+0 3 2
+3 4 82
+4 Good_u14 3
+4 Bad_u15 4
+3 Good_u16 71
+3 OK_u17 73
+3 OK_u18 75
+3 OK_u19 74
+0 5 1
+5 Good_u21 81
+5 Good_u22 82
+5 OK_u23 71
+5 OK_u24 77
+5 Good_u25 79
+0 Bad_u26 7
+0 6 3
+6 Good_u28 2
+6 OK_u29 1
+6 OK_u30 3

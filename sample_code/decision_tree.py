@@ -1,25 +1,39 @@
 import math,operator,re,random,copy
 from collections import defaultdict, Counter
-from pprint import pprint
+# A small portion of the following code is modified from https://github.com/gumption/Python_for_Data_Science/blob/master/4_Python_Simple_Decision_Tree.ipynb
 
+# load data to list of instances. one instance per line
 def load_instances(filename):
     instances = []
     fileR = open(filename, "r")
-    #with open(filename, 'r') as f:
     for line in fileR:
         new_instance = line.strip().split(',')
         instances.append(new_instance)
     fileR.close()
     return instances
 
+# read attribute names from a txt file
+def get_attribute_names(att_name_file_path):
+    att_names = []
+    fileR = open(att_name_file_path, "r")
+    for line in fileR.read().splitlines():
+        att_names.append(line)
+    fileR.close()
+    #print(att_names)
+    return att_names
+
+# get all values for an attribute given the index of the it
+# return a set (no duplicated value)
 def attribute_values(instances, attribute_index):
     return list(set([x[attribute_index] for x in instances]))
 
+# get all values for an attribute given the index of the it
+# return a list
 def attribute_values_list(instances, attribute_index):
     return list(([x[attribute_index] for x in instances]))
 
+# calculate the entropy for a given attribute
 def entropy(instances, class_index=-1, attribute_name=None, value_name=None):
-    '''Calculate the entropy of attribute in position attribute_index for the list of instances.'''
     num_instances = len(instances)
     if num_instances <= 1:
         return 0
@@ -44,8 +58,8 @@ def entropy(instances, class_index=-1, attribute_name=None, value_name=None):
         print('  = {:5.3f}'.format(attribute_entropy))
     return attribute_entropy
 
+# calculate the information gain for splitting on an attribute
 def information_gain(instances, parent_index, class_index=0, attribute_name=False):
-    '''Return the information gain of splitting the instances based on the attribute parent_index'''
     parent_entropy = entropy(instances, class_index, attribute_name)
     child_instances = defaultdict(list)
     for instance in instances:
@@ -57,47 +71,30 @@ def information_gain(instances, parent_index, class_index=0, attribute_name=Fals
         children_entropy += child_probability * entropy(
         	child_instances[child_value], class_index, attribute_name, child_value)
     return parent_entropy - children_entropy
-    
+
+# decide the majority class value given a bunch of instances
 def majority_value(instances, class_index=0):
-    '''Return the most frequent value of class_index in instances'''
     class_counts = Counter([instance[class_index] for instance in instances])
     return class_counts.most_common(1)[0][0]
 
+# find the attribute (index) that gives the most information gain
 def choose_best_attribute_index(instances, candidate_attribute_indexes, class_index=0):
-    '''Return the index of the attribute that will provide the greatest information gain 
-    if instances were partitioned based on that attribute'''
-    gains_and_indexes = sorted([(information_gain(instances, i), i) for i in candidate_attribute_indexes], 
+    gains_and_indexes = sorted([(information_gain(instances, i), i) for i in candidate_attribute_indexes],
                                reverse=True)
     return gains_and_indexes[0][1]
 
+# return a dict type of subset of instances after splitting on the attribute.
+# key: each value of this attribute
+# value: subset of instances that have the value of the attribute equal to the key
 def split_instances(instances, attribute_index):
-    '''Returns a list of dictionaries, splitting a list of instances according to their values of a specified attribute''
-    
-    The key of each dictionary is a distinct value of attribute_index,
-    and the value of each dictionary is a list representing the subset of instances that have that value for the attribute'''
     partitions = defaultdict(list)
     for instance in instances:
         partitions[instance[attribute_index]].append(instance)
     return partitions
 
-def partition_instances(instances, num_partitions):
-    '''Returns a list of relatively equally sized disjoint sublists (partitions) of the list of instances'''
-    return [[instances[j] for j in range(i, len(instances), num_partitions)] for i in range(num_partitions)]
-
+# create DT recursively based on always choosing the attribut that has the most information gain.
 def create_decision_tree(instances, candidate_attribute_indexes=None, class_index=0, default_class=None, prune=0,trace=0):
-    '''Returns a new decision tree trained on a list of instances.
-    
-    The tree is constructed by recursively selecting and splitting instances based on 
-    the highest information_gain of the candidate_attribute_indexes.
-    
-    The class label is found in position class_index.
-    
-    The default_class is the majority value for the current node's parent in the tree.
-    A positive (int) trace value will generate trace information with increasing levels of indentation.
-    
-    Derived from the simplified ID3 algorithm presented in Building Decision Trees in Python by Christopher Roach,
-    http://www.onlamp.com/pub/a/python/2006/02/09/ai_decision_trees.html?page=3'''
-    
+
     # if no candidate_attribute_indexes are provided, assume that we will use all but the target_attribute_index
     if class_index == -1:
         class_index = len(instances[0])-1
@@ -167,8 +164,8 @@ def create_decision_tree(instances, candidate_attribute_indexes=None, class_inde
 
     return tree
 
+# use the DT to predict the class value of an instance.
 def classify(tree, instance, default_class=None):
-    '''Returns a classification label for instance, given a decision tree'''
     if not tree:
         return default_class
     if not isinstance(tree, dict): 
@@ -180,9 +177,8 @@ def classify(tree, instance, default_class=None):
         return default_class
     return classify(attribute_values[instance_attribute_value], instance, default_class)
 
+# compute the accracy
 def classification_accuracy(tree, testing_instances, class_index=0):
-    '''Returns the accuracy of classifying testing_instances with tree, 
-    where the class label is in position class_index'''
     num_correct = 0
     for i in range(len(testing_instances)):
         prediction = classify(tree, testing_instances[i])
@@ -191,8 +187,8 @@ def classification_accuracy(tree, testing_instances, class_index=0):
             num_correct += 1
     return num_correct / len(testing_instances)
 
+# compute the recall
 def classification_recall(tree, testing_instances, class_index=0):
-    num_correct = 0
     recall_for_each_class = {}
     for i in range(len(testing_instances)):
         actual_value = testing_instances[i][class_index]
@@ -255,16 +251,7 @@ def walk_a_tree(tree,level,att,value):
                 walk_a_tree(pair[1],level,att,value)
                 #level-=1
 
-
-def get_attribute_names(att_name_file_path):
-    att_names = []
-    fileR = open(att_name_file_path, "r")
-    for line in fileR.read().splitlines():
-        att_names.append(line)
-    fileR.close()
-    #print(att_names)
-    return att_names
-
+# convert the DT to a tgf file
 def format_a_tree_to_a_tgf_file(tree, att_name_file_path,final_tree_tgf_file_path):
     # firstly, through walking the tree recursively, get information of every edge(node-value-node) of the tree
     walk_a_tree(tree,0,"","X")
@@ -338,7 +325,7 @@ def format_a_tree_to_a_tgf_file(tree, att_name_file_path,final_tree_tgf_file_pat
     print("number of node: " + str(unique_index+1))
     print("Tree graph: please open the tgf file that just generated.")
 
-
+# first type of dicretization: fixed frequency: every interval has the same number of instances.
 def fix_frequency_discretization(instances,continuous_att_index_list,discretized_data_path,nominal_att_index=-1):
     # number of bins = squre root of total number of instances
     num_bins = int(math.sqrt(len(instances)))
@@ -373,7 +360,7 @@ def fix_frequency_discretization(instances,continuous_att_index_list,discretized
         #print(discretized_value)
         new_data_map[att_index] = discretized_value
     data_after_discretization = []
-    print(new_data_map)
+    #print(new_data_map)
     # change nominal attribute value to numbers. for instance, Europe => 1, America => 2, etc
     all_nominal_values = []
     if nominal_att_index != -1:
@@ -399,6 +386,8 @@ def fix_frequency_discretization(instances,continuous_att_index_list,discretized
         fileW.write(temp_string + "\n")
     fileW.close()
 
+# second type of dicretization: fixed inteval: every interval has the same range. i.e., (11-15),(16-20)...
+# the first inteval always starts from 0, and the last interval always ends with infinite (use 999999999 instead).
 def fix_interval_discretization(instances,continuous_att_index_list,discretized_data_path,nominal_att_index=-1):
     # number of bins = squre root of total number of instances
     num_bins = int(math.sqrt(len(instances)))
@@ -477,7 +466,7 @@ def fix_interval_discretization(instances,continuous_att_index_list,discretized_
     fileW.close()
 
 ###########################################################################################
-# start the MAIN
+# Here start the MAIN
 #Define your folder path
 folder_path = "C:\\Users\\Shiyi\\Google Drive\\courses\\681 AI\\DTproject_AI\\sample_code\\"
 #part3 = True #if False, then run part2
@@ -493,12 +482,15 @@ if part3:
     print("Training data " +  training_data_filename + " contains " + str(len(training_instances)) + ' instances')
     # if prune > 0, than pre-pruning if the number of instances is less than prune
     # if prune = 0, than no pre-pruning
-    tree = create_decision_tree(training_instances,trace=0,prune=200,class_index=-1)
-    #pprint(tree)
+    pre_prune_threshold = 0
+    if pre_prune_threshold == 0:
+        print("No pre pruning")
+    else:
+        print("Pre pruning with threshold set at " + str(pre_prune_threshold))
+    tree = create_decision_tree(training_instances,trace=0,prune=pre_prune_threshold,class_index=-1)
     tree_copy = copy.deepcopy(tree)
     attribute_name_file_path = folder_path + "wdbc-att-names.txt"
     final_tree_tgf_file_path = folder_path + "tree_part3.tgf"
-    #pprint(tree)
     format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
     print("accuracy on training data:: " + str(classification_accuracy(tree_copy,training_instances,-1)))
     print("accuracy on testing data:: " + str(classification_accuracy(tree_copy,testing_instances,-1)))
@@ -510,10 +502,15 @@ else:
     # for files that need discretization
     print("PART 2:")
     undiscretized_data_filename = folder_path + "mpg_cars.txt"
+    discretization_type = "f"
     instances = load_instances(undiscretized_data_filename)
     discretized_data_path = folder_path + "discretized_data.txt"
-    #fix_frequency_discretization(instances,[2,3,4,5],discretized_data_path,7)
-    fix_interval_discretization(instances,[2,3,4,5],discretized_data_path,7)
+    if discretization_type == "f":
+        print("discretization method: fixed frequency")
+        fix_frequency_discretization(instances,[2,3,4,5],discretized_data_path,7)
+    else:
+        print("discretization method: fixed interval")
+        fix_interval_discretization(instances,[2,3,4,5],discretized_data_path,7)
     # now we load discretized data
     data_filename = folder_path + "discretized_data.txt"
     all_instances = load_instances(data_filename)
@@ -528,21 +525,29 @@ else:
         else:
             training_instances.append(all_instances[m])
 
-    print("Training data " +  " contains " + str(len(training_instances)) + ' instances')
+    print("Training data" +  " contains " + str(len(training_instances)) + ' instances')
+    print("Testing data" +  " contains " + str(len(testing_instances)) + ' instances')
     # if prune > 0, than pre-pruning if the number of instances is less than prune
     # if prune = 0, than no pre-pruning
-    tree = create_decision_tree(training_instances,trace=0,prune=0,class_index=0)
+    pre_prune_threshold = 0
+    if pre_prune_threshold == 0:
+        print("No pre pruning")
+    else:
+        print("Pre pruning with threshold set at " + str(pre_prune_threshold))
+    tree = create_decision_tree(training_instances,trace=0,prune=pre_prune_threshold,class_index=0)
     tree_copy = copy.deepcopy(tree)
-    #pprint(tree)
     attribute_name_file_path = folder_path + "car_att_names.txt"
     final_tree_tgf_file_path = folder_path + "tree_part2.tgf"
     format_a_tree_to_a_tgf_file(tree,attribute_name_file_path,final_tree_tgf_file_path)
-    print("testing data:")
-    print(testing_instances)
+    #print("testing data:")
+    #print(testing_instances)
     print("accuracy on training data:: " + str(classification_accuracy(tree_copy,training_instances,0)))
     print("accuracy on testing data:: " + str(classification_accuracy(tree_copy,testing_instances,0)))
     print("recall on training data: " + str(classification_recall(tree_copy,training_instances,0)))
     print("recall on testing data: " + str(classification_recall(tree_copy,testing_instances,0)))
+    print()
+    print("The following is the original tree output")
+    print(treeInfo)
     # end for part2
 
 
