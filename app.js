@@ -97,7 +97,7 @@ app.post('/api/todos', function(req, res) {
                 res.send(err);
         });
         // refresh the todos after insert
-        connection.query("select text from todo", function(err, todos){
+        connection.query("select * from todo", function(err, todos){
             if (err)
                 res.send(err);
             res.json(todos);
@@ -118,7 +118,7 @@ app.delete('/api/todos/:todo_id', function(req, res) {
                 res.send(err);
         });
         // refresh the todos after delete
-        connection.query("select text from todo", function(err, todos){
+        connection.query("select * from todo", function(err, todos){
             if (err)
                 res.send(err);
             res.json(todos);
