@@ -6,9 +6,9 @@ ehthumbs.db
 node_modules/
 
 # database info
-config/database.js
-mysqlServer/connectionString.js
 
+mysqlServer/connectionString.js
+config/database.js
 # Folder config file
 Desktop.ini
 

@@ -4,6 +4,7 @@
     <list default="true" id="f824d33f-a3df-413b-8406-00053665bbc6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mysqlServer/connectionProvider.js" afterPath="$PROJECT_DIR$/mysqlServer/connectionProvider.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mysqlServer/connectionString.js" afterPath="$PROJECT_DIR$/mysqlServer/connectionString.js" />
     </list>
     <ignored path="MEANtutorial_1.iws" />
@@ -56,21 +57,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="connectionProvider.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="connectionProvider.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mysqlServer/connectionProvider.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+            <state relative-caret-position="20">
+              <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="connectionString.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="connectionString.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mysqlServer/connectionString.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="18" column="2" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="2" />
+            <state relative-caret-position="320">
+              <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -137,6 +138,7 @@
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/mysqlServer/connectionString.js" />
+        <option value="$PROJECT_DIR$/mysqlServer/connectionProvider.js" />
       </list>
     </option>
   </component>
@@ -802,12 +804,12 @@
       <updated>1477234469389</updated>
       <workItem from="1477234484209" duration="3557000" />
       <workItem from="1477264946342" duration="7388000" />
-      <workItem from="1477272759884" duration="7706000" />
+      <workItem from="1477272759884" duration="8022000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18651000" />
+    <option name="totallyTimeSpent" value="18967000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
@@ -1014,18 +1016,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mysqlServer/connectionProvider.js">
+    <entry file="file://$PROJECT_DIR$/mysqlServer/connectionString.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+        <state relative-caret-position="320">
+          <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mysqlServer/connectionString.js">
+    <entry file="file://$PROJECT_DIR$/mysqlServer/connectionProvider.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="18" column="2" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="2" />
+        <state relative-caret-position="20">
+          <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
           <folding />
         </state>
       </provider>
