@@ -2,7 +2,7 @@
  * Created by Shiyi on 10/17/2016.
  */
 var mysql = require('mysql');
-//var connectionString = require('./connectionString.js');
+var connectionString = require('./connectionString.js');
 var mysqlConnectionProvider = {
     startConnection: function() {
         var connection = mysql.createConnection(connectionString.mysqlConnectionString.connection.development);
