@@ -1,8 +1,13 @@
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
+
 # node modules
 node_modules/
+
+# database user info
+config/database.js
+
 # Folder config file
 Desktop.ini
 
