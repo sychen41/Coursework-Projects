@@ -1,6 +1,6 @@
 # README #
 
-This is a compiler built for the OOP language decaf. It contains the following conponents:
+This is a compiler built for the OOP language decaf (in Fall 2014). It contains the following conponents:
 
 - Scanner: define and extract lexical units (tokens) by using Regex and Flex.
 - Parser: produce a parse tree by using Bison
