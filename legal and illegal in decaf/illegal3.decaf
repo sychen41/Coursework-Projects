@@ -1,0 +1,28 @@
+/* This is a program that simply records inputs from users as strings
+* and prints them out at the end;
+* Syntax errors:
+* 1. line 24, no " " around the string
+* 2. line 13, newline in a string
+* 3. line 10, must have this before line 9, because variable
+* declarations have to be done before other statements in a function
+*/
+void main() {
+    string[] recorder;
+    recorder = NewArray(3, string);
+    int counter;
+    counter = 0;
+    Print("Please state your will. 
+    You have at most three sentences because it is A WILL!");
+    for(;counter<3;counter=counter+1){
+	Print(counter); 
+	recorder[counter] = ReadLine();
+    }
+    Print("Now do you want to revise your will?");
+    if (ReadLine() == "yes") //should have {}, but not a syntax error
+    	Print("Sorry you CANNOT");
+    else {
+    	Print("I don't understand that. This is your will: ");
+    	Print(recorder[0],recorder[1],recorder[2]);
+    	Print("Safe travels!");
+    }
+}

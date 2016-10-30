@@ -1,0 +1,25 @@
+/* Grammar usage: string, Print, while loop, readInteger, etc.
+* This is a simple "Guess the Number" game
+* The whole loop will keep asking for input
+* from users until the correct one shows up
+*/
+class Guess {
+    string inputMessage;
+    string wrongMessage;
+    string rightMessage;
+    int input;
+    void main() {
+    	int theNum;
+    	theNum = 8;
+    	inputMessage = "Please make your guess to save the world: ";
+    	wrongMessage = "Wrong, guess again or the world will end!";
+    	rightMessage = "You made it! The world will end nonetheles..";
+    	Print(inputMessage);
+    	input = ReadInteger();
+    	while (input != theNum) {
+	    Print(wrongMessage);
+	    input = ReadInteger();
+	}
+	Print(rightMessage);
+    }
+}

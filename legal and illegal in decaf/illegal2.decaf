@@ -1,0 +1,33 @@
+/* Syntax errors
+* 1: at line 24, because you cannot 
+* do declaration and assignment at the same line;
+* 2: at line 21, because IF is used instead of if, the "{"
+* is not acceptable.
+
+* Other than syntax errors, there are errors like: 
+* 1: it uses the binary arithmetic operators, but the operands
+* are not the same type. But this is not a syntax error.
+* 2: Since logical operators must be of bool type, if (!b)
+* is not ok. (b is a int type)
+*/
+class Calculator {
+    int sum(int a, double b) {
+	return a + b;
+    }
+    int difference(int a, double b) {
+    	return a - b;
+    }
+    int product(int a, double b) {
+	return a - b;
+    }
+    int quotient(double a, int b) {
+    	IF (!b) {
+	    return a/b;
+	}
+    }
+}
+void main() {
+    Calculator cal = New (Calculator);
+    Print(cal.sum(1,2.9), cal.difference(2,4.4), cal.product(5, 3.5), cal.quotient(3, 0));
+}
+

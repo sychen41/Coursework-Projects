@@ -1,0 +1,85 @@
+/* Grammar usage: class, interface, recursion, null, 
+* boolean, unary logical operator, this, new, etc.
+*  This is an interesting way to implement a list 
+*   that is very similar to the linked lists 
+*   Adding first element 1 will get you: 1
+*   Adding the second element 2 will get you: 2->1 
+*   instead of 1->2, etc
+*   Also it uses recursive call to get the size of 
+*   the list and check whether it contains a value
+*/
+interface ListNode {
+    int getValue();
+    boolean hasNext();
+    ListNode getNext();
+    int size();
+    boolean contains(int value);
+}
+class LinkedNode implements ListNode {
+    int value;
+    ListNode next;
+    void setValue(int value){
+    	this.value = value;
+    }
+    void setNext(ListNode next){
+    	this.next = next;
+    }
+    int getValue() {
+    	return this.value;
+    }
+    ListNode getNext() {
+    	return this.next;
+    }
+    boolean hasNext() {
+    	return true;
+    }
+    // recursive call to get the size of a list
+    int size() {
+    	return 1 + this.next.size(); // to do 
+    }
+    // recursive call to test if a list contains the value
+    boolean contains(int value) {
+    	return this.value == value || this.next.value == value; 
+    }
+}
+class EmptyNode implements ListNode {
+    int getValue() {
+    	return null;
+    }
+    ListNode getNext() {
+    	return null;
+    }
+    boolean hasNext() {
+    	return false;
+    }
+    int size() {
+    	return 0; 
+    }
+    boolean contains(int value) {
+    	return false; 
+    }
+}
+class PolymorphicList {
+    ListNode head;
+    void add(int value){
+	LinkedNode temp;
+	temp = new (LinkedNode);
+	temp.setValue(value);
+	temp.setNext(this.head);
+	head = temp;
+    }
+    int size() {
+    	return head.size();
+    }
+    boolean contains(int value){
+    	return head.contains(value);
+    }
+    void main() {
+	head = new (EmptyNode);
+	head.add(1);
+	Print(head.getValue());	
+	head.add(2);
+	head.add(3);
+	head.contains(2);
+    }
+}

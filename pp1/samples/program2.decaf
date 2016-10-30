@@ -1,0 +1,18 @@
+int a;
+
+void main() {
+   int b;
+   int a_;
+   int d;
+   double fintthis;
+   ifinthis = 1.2E; 
+   if a || b;
+   else a && b;
+   d = 0X1E;
+   d = 2 + 3 * 4 - 6;
+   b = 3E;
+   b = 3;
+   a = b + 2;
+   string s;
+   s = "letterfg32r653764["7.67:";
+}

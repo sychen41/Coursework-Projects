@@ -1,0 +1,40 @@
+/* Grammar usage: class, extends, Print, etc
+* Syntax error 1: In the statement
+* block, we need to do variable declaration first, 
+* then do other statement.
+* Syntax error 2: to new a object, we need to use 
+* new (Typename), not new Typename()
+* Another error: overload is not allowed, 
+* but not get reported by dcc
+*/
+class Vehicle {
+    void fuelUp() {
+    	Print("Please fuel up!");
+    }
+}
+class Sedan extends Vehicle {
+   void fuelUp() {
+       Print("Please fuel up with GAS!");
+   }
+}
+class Pickup extends Vehicle {
+    void fuelUp() {
+    	Print("Please fuel up with DIESEL!");
+    }
+}
+void howToFuelUp(Sedan car) {
+    car.fuelUp();
+}
+void howToFuelUp(Pickup car) {
+    car.fuelUp();
+}
+void main(){
+    // syntax error here: we need to first do all declaration
+    // then do assignments and other statements
+    Sedan car1;
+    car1 = New Sedan();
+    Pickup car2; 
+    car2 = New Pickup();
+    howToFuelUp(car1);
+    howToFuelUp(car2);
+}

@@ -1,0 +1,41 @@
+/* Grammar usage: double, Array, if else, for loop, etc.
+* This is an awkward extension of array manipulation.
+*   It enables users to create an array without 
+*   define its size. The array will automatically 
+*   expand when it's full.
+*/
+class TheArrayUWant {
+    int[] theArray;
+    int size;
+    int counter;
+    int index;
+    int[] temp;
+    void initialize() {
+	size = 2;
+	theArray = NewArray(size, int);
+	counter = 0;
+    }
+    void add(int newInt){
+	theArray[counter] = newInt;
+	counter = counter + 1;
+	if (counter == size) {
+	    size = size * 2;
+	    temp = theArray;
+	    theArray = NewArray(size, int);
+	    for (index = 0;index < counter;index = index + 1) {
+		theArray[index] = temp[index];
+	    }
+	}
+    }
+    int getValue(int index){
+	return theArray[index];
+    }
+    void main() {
+	initialize();	
+	add(1);
+	add(2);
+	add(3);
+	Print(theArray.getValue(0), theArray.getValue(2));
+    }
+}
+
