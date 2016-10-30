@@ -7,7 +7,7 @@ This is a compiler built for the OOP language decaf. It contains the following c
 - Semantic Analyzer: check any violation of semantic rules and output an annotated parse tree
 - MIPS assembly code generator: generates code to be executed on the SPIM simulator
 
-Development History
+Development History Log
 
 * Version 1.0:
 * The current project is pp1 
