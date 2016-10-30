@@ -1,0 +1,25 @@
+PING strauss.udel.edu: 56 data bytes
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=0. time=0.777 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=1. time=0.543 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=2. time=0.600 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=3. time=0.416 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=4. time=0.481 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=5. time=0.441 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=6. time=0.626 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=7. time=0.568 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=8. time=0.503 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=9. time=0.572 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=10. time=0.634 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=11. time=0.469 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=12. time=0.512 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=13. time=0.448 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=14. time=0.532 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=15. time=0.464 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=16. time=0.556 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=17. time=0.622 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=18. time=0.425 ms
+64 bytes from strauss.udel.edu (128.175.13.74): icmp_seq=19. time=0.478 ms
+
+----strauss.udel.edu PING Statistics----
+20 packets transmitted, 20 packets received, 0% packet loss
+round-trip (ms)  min/avg/max/stddev = 0.416/0.5333/0.777/0.0892

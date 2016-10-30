@@ -1,0 +1,15 @@
+MyTest DEFINITIONS ::=
+BEGIN
+    
+    Message ::= CHOICE {
+	intMessage INTEGER,
+	stringMessage OCTET STRING,
+	oidInfo OBJECT IDENTIFIER
+}
+
+    MyType ::= SEQUENCE {
+	checksum INTEGER,
+	timeElapsed INTEGER
+} 
+
+END

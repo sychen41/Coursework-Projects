@@ -1,0 +1,10 @@
+PING www.yahoo.com: 56 data bytes
+64 bytes from ir2.fp.vip.bf1.yahoo.com (98.139.183.24): icmp_seq=0. time=23.1 ms
+64 bytes from ir2.fp.vip.bf1.yahoo.com (98.139.183.24): icmp_seq=1. time=25.3 ms
+64 bytes from ir2.fp.vip.bf1.yahoo.com (98.139.183.24): icmp_seq=2. time=27.6 ms
+64 bytes from ir2.fp.vip.bf1.yahoo.com (98.139.183.24): icmp_seq=3. time=25.2 ms
+64 bytes from ir2.fp.vip.bf1.yahoo.com (98.139.183.24): icmp_seq=4. time=22.6 ms
+
+----www.yahoo.com PING Statistics----
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip (ms)  min/avg/max/stddev = 22.6/24.7/27.6/2.0
