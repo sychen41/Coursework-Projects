@@ -1,0 +1,40 @@
+0 weight_0
+1 acceleration_1
+2 displacement_2
+3 acceleration_3
+4 modelyear_4
+5 modelyear_5
+6 horsepower_6
+7 maker_7
+#
+0 1 3
+1 OK_u2 3
+1 OK_u3 5
+1 Good_u4 6
+1 2 1
+2 Good_u6 2
+2 Bad_u7 3
+0 3 5
+3 Bad_u9 2
+3 Bad_u10 6
+3 Bad_u11 7
+3 OK_u12 3
+0 Bad_u13 7
+0 4 1
+4 Good_u15 82
+4 OK_u16 71
+4 OK_u17 77
+4 Good_u18 74
+4 Good_u19 79
+0 Bad_u20 6
+0 5 2
+5 OK_u22 75
+5 6 82
+6 Good_u24 3
+6 Bad_u25 4
+5 Good_u26 71
+5 OK_u27 74
+0 7 4
+7 Bad_u29 3
+7 OK_u30 1
+7 OK_u31 2
