@@ -6,6 +6,8 @@ This is a compiler built for the OOP language decaf. It contains the following c
 - Parser: produce a parse tree by using Bison
 - Semantic Analyzer: check any violation of semantic rules and output an annotated parse tree
 - MIPS assembly code generator: generates code to be executed on the SPIM simulator
+
+
 -------------------------------------------------------------------------------------------------------------------------
 # Gene Expression Inference
 (Course: CISC889 Advanced Topics In Artificial Intelligence(Spring 2016)
