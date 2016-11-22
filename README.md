@@ -58,3 +58,14 @@ Add another panel for administrators to view all documents that need to be 'appr
 10. Allow administrator to view any document and mark them as approved.
 
 11. Allow user to see documents that have been approved in their list.
+
+-------------------------------------------------------------------------------------------------------------------------
+# -CISC853-SNMPv2c-agent
+(Course: Computer Network Management (2015S)) Project 1&amp; 2
+
+- Implemented management agents (servers) and clients
+
+- Implemented the ASN.1 data types and use them in the application, according to the SNMP message structure from RFC 1901 and the PDU structure from RFC 3416. 
+
+- Implemented and extended MIB variables,  completed the functionality of UDEL-PING-MIB
+
