@@ -30,7 +30,8 @@ Project 2
 - Made inference about the expression level of a gene given the expression levels of other genes. Achieved prediction accuracy of .75.
 
 -------------------------------------------------------------------------------------------------------------------------
-This is a web application done in April 2014 for CISC474 (Advanced Web Tech)
+# Web App in PHP (Spring 2014)
+(Course: CISC474 Advanced Web Tech)
 
 Use PHP and the Slim framework to build out the application. 
 
