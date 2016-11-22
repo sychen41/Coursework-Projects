@@ -1,0 +1,6 @@
+[Activity]
+name = CaptainMathematica
+activity_version = 1
+bundle_id = org.darkjedixp.captainmathematica
+icon = activity
+exec = sugar-activity activity.Activity
