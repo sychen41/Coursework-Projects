@@ -1,6 +1,14 @@
+# Compiler for OOP decaf
+(Course: CISC672 Compiler Construction (Fall 2014))
+This is a compiler built for the OOP language decaf. It contains the following conponents:
+
+- Scanner: define and extract lexical units (tokens) by using Regex and Flex.
+- Parser: produce a parse tree by using Bison
+- Semantic Analyzer: check any violation of semantic rules and output an annotated parse tree
+- MIPS assembly code generator: generates code to be executed on the SPIM simulator
 -------------------------------------------------------------------------------------------------------------------------
-# -CISC889-Gene-Expression-Inference
-(Course: Advanced Topics In Artificial Intelligence(2016S) Project 1 &amp; 2
+# Gene Expression Inference
+(Course: CISC889 Advanced Topics In Artificial Intelligence(Spring 2016)
  
 Project 1
  
