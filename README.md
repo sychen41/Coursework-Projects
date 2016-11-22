@@ -113,3 +113,8 @@ will be a function to:
  Build the decision tree
 
  Generate a tgf file (see more details later in this document)
+
+-------------------------------------------------------------------------------------------------------------------------
+# -CISC-374-Phaser-and-HTML5
+(Course: Game Development(2014F)) This is for html5+phaser study purpose 
+https://www.eecis.udel.edu/~pollock/374s15/syllabus
