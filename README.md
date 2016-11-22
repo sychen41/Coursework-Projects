@@ -61,8 +61,8 @@ Add another panel for administrators to view all documents that need to be 'appr
 11. Allow user to see documents that have been approved in their list.
 
 -------------------------------------------------------------------------------------------------------------------------
-# -CISC853-SNMPv2c-agent
-(Course: Computer Network Management (2015S)) Project 1&amp; 2
+# SNMPv2c Agent (Spring 2015)
+(Course: CISC853 Computer Network Management)
 
 - Implemented management agents (servers) and clients
 
